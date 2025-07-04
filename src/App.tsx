@@ -5,6 +5,7 @@ import Layout from '@/components/layout/Layout';
 import AdminLayout from '@/components/admin/layout/AdminLayout';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
 import { useAuthStore } from '@/store/auth';
+import { useEffect } from 'react';
 
 // Import pages
 import Home from '@/pages/Home';

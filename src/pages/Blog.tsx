@@ -10,7 +10,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogFilters } from '@/types/blog';
-import { sanitizeNulls } from '@/lib/utils';
+import { deepSanitizeNulls } from '@/lib/utils';
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,9 +43,29 @@ const Blog = () => {
   const { categories } = useBlogCategories();
   const { tags } = useBlogTags();
 
-  const sanitizedPosts = posts.map(sanitizeNulls);
-  const sanitizedCategories = categories.map(sanitizeNulls);
-  const sanitizedTags = tags.map(sanitizeNulls);
+  const sanitizedPosts = deepSanitizeNulls(posts);
+  const sanitizedCategories = deepSanitizeNulls(categories);
+  const sanitizedTags = deepSanitizeNulls(tags);
+
+  const fixedCategories = sanitizedCategories.map(cat => ({
+    ...cat,
+    description: cat.description ?? undefined
+  }));
+  const fixedPosts = sanitizedPosts.map(post => ({
+    ...post,
+    excerpt: post.excerpt ?? undefined,
+    featured_image_url: post.featured_image_url ?? undefined,
+    category: post.category ?? undefined,
+    category_id: post.category_id ?? undefined,
+    author_name: post.author_name ?? undefined,
+    author_id: post.author_id ?? undefined,
+    reading_time_minutes: post.reading_time_minutes ?? undefined,
+    seo_title: post.seo_title ?? undefined,
+    seo_description: post.seo_description ?? undefined,
+    meta_title: post.meta_title ?? undefined,
+    meta_description: post.meta_description ?? undefined,
+    meta_keywords: post.meta_keywords ?? undefined
+  }));
 
   const handleSearch = (query: string) => {
     const params = new URLSearchParams(searchParams);
@@ -71,7 +91,7 @@ const Blog = () => {
     }
     
     if (filters.category_slug) {
-      const category = sanitizedCategories.find(c => c.slug === filters.category_slug);
+      const category = fixedCategories.find(c => c.slug === filters.category_slug);
       return category ? `Category: ${category.name}` : 'Blog';
     }
     
@@ -132,7 +152,7 @@ const Blog = () => {
                 <div className="text-center py-12">
                   <p className="text-red-600">{error}</p>
                 </div>
-              ) : sanitizedPosts.length === 0 ? (
+              ) : fixedPosts.length === 0 ? (
                 <Card>
                   <CardContent className="p-8 text-center">
                     <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -154,7 +174,7 @@ const Blog = () => {
               ) : (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    {sanitizedPosts.map((post) => (
+                    {fixedPosts.map((post) => (
                       <BlogCard key={post.id} post={post} />
                     ))}
                   </div>
@@ -195,9 +215,9 @@ const Blog = () => {
             {/* Sidebar */}
             <div>
               <BlogSidebar
-                categories={sanitizedCategories}
+                categories={fixedCategories}
                 tags={sanitizedTags}
-                recentPosts={sanitizedPosts.slice(0, 5)}
+                recentPosts={fixedPosts.slice(0, 5)}
                 onSearch={handleSearch}
               />
             </div>

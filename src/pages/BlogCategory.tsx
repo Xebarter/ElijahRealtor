@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogCategory } from '@/types/blog';
-import { sanitizeNulls } from '@/lib/utils';
+import { deepSanitizeNulls } from '@/lib/utils';
 
 const BlogCategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -27,9 +27,9 @@ const BlogCategoryPage = () => {
     published: true 
   }, currentPage, 6);
 
-  const sanitizedPosts = posts.map(sanitizeNulls);
-  const sanitizedCategories = categories.map(sanitizeNulls);
-  const sanitizedTags = tags.map(sanitizeNulls);
+  const sanitizedPosts = deepSanitizeNulls(posts);
+  const sanitizedCategories = deepSanitizeNulls(categories);
+  const sanitizedTags = deepSanitizeNulls(tags);
 
   const fixedCategories = sanitizedCategories.map(cat => ({...cat, description: cat.description ?? undefined}));
   const fixedPosts = sanitizedPosts.map(post => ({

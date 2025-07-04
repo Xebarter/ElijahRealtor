@@ -11,7 +11,7 @@ import BlogCard from '@/components/blog/BlogCard';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
-import { generateSlug, sanitizeNulls } from '@/lib/utils';
+import { generateSlug, deepSanitizeNulls } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import type { BlogPost } from '@/types/blog';
 
@@ -26,9 +26,29 @@ const BlogPostPage = () => {
   const { categories } = useBlogCategories();
   const { tags } = useBlogTags();
 
-  const sanitizedPosts = posts.map(sanitizeNulls);
-  const sanitizedCategories = categories.map(sanitizeNulls);
-  const sanitizedTags = tags.map(sanitizeNulls);
+  const sanitizedPosts = deepSanitizeNulls(posts);
+  const sanitizedCategories = deepSanitizeNulls(categories);
+  const sanitizedTags = deepSanitizeNulls(tags);
+
+  const fixedCategories = sanitizedCategories.map(cat => ({
+    ...cat,
+    description: cat.description ?? undefined
+  }));
+  const fixedPosts = sanitizedPosts.map(post => ({
+    ...post,
+    excerpt: post.excerpt ?? undefined,
+    featured_image_url: post.featured_image_url ?? undefined,
+    category: post.category ?? undefined,
+    category_id: post.category_id ?? undefined,
+    author_name: post.author_name ?? undefined,
+    author_id: post.author_id ?? undefined,
+    reading_time_minutes: post.reading_time_minutes ?? undefined,
+    seo_title: post.seo_title ?? undefined,
+    seo_description: post.seo_description ?? undefined,
+    meta_title: post.meta_title ?? undefined,
+    meta_description: post.meta_description ?? undefined,
+    meta_keywords: post.meta_keywords ?? undefined
+  }));
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -275,7 +295,7 @@ const BlogPostPage = () => {
             {/* Sidebar */}
             <div>
               <BlogSidebar
-                categories={sanitizedCategories}
+                categories={fixedCategories}
                 tags={sanitizedTags}
                 recentPosts={sanitizedPosts.filter(p => p.id !== post.id).slice(0, 5)}
               />

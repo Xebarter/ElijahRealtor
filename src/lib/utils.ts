@@ -45,3 +45,14 @@ export function sanitizeNulls<T extends object>(obj: T): T {
     Object.entries(obj).map(([k, v]) => [k, v === null ? undefined : v])
   ) as T;
 }
+
+export function deepSanitizeNulls<T>(input: T): T {
+  if (Array.isArray(input)) {
+    return input.map(deepSanitizeNulls) as unknown as T;
+  } else if (input && typeof input === 'object') {
+    return Object.fromEntries(
+      Object.entries(input).map(([k, v]) => [k, v === null ? undefined : deepSanitizeNulls(v)])
+    ) as T;
+  }
+  return input;
+}
