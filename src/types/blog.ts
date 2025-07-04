@@ -4,9 +4,9 @@ export interface BlogPost {
   title: string;
   slug: string;
   content: string;
-  excerpt?: string | null;
-  featured_image_url?: string | null;
-  category?: string | null | { name?: string };
+  excerpt?: string;
+  featured_image_url?: string;
+  category?: string | { name?: string };
   category_id?: string;
   author_name?: string;
   author_id?: string;
@@ -15,11 +15,11 @@ export interface BlogPost {
   published: boolean;
   reading_time_minutes?: number;
   view_count?: number;
-  seo_title?: string | null;
-  seo_description?: string | null;
-  meta_keywords?: string[] | null;
-  created_at?: string | null;
-  updated_at?: string | null;
+  seo_title?: string;
+  seo_description?: string;
+  meta_keywords?: string[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface BlogCategory {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, User, Tag, Eye, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -44,9 +43,9 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
       <CardContent className="p-5">
         {/* Category */}
         {post.category && (
-          <Link to={`/blog/category/${post.category.slug}`}>
+          <Link to={`/blog/category/${typeof post.category === 'object' && post.category !== null && 'slug' in post.category ? post.category.slug ?? '' : ''}`}>
             <Badge variant="outline" className="mb-2 text-primary-gold border-primary-gold">
-              {post.category.name}
+              {typeof post.category === 'object' && post.category !== null && 'name' in post.category ? post.category.name ?? '' : undefined}
             </Badge>
           </Link>
         )}

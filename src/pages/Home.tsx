@@ -1,4 +1,3 @@
-import React from 'react';
 import SEO from '@/components/common/SEO';
 import HeroSection from '@/components/home/HeroSection';
 import FeaturedProperties from '@/components/home/FeaturedProperties';

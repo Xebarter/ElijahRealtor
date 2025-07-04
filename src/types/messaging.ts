@@ -1,3 +1,5 @@
+import type { Property } from './index';
+
 // Messaging system types
 export interface Conversation {
   id: string;
