@@ -129,7 +129,7 @@ const BlogPostPage = () => {
     <>
       <SEO
         title={post.seo_title || post.title}
-        description={post.meta_description || post.excerpt || `Read ${post.title} on ElijahRealtor Blog`}
+        description={post.seo_description || post.excerpt || `Read ${post.title} on ElijahRealtor Blog`}
         keywords={post.meta_keywords?.join(', ') || 'real estate, blog, property'}
         image={post.featured_image_url}
         type="article"
@@ -240,9 +240,9 @@ const BlogPostPage = () => {
                 <CardContent className="p-8">
                   {/* Category */}
                   {post.category && (
-                    <Link to={`/blog/category/${post.category.slug}`}>
+                    <Link to={`/blog/category/${typeof post.category === 'object' && post.category !== null && 'slug' in post.category ? post.category.slug ?? '' : ''}`}>
                       <Badge variant="outline" className="mb-4 text-primary-gold border-primary-gold">
-                        {post.category.name}
+                        {typeof post.category === 'object' && post.category !== null && 'name' in post.category ? post.category.name ?? '' : ''}
                       </Badge>
                     </Link>
                   )}

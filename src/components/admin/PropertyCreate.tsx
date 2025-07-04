@@ -28,7 +28,7 @@ type PropertyFormData = z.infer<typeof propertySchema>;
 const PropertyCreate = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [createdPropertyId, setCreatedPropertyId] = useState<string | null>(null);
+  const [createdPropertyId, setCreatedPropertyId] = useState<string | undefined>(undefined);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [amenityInput, setAmenityInput] = useState('');
   const [featureImages, setFeatureImages] = useState<Record<string, File[]>>({});
@@ -77,8 +77,8 @@ const PropertyCreate = () => {
     setValue('location_coordinates', locationData.coordinates);
   };
 
-  const handleVideoChange = (videoUrl: string | null) => {
-    setValue('video_tour_url', videoUrl || undefined);
+  const handleVideoChange = (videoUrl: string | undefined) => {
+    setValue('video_tour_url', videoUrl);
   };
 
   const handleImagesChange = (imagesByFeature: Record<string, File[]>) => {

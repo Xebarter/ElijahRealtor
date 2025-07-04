@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BookOpen, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import BlogCard from '@/components/blog/BlogCard';
-import BlogSidebar from '@/components/blog/BlogSidebar';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
-import SEO from '@/components/common/SEO';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogFilters } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
@@ -35,9 +29,6 @@ const Blog = () => {
 
   const { 
     posts, 
-    loading, 
-    error, 
-    totalPages 
   } = useBlogPosts(filters, currentPage, 6);
   
   const { categories } = useBlogCategories();
@@ -105,7 +96,7 @@ const Blog = () => {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="md:w-1/4">
-        <BlogSidebar />
+        {/* Add BlogSidebar component */}
       </div>
       <div className="md:w-3/4">
         <h1>{getPageTitle()}</h1>

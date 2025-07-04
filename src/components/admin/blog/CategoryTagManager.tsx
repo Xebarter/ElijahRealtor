@@ -66,7 +66,7 @@ const CategoryTagManager: React.FC = () => {
   const handleEditCategory = (category: BlogCategory) => {
     setEditingCategory(category);
     setCategoryName(category.name);
-    setCategoryDescription(category.description || '');
+    setCategoryDescription(category.description ?? '');
     setShowCategoryDialog(true);
   };
 
