@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Tag as TagIcon, Eye, Clock, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -128,7 +128,7 @@ const BlogPostPage = () => {
   return (
     <>
       <SEO
-        title={post.meta_title || post.title}
+        title={post.seo_title || post.title}
         description={post.meta_description || post.excerpt || `Read ${post.title} on ElijahRealtor Blog`}
         keywords={post.meta_keywords?.join(', ') || 'real estate, blog, property'}
         image={post.featured_image_url}

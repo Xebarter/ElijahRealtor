@@ -39,8 +39,6 @@ const BlogCommentManager: React.FC = () => {
     comments, 
     loading, 
     error, 
-    updateCommentStatus, 
-    deleteComment 
   } = useAllBlogComments(statusFilter);
 
   const handleStatusChange = (status: 'pending' | 'approved' | 'rejected' | 'all') => {

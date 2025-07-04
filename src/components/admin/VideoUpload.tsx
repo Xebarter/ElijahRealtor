@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Upload, Video, X, Loader2, Play } from 'lucide-react';
+import { Video, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -20,7 +20,6 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
   const [videoUrl, setVideoUrl] = useState(currentVideoUrl || '');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
-  const [isEmbedUrl, setIsEmbedUrl] = useState(false);
 
   const { uploading, uploadVideo } = useVideoUpload();
 

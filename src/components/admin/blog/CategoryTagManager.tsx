@@ -5,8 +5,7 @@ import {
   Plus, 
   Edit, 
   Trash2,
-  Save,
-  X
+  Save
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -182,9 +181,6 @@ const CategoryTagManager: React.FC = () => {
                     )}
                     <div className="text-xs text-gray-400 mt-1">
                       Slug: {category.slug}
-                      {category.post_count !== undefined && (
-                        <span className="ml-2">Posts: {category.post_count}</span>
-                      )}
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -199,8 +195,6 @@ const CategoryTagManager: React.FC = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => handleDeleteCategory(category)}
-                      className="text-red-600 hover:text-red-700"
-                      disabled={category.post_count ? category.post_count > 0 : false}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -239,9 +233,6 @@ const CategoryTagManager: React.FC = () => {
                 <div key={tag.id} className="group relative">
                   <Badge className="py-1 px-2">
                     {tag.name}
-                    {tag.post_count !== undefined && (
-                      <span className="ml-1 text-xs">({tag.post_count})</span>
-                    )}
                   </Badge>
                   <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 hidden group-hover:flex bg-white rounded-full shadow-sm border">
                     <Button
@@ -257,7 +248,6 @@ const CategoryTagManager: React.FC = () => {
                       size="sm"
                       className="h-6 w-6 p-0 text-red-600"
                       onClick={() => handleDeleteTag(tag)}
-                      disabled={tag.post_count ? tag.post_count > 0 : false}
                     >
                       <Trash2 className="w-3 h-3" />
                     </Button>
@@ -331,11 +321,6 @@ const CategoryTagManager: React.FC = () => {
           </DialogHeader>
           <p>
             Are you sure you want to delete the category "{deletingCategory?.name}"?
-            {deletingCategory?.post_count && deletingCategory.post_count > 0 && (
-              <span className="block text-red-600 mt-2">
-                This category has {deletingCategory.post_count} posts. You cannot delete it until you reassign or delete those posts.
-              </span>
-            )}
           </p>
           <DialogFooter>
             <Button
@@ -347,7 +332,6 @@ const CategoryTagManager: React.FC = () => {
             <Button
               variant="destructive"
               onClick={confirmDeleteCategory}
-              disabled={deletingCategory?.post_count ? deletingCategory.post_count > 0 : false}
             >
               Delete
             </Button>
@@ -404,11 +388,6 @@ const CategoryTagManager: React.FC = () => {
           </DialogHeader>
           <p>
             Are you sure you want to delete the tag "{deletingTag?.name}"?
-            {deletingTag?.post_count && deletingTag.post_count > 0 && (
-              <span className="block text-red-600 mt-2">
-                This tag is used in {deletingTag.post_count} posts. You cannot delete it until you remove it from those posts.
-              </span>
-            )}
           </p>
           <DialogFooter>
             <Button
@@ -420,7 +399,6 @@ const CategoryTagManager: React.FC = () => {
             <Button
               variant="destructive"
               onClick={confirmDeleteTag}
-              disabled={deletingTag?.post_count ? deletingTag.post_count > 0 : false}
             >
               Delete
             </Button>

@@ -6,12 +6,9 @@ import {
   Eye, 
   Calendar, 
   User, 
-  Tag as TagIcon, 
-  FolderOpen,
   CheckCircle,
   XCircle,
   Search,
-  Filter
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

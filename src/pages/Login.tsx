@@ -10,6 +10,7 @@ import SEO from '@/components/common/SEO';
 import { useAuthStore } from '@/store/auth';
 import { loginSchema } from '@/lib/validations';
 import type { z } from 'zod';
+import { useState } from 'react';
 
 type LoginForm = z.infer<typeof loginSchema>;
 

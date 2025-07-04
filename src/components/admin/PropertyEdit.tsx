@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,7 +19,6 @@ import { supabase } from '@/lib/supabase';
 import { propertySchema } from '@/lib/validations';
 import { COUNTRIES } from '@/lib/countries';
 import { useProperty } from '@/hooks/useProperties';
-import type { PropertyForm } from '@/types';
 import type { z } from 'zod';
 
 type PropertyFormData = z.infer<typeof propertySchema>;

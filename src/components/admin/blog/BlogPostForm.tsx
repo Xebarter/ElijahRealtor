@@ -6,12 +6,8 @@ import {
   Save, 
   Image as ImageIcon, 
   Tag as TagIcon, 
-  FolderOpen, 
-  User, 
-  Upload, 
   X, 
   Plus,
-  Eye,
   FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,7 +27,7 @@ import { Progress } from '@/components/ui/progress';
 import { useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import { useAuthStore } from '@/store/auth';
 import { generateSlug } from '@/lib/utils';
-import type { BlogPost, BlogPostForm as BlogPostFormType } from '@/types/blog';
+import type { BlogPost } from '@/types/blog';
 
 // Form validation schema
 const blogPostSchema = z.object({

@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Upload, X, Image as ImageIcon, Loader2, Plus, AlertCircle } from 'lucide-react';
+import { Upload, X, Image as ImageIcon, Plus, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { PROPERTY_FEATURES } from '@/types';
 import type { PropertyFeatureType } from '@/types';
