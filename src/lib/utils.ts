@@ -39,3 +39,9 @@ export function calculateReadingTime(content: string): number {
   const readingTime = Math.ceil(wordCount / wordsPerMinute);
   return Math.max(1, readingTime); // Minimum 1 minute
 }
+
+export function sanitizeNulls<T extends object>(obj: T): T {
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [k, v === null ? undefined : v])
+  ) as T;
+}

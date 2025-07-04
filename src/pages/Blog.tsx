@@ -10,6 +10,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogFilters } from '@/types/blog';
+import { sanitizeNulls } from '@/lib/utils';
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,6 +43,10 @@ const Blog = () => {
   const { categories } = useBlogCategories();
   const { tags } = useBlogTags();
 
+  const sanitizedPosts = posts.map(sanitizeNulls);
+  const sanitizedCategories = categories.map(sanitizeNulls);
+  const sanitizedTags = tags.map(sanitizeNulls);
+
   const handleSearch = (query: string) => {
     const params = new URLSearchParams(searchParams);
     if (query) {
@@ -66,12 +71,12 @@ const Blog = () => {
     }
     
     if (filters.category_slug) {
-      const category = categories.find(c => c.slug === filters.category_slug);
+      const category = sanitizedCategories.find(c => c.slug === filters.category_slug);
       return category ? `Category: ${category.name}` : 'Blog';
     }
     
     if (filters.tag_slug) {
-      const tag = tags.find(t => t.slug === filters.tag_slug);
+      const tag = sanitizedTags.find(t => t.slug === filters.tag_slug);
       return tag ? `Tag: ${tag.name}` : 'Blog';
     }
     
@@ -127,7 +132,7 @@ const Blog = () => {
                 <div className="text-center py-12">
                   <p className="text-red-600">{error}</p>
                 </div>
-              ) : posts.length === 0 ? (
+              ) : sanitizedPosts.length === 0 ? (
                 <Card>
                   <CardContent className="p-8 text-center">
                     <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -149,7 +154,7 @@ const Blog = () => {
               ) : (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    {posts.map((post) => (
+                    {sanitizedPosts.map((post) => (
                       <BlogCard key={post.id} post={post} />
                     ))}
                   </div>
@@ -190,9 +195,9 @@ const Blog = () => {
             {/* Sidebar */}
             <div>
               <BlogSidebar
-                categories={categories}
-                tags={tags}
-                recentPosts={posts.slice(0, 5)}
+                categories={sanitizedCategories}
+                tags={sanitizedTags}
+                recentPosts={sanitizedPosts.slice(0, 5)}
                 onSearch={handleSearch}
               />
             </div>

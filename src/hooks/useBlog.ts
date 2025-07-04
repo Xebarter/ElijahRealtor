@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Database } from '../lib/supabase';
+import { sanitizeNulls } from '@/lib/utils';
 
 type BlogPost = Database['public']['Tables']['blog_posts']['Row'];
 type BlogCategory = Database['public']['Tables']['blog_categories']['Row'];
@@ -58,7 +59,7 @@ export const useBlog = () => {
         );
       }
 
-      setPosts(filteredPosts);
+      setPosts((filteredPosts || []).map(sanitizeNulls));
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch blog posts';
       console.error('Blog fetch error:', err);
@@ -81,7 +82,7 @@ export const useBlog = () => {
         throw new Error(`Failed to fetch categories: ${fetchError.message}`);
       }
 
-      setCategories(data || []);
+      setCategories((data || []).map(sanitizeNulls));
     } catch (err) {
       console.error('Categories fetch error:', err);
       setCategories([]);
@@ -100,7 +101,7 @@ export const useBlog = () => {
         throw new Error(`Failed to fetch tags: ${fetchError.message}`);
       }
 
-      setTags(data || []);
+      setTags((data || []).map(sanitizeNulls));
     } catch (err) {
       console.error('Tags fetch error:', err);
       setTags([]);
@@ -370,7 +371,7 @@ export const useBlogCategories = () => {
         throw new Error(`Failed to fetch categories: ${fetchError.message}`);
       }
 
-      setCategories(data || []);
+      setCategories((data || []).map(sanitizeNulls));
       return data || [];
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch categories';
@@ -414,7 +415,7 @@ export const useBlogTags = () => {
         throw new Error(`Failed to fetch tags: ${fetchError.message}`);
       }
 
-      setTags(data || []);
+      setTags((data || []).map(sanitizeNulls));
       return data || [];
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch tags';

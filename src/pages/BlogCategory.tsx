@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogCategory } from '@/types/blog';
+import { sanitizeNulls } from '@/lib/utils';
 
 const BlogCategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -26,11 +27,32 @@ const BlogCategoryPage = () => {
     published: true 
   }, currentPage, 6);
 
+  const sanitizedPosts = posts.map(sanitizeNulls);
+  const sanitizedCategories = categories.map(sanitizeNulls);
+  const sanitizedTags = tags.map(sanitizeNulls);
+
+  const fixedCategories = sanitizedCategories.map(cat => ({...cat, description: cat.description ?? undefined}));
+  const fixedPosts = sanitizedPosts.map(post => ({
+    ...post,
+    excerpt: post.excerpt ?? undefined,
+    featured_image_url: post.featured_image_url ?? undefined,
+    category: post.category ?? undefined,
+    category_id: post.category_id ?? undefined,
+    author_name: post.author_name ?? undefined,
+    author_id: post.author_id ?? undefined,
+    reading_time_minutes: post.reading_time_minutes ?? undefined,
+    seo_title: post.seo_title ?? undefined,
+    seo_description: post.seo_description ?? undefined,
+    meta_title: post.meta_title ?? undefined,
+    meta_description: post.meta_description ?? undefined,
+    meta_keywords: post.meta_keywords ?? undefined
+  }));
+
   useEffect(() => {
     // Find category by slug
-    const foundCategory = categories.find(c => c.slug === slug);
+    const foundCategory = fixedCategories.find(c => c.slug === slug);
     setCategory(foundCategory || null);
-  }, [slug, categories]);
+  }, [slug, fixedCategories]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -81,7 +103,7 @@ const BlogCategoryPage = () => {
                 <div className="text-center py-12">
                   <p className="text-red-600">{error}</p>
                 </div>
-              ) : posts.length === 0 ? (
+              ) : fixedPosts.length === 0 ? (
                 <div className="text-center py-12">
                   <FolderOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <h2 className="text-2xl font-bold text-gray-700 mb-2">No Posts Found</h2>
@@ -97,7 +119,7 @@ const BlogCategoryPage = () => {
               ) : (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    {posts.map((post) => (
+                    {fixedPosts.map((post) => (
                       <BlogCard key={post.id} post={post} />
                     ))}
                   </div>
@@ -138,9 +160,9 @@ const BlogCategoryPage = () => {
             {/* Sidebar */}
             <div>
               <BlogSidebar
-                categories={categories}
-                tags={tags}
-                recentPosts={posts.slice(0, 5)}
+                categories={fixedCategories}
+                tags={sanitizedTags}
+                recentPosts={fixedPosts.slice(0, 5)}
               />
             </div>
           </div>

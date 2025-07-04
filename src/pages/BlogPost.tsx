@@ -11,7 +11,7 @@ import BlogCard from '@/components/blog/BlogCard';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
-import { generateSlug } from '@/lib/utils';
+import { generateSlug, sanitizeNulls } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import type { BlogPost } from '@/types/blog';
 
@@ -25,6 +25,10 @@ const BlogPostPage = () => {
   const { getPostBySlug, posts } = useBlogPosts({ published: true });
   const { categories } = useBlogCategories();
   const { tags } = useBlogTags();
+
+  const sanitizedPosts = posts.map(sanitizeNulls);
+  const sanitizedCategories = categories.map(sanitizeNulls);
+  const sanitizedTags = tags.map(sanitizeNulls);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -44,8 +48,8 @@ const BlogPostPage = () => {
         setPost(fetchedPost);
         
         // Find related posts (same category or tags)
-        if (posts.length > 0) {
-          const related = posts.filter(p => 
+        if (sanitizedPosts.length > 0) {
+          const related = sanitizedPosts.filter(p => 
             p.id !== fetchedPost.id && (
               p.category_id === fetchedPost.category_id ||
               p.tags?.some(tag => fetchedPost.tags?.includes(tag))
@@ -63,7 +67,7 @@ const BlogPostPage = () => {
     };
     
     fetchPost();
-  }, [slug, getPostBySlug, posts]);
+  }, [slug, getPostBySlug, sanitizedPosts]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -271,9 +275,9 @@ const BlogPostPage = () => {
             {/* Sidebar */}
             <div>
               <BlogSidebar
-                categories={categories}
-                tags={tags}
-                recentPosts={posts.filter(p => p.id !== post.id).slice(0, 5)}
+                categories={sanitizedCategories}
+                tags={sanitizedTags}
+                recentPosts={sanitizedPosts.filter(p => p.id !== post.id).slice(0, 5)}
               />
             </div>
           </div>
