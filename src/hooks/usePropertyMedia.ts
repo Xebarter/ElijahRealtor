@@ -182,11 +182,13 @@ export function usePropertyImages(propertyId?: string) {
   };
 }
 
-export function useVideoUpload() {
+export function useVideoUpload(propertyId?: string) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const uploadVideo = useCallback(async (file: File, onProgress?: (progress: number) => void) => {
+    if (!propertyId) throw new Error('Property ID is required');
+    
     try {
       setUploading(true);
       setError(null);
@@ -206,7 +208,7 @@ export function useVideoUpload() {
     } finally {
       setUploading(false);
     }
-  }, []);
+  }, [propertyId]);
 
   const deleteVideo = async (videoPath: string) => {
     try {

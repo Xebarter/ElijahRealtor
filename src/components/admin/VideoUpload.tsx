@@ -21,7 +21,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
 
-  const { uploading, uploadVideo } = useVideoUpload();
+  const { uploading, uploadVideo } = useVideoUpload(propertyId);
 
   const handleFileSelect = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0 || !propertyId) return;
@@ -42,7 +42,9 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
 
     try {
       setUploadProgress(0);
-      const uploadedVideoUrl = await uploadVideo(file, propertyId);
+      const uploadedVideoUrl = await uploadVideo(file, (progress) => {
+        setUploadProgress(progress);
+      });
       setVideoUrl(uploadedVideoUrl);
       onVideoChange?.(uploadedVideoUrl);
       setUploadProgress(100);

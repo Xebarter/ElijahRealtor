@@ -216,6 +216,7 @@ export interface TestimonialForm {
 export interface PropertyFilters {
   search?: string;
   property_type?: string;
+  status?: 'available' | 'sold' | 'pending';
   min_price?: number;
   max_price?: number;
   location?: string;

@@ -3,6 +3,7 @@ import { Calendar, User, Tag, Eye, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { generateSlug } from '@/lib/utils';
 import type { BlogPost } from '@/types/blog';
 
 interface BlogCardProps {

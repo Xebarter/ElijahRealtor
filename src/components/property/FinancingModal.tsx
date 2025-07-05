@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DollarSign, Building, User, Calendar, Phone, Mail, MapPin, AlertCircle } from 'lucide-react';
+import { DollarSign, Building, User, Calendar, Phone, Mail, MapPin, AlertCircle, Upload, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

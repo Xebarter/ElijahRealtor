@@ -431,6 +431,30 @@ export const useBlogPosts = (
     }
   };
 
+  const getPostBySlug = async (slug: string): Promise<BlogPost | null> => {
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('slug', slug)
+        .eq('published', true)
+        .single();
+
+      if (fetchError) {
+        if (fetchError.code === 'PGRST116') {
+          return null;
+        }
+        console.error('Error fetching post by slug:', fetchError);
+        throw new Error(`Failed to fetch blog post: ${fetchError.message}`);
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Post by slug fetch error:', err);
+      return null;
+    }
+  };
+
   return {
     posts,
     loading,
@@ -439,7 +463,8 @@ export const useBlogPosts = (
     fetchPosts,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    getPostBySlug
   };
 };
 

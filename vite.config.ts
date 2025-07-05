@@ -20,7 +20,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api\/pesapal/, ''),
         timeout: 30000,
         proxyTimeout: 30000,
-        configure: (proxy, options) => {
+        configure: (proxy) => {
           proxy.on('error', (err, _req, _res) => {
             console.log('Proxy error:', err);
           });
@@ -38,7 +38,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api\/pesapal-live/, ''),
         timeout: 30000,
         proxyTimeout: 30000,
-        configure: (proxy, options) => {
+        configure: (proxy) => {
           proxy.on('error', (err, _req, _res) => {
             console.log('Proxy error:', err);
           });

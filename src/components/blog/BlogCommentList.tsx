@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Calendar, User, MessageSquare } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useBlogComments } from '@/hooks/useBlog';

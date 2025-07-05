@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Clock, Phone, Mail, MapPin, CheckCircle, Eye } from 'lucide-react';
+import { Calendar, Clock, Phone, Mail, MapPin, CheckCircle, Eye, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,8 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useVisits } from '@/hooks/useVisits';
 import { formatPrice } from '@/lib/countries';
-import { formatPaymentAmount } from '@/lib/payment';
-import toast from 'react-hot-toast';
+
 import type { Visit } from '@/types';
 
 const VisitBookings = () => {

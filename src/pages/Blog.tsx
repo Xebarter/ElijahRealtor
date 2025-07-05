@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogFilters } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();

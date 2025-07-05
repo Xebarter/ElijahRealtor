@@ -86,7 +86,7 @@ const TestimonialsManagement = () => {
   };
 
   const renderTestimonialMedia = (testimonial: Testimonial) => {
-    if (testimonial.type === 'video' && testimonial.media_urls?.length > 0) {
+    if (testimonial.type === 'video' && testimonial.media_urls && testimonial.media_urls.length > 0) {
       const videoUrl = testimonial.media_urls[0];
       
       if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
@@ -129,7 +129,7 @@ const TestimonialsManagement = () => {
       }
     }
 
-    if (testimonial.type === 'image' && testimonial.media_urls?.length > 0) {
+    if (testimonial.type === 'image' && testimonial.media_urls && testimonial.media_urls.length > 0) {
       return (
         <div className="grid grid-cols-2 gap-2">
           {testimonial.media_urls.slice(0, 4).map((imageUrl: string, index: number) => (

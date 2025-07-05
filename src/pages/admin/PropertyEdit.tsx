@@ -468,7 +468,6 @@ const PropertyEdit = () => {
           propertyId={property.id}
           currentVideoUrl={watch('video_tour_url')}
           onVideoChange={handleVideoChange}
-          onVideoUpload={(videoUrl) => setValue('video_url', videoUrl || undefined)}
         />
 
         {/* Property Images */}

@@ -507,7 +507,7 @@ export const deleteFile = async (bucket: string, path: string) => {
 // Test connection function
 export const testConnection = async () => {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('blog_posts')
       .select('id')
       .limit(1);

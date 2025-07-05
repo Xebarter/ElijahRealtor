@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useBlog, useBlogPost } from '@/hooks/useBlog';
 import toast from 'react-hot-toast';
 import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
-import { deepSanitizeNulls } from '@/utils/deepSanitizeNulls';
+import { deepSanitizeNulls } from '@/lib/utils';
 
 const BlogPostEdit = () => {
   const { id } = useParams<{ id: string }>();
