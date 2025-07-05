@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DollarSign, Building, User, Calendar, Phone, Mail, MapPin, AlertCircle, Upload, FileText } from 'lucide-react';
+import { DollarSign, Upload, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { financingSchema } from '@/lib/validations';
 import { COUNTRIES } from '@/lib/countries';
-import type { Property, FinancingForm } from '@/types';
+import type { Property } from '@/types';
 import type { z } from 'zod';
 
 interface FinancingModalProps {
@@ -130,12 +130,12 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
                 Full Name *
               </label>
               <Input
-                {...register('full_name')}
+                {...register('applicant_name')}
                 placeholder="Enter your full name"
-                className={errors.full_name ? 'border-red-500' : ''}
+                className={errors.applicant_name ? 'border-red-500' : ''}
               />
-              {errors.full_name && (
-                <p className="text-red-500 text-sm mt-1">{errors.full_name.message}</p>
+              {errors.applicant_name && typeof errors.applicant_name.message === 'string' && (
+                <p className="text-red-500 text-sm mt-1">{errors.applicant_name.message}</p>
               )}
             </div>
 
@@ -145,12 +145,12 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
               </label>
               <Input
                 type="email"
-                {...register('email')}
+                {...register('applicant_email')}
                 placeholder="Enter your email"
-                className={errors.email ? 'border-red-500' : ''}
+                className={errors.applicant_email ? 'border-red-500' : ''}
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              {errors.applicant_email && typeof errors.applicant_email.message === 'string' && (
+                <p className="text-red-500 text-sm mt-1">{errors.applicant_email.message}</p>
               )}
             </div>
 
@@ -160,12 +160,12 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
               </label>
               <Input
                 type="tel"
-                {...register('phone')}
+                {...register('applicant_phone')}
                 placeholder="Enter your phone number"
-                className={errors.phone ? 'border-red-500' : ''}
+                className={errors.applicant_phone ? 'border-red-500' : ''}
               />
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+              {errors.applicant_phone && typeof errors.applicant_phone.message === 'string' && (
+                <p className="text-red-500 text-sm mt-1">{errors.applicant_phone.message}</p>
               )}
             </div>
           </div>
@@ -269,7 +269,7 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
                   </span>
                 </label>
               </div>
-              {errors.id_document && (
+              {errors.id_document && typeof errors.id_document.message === 'string' && (
                 <p className="text-red-500 text-sm mt-1">{errors.id_document.message}</p>
               )}
             </div>
@@ -302,7 +302,7 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
                   </span>
                 </label>
               </div>
-              {errors.income_proof && (
+              {errors.income_proof && typeof errors.income_proof.message === 'string' && (
                 <p className="text-red-500 text-sm mt-1">{errors.income_proof.message}</p>
               )}
             </div>

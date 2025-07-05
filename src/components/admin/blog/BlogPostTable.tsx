@@ -242,11 +242,7 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                         </div>
                       </td>
                       <td className="p-4">
-                        {typeof post.category === 'object' && post.category !== null && 'name' in post.category
-                          ? post.category.name
-                          : typeof post.category === 'string'
-                            ? post.category
-                            : '-'}
+                        {post.category || '-'}
                       </td>
                       <td className="p-4">
                         <Badge

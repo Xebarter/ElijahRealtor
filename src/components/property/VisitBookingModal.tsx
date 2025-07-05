@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Calendar, CreditCard, MapPin, AlertCircle, Wifi, WifiOff } from 'lucide-react';
+import { Calendar, CreditCard } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { visitBookingSchema } from '@/lib/validations';
 import { pesapalService, getVisitBookingFee } from '@/lib/payment';
 import { formatPrice } from '@/lib/countries';
-import type { Property, VisitBookingForm } from '@/types';
+import type { Property } from '@/types';
 import type { z } from 'zod';
 
 interface VisitBookingModalProps {
@@ -59,8 +59,8 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
         currency: visitFee.currency,
         description: `Visit booking for ${property.title}`,
         reference: `VISIT_${Date.now()}`,
-        email: bookingData.client_email,
-        phone: bookingData.client_phone,
+        email: bookingData.email,
+        phone: bookingData.phone,
       };
 
       const response = await pesapalService.initiatePayment(paymentData);
@@ -166,37 +166,20 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Visit Date *
-                  </label>
-                  <Input
-                    type="date"
-                    {...register('visit_date')}
-                    min={minDate}
-                    className={errors.visit_date ? 'border-red-500' : ''}
-                  />
-                  {errors.visit_date && (
-                    <p className="text-red-500 text-sm mt-1">{errors.visit_date.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Visit Time *
-                  </label>
-                  <Input
-                    type="time"
-                    {...register('visit_time')}
-                    min="08:00"
-                    max="18:00"
-                    className={errors.visit_time ? 'border-red-500' : ''}
-                  />
-                  {errors.visit_time && (
-                    <p className="text-red-500 text-sm mt-1">{errors.visit_time.message}</p>
-                  )}
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Preferred Time *
+                </label>
+                <Input
+                  type="datetime-local"
+                  {...register('preferred_time')}
+                  min={minDate + 'T08:00'}
+                  max={minDate + 'T18:00'}
+                  className={errors.preferred_time ? 'border-red-500' : ''}
+                />
+                {errors.preferred_time && (
+                  <p className="text-red-500 text-sm mt-1">{errors.preferred_time.message}</p>
+                )}
               </div>
 
               <div>
@@ -235,12 +218,10 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
                   <span className="font-medium">{property.title}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Date:</span>
-                  <span className="font-medium">{bookingData?.visit_date}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Time:</span>
-                  <span className="font-medium">{bookingData?.visit_time}</span>
+                  <span>Preferred Time:</span>
+                  <span className="font-medium">
+                    {bookingData?.preferred_time ? new Date(bookingData.preferred_time).toLocaleString() : ''}
+                  </span>
                 </div>
                 <div className="flex justify-between border-t pt-2 mt-2">
                   <span className="font-semibold">Visit Fee:</span>

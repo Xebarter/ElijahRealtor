@@ -20,7 +20,7 @@ import DeveloperSelector from '@/components/admin/DeveloperSelector';
 import { supabase, uploadFile, getPublicUrl } from '@/lib/supabase';
 import { propertySchema } from '@/lib/validations';
 import { COUNTRIES } from '@/lib/countries';
-import type { PropertyForm } from '@/types';
+
 import type { z } from 'zod';
 
 type PropertyFormData = z.infer<typeof propertySchema>;
@@ -77,8 +77,8 @@ const PropertyCreate = () => {
     setValue('location_coordinates', locationData.coordinates);
   };
 
-  const handleVideoChange = (videoUrl: string | undefined) => {
-    setValue('video_tour_url', videoUrl);
+  const handleVideoChange = (videoUrl: string | null) => {
+    setValue('video_tour_url', videoUrl || undefined);
   };
 
   const handleImagesChange = (imagesByFeature: Record<string, File[]>) => {

@@ -14,7 +14,7 @@ export interface BlogPost {
   tag_objects?: BlogTag[];
   published: boolean;
   reading_time_minutes: number | null;
-  view_count: number;
+  view_count: number | null;
   seo_title: string | null;
   seo_description: string | null;
   meta_title: string | null;
@@ -56,16 +56,16 @@ export interface BlogPostForm {
   title: string;
   slug: string;
   content: string;
-  excerpt?: string;
+  excerpt?: string | null;
   featured_image?: File;
-  featured_image_url?: string;
-  category_id?: string;
+  featured_image_url?: string | null;
+  category_id?: string | null;
   author_name: string;
   tags: string[];
   published: boolean;
-  meta_title?: string;
-  meta_description?: string;
-  meta_keywords?: string[];
+  meta_title?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string[] | null;
 }
 
 export interface BlogCategoryForm {

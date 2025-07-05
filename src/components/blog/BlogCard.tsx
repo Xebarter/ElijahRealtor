@@ -26,7 +26,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg ${className}`}>
       {/* Featured Image */}
       {post.featured_image_url && (
-        <Link to={`/blog/${post.slug || generateSlug(post.title)}`} className="block overflow-hidden">
+        <Link to={`/blog/${post.slug || generateSlug(post.title || '')}`} className="block overflow-hidden">
           <div className="aspect-video overflow-hidden">
             <img
               src={post.featured_image_url}
@@ -44,15 +44,15 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
       <CardContent className="p-5">
         {/* Category */}
         {post.category && (
-          <Link to={`/blog/category/${typeof post.category === 'object' && post.category !== null && 'slug' in post.category ? post.category.slug ?? '' : ''}`}>
+          <Link to={`/blog/category/${post.category}`}>
             <Badge variant="outline" className="mb-2 text-primary-gold border-primary-gold">
-              {typeof post.category === 'object' && post.category !== null && 'name' in post.category ? post.category.name ?? '' : undefined}
+              {post.category}
             </Badge>
           </Link>
         )}
         
         {/* Title */}
-        <Link to={`/blog/${post.slug || generateSlug(post.title)}`}>
+        <Link to={`/blog/${post.slug || generateSlug(post.title || '')}`}>
           <h3 className="text-xl font-semibold text-primary-navy mb-2 hover:text-primary-gold transition-colors">
             {post.title}
           </h3>
@@ -113,7 +113,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
         
         {/* Read More Button */}
         {!compact && (
-          <Link to={`/blog/${post.slug || generateSlug(post.title)}`}>
+          <Link to={`/blog/${post.slug || generateSlug(post.title || '')}`}>
             <Button variant="outline" className="mt-2">
               Read More
             </Button>

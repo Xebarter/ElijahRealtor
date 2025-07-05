@@ -75,9 +75,10 @@ const CategoryTagManager: React.FC = () => {
 
     try {
       if (editingCategory) {
-        await updateCategory(editingCategory.id, categoryName, categoryDescription);
+        await updateCategory(editingCategory.id, { name: categoryName, description: categoryDescription || null });
       } else {
-        await createCategory(categoryName, categoryDescription);
+        const slug = generateSlug(categoryName);
+        await createCategory({ name: categoryName, slug, description: categoryDescription });
       }
       setShowCategoryDialog(false);
     } catch (error) {
@@ -120,9 +121,10 @@ const CategoryTagManager: React.FC = () => {
 
     try {
       if (editingTag) {
-        await updateTag(editingTag.id, tagName);
+        await updateTag(editingTag.id, { name: tagName });
       } else {
-        await createTag(tagName);
+        const slug = generateSlug(tagName);
+        await createTag({ name: tagName, slug });
       }
       setShowTagDialog(false);
     } catch (error) {

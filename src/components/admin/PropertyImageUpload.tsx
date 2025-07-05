@@ -86,7 +86,6 @@ const PropertyImageUpload: React.FC<PropertyImageUploadProps> = ({
     }
   };
 
-  const featureImages = getImagesByFeature(selectedFeature);
   const allFeatures = getAllFeatures();
 
   if (!propertyId) {
