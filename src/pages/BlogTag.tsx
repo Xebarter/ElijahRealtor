@@ -31,21 +31,21 @@ const BlogTagPage = () => {
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
 
-  const fixedCategories = sanitizedCategories.map(cat => ({...cat, description: cat.description ?? undefined}));
+  const fixedCategories = sanitizedCategories.map(cat => ({...cat, description: cat.description ?? null}));
   const fixedPosts = sanitizedPosts.map(post => ({
     ...post,
-    excerpt: post.excerpt ?? undefined,
-    featured_image_url: post.featured_image_url ?? undefined,
-    category: post.category ?? undefined,
-    category_id: post.category_id ?? undefined,
-    author_name: post.author_name ?? undefined,
-    author_id: post.author_id ?? undefined,
-    reading_time_minutes: post.reading_time_minutes ?? undefined,
-    seo_title: post.seo_title ?? undefined,
-    seo_description: post.seo_description ?? undefined,
-    meta_title: post.meta_title ?? undefined,
-    meta_description: post.meta_description ?? undefined,
-    meta_keywords: post.meta_keywords ?? undefined
+    excerpt: post.excerpt ?? null,
+    featured_image_url: post.featured_image_url ?? null,
+    category: post.category ?? null,
+    category_id: post.category_id ?? null,
+    author_name: post.author_name ?? null,
+    author_id: post.author_id ?? null,
+    reading_time_minutes: post.reading_time_minutes ?? null,
+    seo_title: post.seo_title ?? null,
+    seo_description: post.seo_description ?? null,
+    meta_title: post.meta_title ?? null,
+    meta_description: post.meta_description ?? null,
+    meta_keywords: post.meta_keywords ?? null
   }));
 
   useEffect(() => {

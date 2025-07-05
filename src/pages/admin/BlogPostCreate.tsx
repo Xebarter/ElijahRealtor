@@ -7,7 +7,7 @@ import { useBlogPosts } from '@/hooks/useBlog';
 import { useAuthStore } from '@/store/auth';
 import toast from 'react-hot-toast';
 import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
-import { useForm } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blogPostSchema } from '@/lib/validations';
 

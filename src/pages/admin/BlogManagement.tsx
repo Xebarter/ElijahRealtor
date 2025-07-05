@@ -2,24 +2,18 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, BookOpen, MessageSquare, FileText, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BlogPostTable from '@/components/admin/blog/BlogPostTable';
 import CategoryTagManager from '@/components/admin/blog/CategoryTagManager';
 import BlogCommentManager from '@/components/admin/blog/BlogCommentManager';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { useBlogPosts, useBlogStats } from '@/hooks/useBlog';
+import { useBlogStats } from '@/hooks/useBlog';
 import type { BlogPost } from '@/types/blog';
 
 const BlogManagement = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('posts');
-  
-  const { 
-    posts, 
-    loading, 
-    error
-  } = useBlogPosts({ published: undefined });
   
   const { stats, loading: statsLoading } = useBlogStats();
 
@@ -51,7 +45,7 @@ const BlogManagement = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Posts</p>
                 <p className="text-3xl font-bold text-primary-navy">
-                  {statsLoading ? <LoadingSpinner size="sm" as="span" className="align-middle" /> : stats.totalPosts}
+                  {statsLoading ? <LoadingSpinner size="sm" as="span" className="align-middle" /> : stats.total_posts}
                 </p>
               </div>
               <div className="p-3 bg-blue-50 rounded-full">
@@ -60,14 +54,13 @@ const BlogManagement = () => {
             </div>
           </CardContent>
         </Card>
-        
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Published</p>
-                <p className="text-3xl font-bold text-green-600">
-                  {statsLoading ? <LoadingSpinner size="sm" as="span" className="align-middle" /> : stats.publishedPosts}
+                <p className="text-sm font-medium text-gray-600">Published Posts</p>
+                <p className="text-3xl font-bold text-primary-navy">
+                  {statsLoading ? <LoadingSpinner size="sm" as="span" className="align-middle" /> : stats.published_posts}
                 </p>
               </div>
               <div className="p-3 bg-green-50 rounded-full">
@@ -76,23 +69,32 @@ const BlogManagement = () => {
             </div>
           </CardContent>
         </Card>
-        
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Comments</p>
-                <p className="text-3xl font-bold text-yellow-600">
-                  {statsLoading ? <LoadingSpinner size="sm" as="span" className="align-middle" /> : stats.totalComments}
+                <p className="text-sm font-medium text-gray-600">Total Comments</p>
+                <p className="text-3xl font-bold text-primary-navy">
+                  {statsLoading ? <LoadingSpinner size="sm" as="span" className="align-middle" /> : stats.total_comments}
                 </p>
-                {stats.pendingComments > 0 && (
-                  <p className="text-sm text-yellow-600 mt-1">
-                    {stats.pendingComments} pending
-                  </p>
-                )}
               </div>
               <div className="p-3 bg-yellow-50 rounded-full">
                 <MessageSquare className="w-6 h-6 text-yellow-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Pending Comments</p>
+                <p className="text-3xl font-bold text-primary-navy">
+                  {statsLoading ? <LoadingSpinner size="sm" as="span" className="align-middle" /> : stats.pending_comments}
+                </p>
+              </div>
+              <div className="p-3 bg-red-50 rounded-full">
+                <Layers className="w-6 h-6 text-red-600" />
               </div>
             </div>
           </CardContent>
@@ -113,9 +115,9 @@ const BlogManagement = () => {
           <TabsTrigger value="comments" className="flex items-center">
             <MessageSquare className="w-4 h-4 mr-2" />
             Comments
-            {stats.pendingComments > 0 && (
+            {stats.pending_comments > 0 && (
               <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
-                {stats.pendingComments}
+                {stats.pending_comments}
               </span>
             )}
           </TabsTrigger>

@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { useVisitBookings } from '@/hooks/useVisitBookings';
+import { useVisitBookings } from '@/hooks/useVisitBookings'; // Check if this path is correct
 import type { VisitBooking } from '@/types';
 import toast from 'react-hot-toast';
 

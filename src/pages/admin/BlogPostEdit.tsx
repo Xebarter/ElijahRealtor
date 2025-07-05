@@ -8,7 +8,6 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useBlog, useBlogPost } from '@/hooks/useBlog';
 import toast from 'react-hot-toast';
 import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
-import { deepSanitizeNulls } from '@/lib/utils';
 
 const BlogPostEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,10 +25,10 @@ const BlogPostEdit = () => {
     if (!id || !post) return;
     setIsSubmitting(true);
     try {
-      const { category_id, tags, ...rest } = data;
+      const { category_id, tags = [], ...rest } = data;
       const updateObj: any = {
         ...rest,
-        tags: Array.isArray(tags) ? tags : [],
+        tags,
         author_id: post.author_id,
         featured_image_url:
           featuredImageRemoved && !featuredImage ? null : post.featured_image_url,
@@ -44,7 +43,7 @@ const BlogPostEdit = () => {
         published: data.published,
         author_name: data.author_name,
         excerpt: data.excerpt,
-        tags: data.tags || [],
+        tags,
         category_id: data.category_id,
         meta_title: data.meta_title,
         meta_description: data.meta_description,

@@ -21,6 +21,8 @@ import { COUNTRIES } from '@/lib/countries';
 import { useProperty } from '@/hooks/useProperties';
 import type { PropertyForm } from '@/types';
 import type { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type PropertyFormData = z.infer<typeof propertySchema>;
 
