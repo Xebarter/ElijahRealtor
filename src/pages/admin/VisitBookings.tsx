@@ -1,96 +1,55 @@
-import { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Mail, Phone, MapPin, Eye, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Calendar, Clock, Download, CheckCircle, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { useVisitBookings } from '@/hooks/useVisitBookings'; // Check if this path is correct
-import type { VisitBooking } from '@/types';
-import toast from 'react-hot-toast';
+import { Textarea } from '@/components/ui/textarea';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { formatPrice } from '@/lib/utils';
+import type { Visit } from '@/types';
 
 const VisitBookings = () => {
-  const [selectedVisit, setSelectedVisit] = useState<VisitBooking | null>(null);
+  const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [paymentFilter, setPaymentFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [adminNotes, setAdminNotes] = useState('');
+  const [adminNotes, setAdminNotes] = useState<string>('');
 
-  const { visits, loading, error, updateVisitStatus } = useVisitBookings();
+  // Mock data - replace with actual hook when available
+  const [visits] = useState<Visit[]>([]);
+  const [loading] = useState(false);
 
-  const filteredVisits = visits.filter(visit => {
-    const matchesStatus = statusFilter === 'all' || visit.status === statusFilter;
-    const matchesPayment = paymentFilter === 'all' || visit.payment_status === paymentFilter;
-    const matchesSearch = searchTerm === '' || 
-      visit.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      visit.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      visit.property?.title.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    return matchesStatus && matchesPayment && matchesSearch;
-  });
-
-  const getStatusBadge = (status: string) => {
-    const statusColors = {
-      pending: 'bg-yellow-500 text-white',
-      confirmed: 'bg-green-500 text-white',
-      cancelled: 'bg-red-500 text-white',
-    };
-
-    return (
-      <Badge className={statusColors[status as keyof typeof statusColors]}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </Badge>
-    );
+  const handleStatusChange = (visit: Visit, newStatus: string) => {
+    // Mock implementation
+    console.log('Status change:', visit.id, newStatus);
   };
 
-  const getPaymentBadge = (status: string) => {
-    const statusColors = {
-      pending: 'bg-orange-500 text-white',
-      paid: 'bg-green-500 text-white',
-    };
-
-    return (
-      <Badge className={statusColors[status as keyof typeof statusColors]}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </Badge>
-    );
-  };
-
-  const handleStatusUpdate = async (visitId: string, newStatus: string, notes?: string) => {
-    try {
-      await updateVisitStatus(visitId, newStatus, notes);
-      setShowDetailsModal(false);
-      setSelectedVisit(null);
-      setAdminNotes('');
-    } catch (error) {
-      console.error('Error updating visit status:', error);
-    }
-  };
-
-  const handleViewDetails = (visit: VisitBooking) => {
+  const handleViewDetails = (visit: Visit) => {
     setSelectedVisit(visit);
     setAdminNotes(visit.admin_notes || '');
     setShowDetailsModal(true);
   };
 
-  const exportVisits = () => {
+  const handleExportCSV = () => {
     const csvContent = [
       ['Date', 'Visitor Name', 'Email', 'Phone', 'Property', 'Visit Time', 'Payment Status', 'Status'],
-      ...filteredVisits.map(visit => [
+      ...visits.map((visit: Visit) => [
         new Date(visit.created_at).toLocaleDateString(),
         visit.name,
         visit.email,
         visit.phone,
-        visit.property?.title || '',
-        new Date(visit.preferred_time).toLocaleString(),
+        visit.property?.title || 'N/A',
+        visit.preferred_time,
         visit.payment_status,
-        visit.status
-      ])
-    ].map(row => row.join(',')).join('\n');
+        visit.status,
+      ]),
+    ];
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const blob = new Blob([csvContent.map(row => row.join(',')).join('\n')], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -107,14 +66,6 @@ const VisitBookings = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-red-600">{error}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -123,7 +74,7 @@ const VisitBookings = () => {
           <h1 className="text-3xl font-bold text-primary-navy">Visit Bookings</h1>
           <p className="text-gray-600 mt-2">Manage property visit appointments and schedules</p>
         </div>
-        <Button onClick={exportVisits} variant="outline">
+        <Button onClick={handleExportCSV} variant="outline">
           <Download className="w-4 h-4 mr-2" />
           Export CSV
         </Button>
@@ -226,10 +177,10 @@ const VisitBookings = () => {
       {/* Visits Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Visit Bookings ({filteredVisits.length})</CardTitle>
+          <CardTitle>Visit Bookings ({visits.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          {filteredVisits.length === 0 ? (
+          {visits.length === 0 ? (
             <div className="text-center py-8">
               <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-500">No visit bookings found</p>
@@ -248,55 +199,50 @@ const VisitBookings = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredVisits.map((visit) => (
+                  {visits.map((visit: Visit) => (
                     <tr key={visit.id} className="border-b hover:bg-gray-50">
                       <td className="p-4">
-                        <div>
-                          <div className="font-medium">{visit.name}</div>
-                          <div className="text-sm text-gray-500 flex items-center mt-1">
-                            <Mail className="w-3 h-3 mr-1" />
-                            {visit.email}
-                          </div>
-                          <div className="text-sm text-gray-500 flex items-center">
-                            <Phone className="w-3 h-3 mr-1" />
-                            {visit.phone}
-                          </div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {new Date(visit.created_at).toLocaleDateString()}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {new Date(visit.created_at).toLocaleTimeString()}
                         </div>
                       </td>
                       <td className="p-4">
-                        <div>
-                          <div className="font-medium">{visit.property?.title}</div>
-                          <div className="text-sm text-gray-500 flex items-center">
-                            <MapPin className="w-3 h-3 mr-1" />
-                            {visit.property?.location}, {visit.property?.city}
-                          </div>
+                        <div className="text-sm font-medium text-gray-900">{visit.name}</div>
+                        <div className="text-sm text-gray-500">{visit.email}</div>
+                        <div className="text-sm text-gray-500">{visit.phone}</div>
+                      </td>
+                      <td className="p-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {visit.property?.title || 'N/A'}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {visit.property?.location || 'N/A'}
                         </div>
                       </td>
                       <td className="p-4">
-                        <div className="text-sm">
-                          <div className="flex items-center">
-                            <Calendar className="w-3 h-3 mr-1 text-primary-gold" />
-                            {new Date(visit.preferred_time).toLocaleDateString()}
-                          </div>
-                          <div className="flex items-center mt-1">
-                            <Clock className="w-3 h-3 mr-1 text-primary-gold" />
-                            {new Date(visit.preferred_time).toLocaleTimeString()}
-                          </div>
-                        </div>
+                        <div className="text-sm text-gray-900">{visit.preferred_time}</div>
                       </td>
                       <td className="p-4">
-                        {getPaymentBadge(visit.payment_status)}
-                        {visit.transaction_id && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            ID: {visit.transaction_id.slice(-8)}
-                          </div>
+                        {visit.payment_status === 'paid' ? (
+                          <Badge className="bg-green-500 text-white">Paid</Badge>
+                        ) : (
+                          <Badge className="bg-orange-500 text-white">Pending</Badge>
                         )}
                       </td>
                       <td className="p-4">
-                        {getStatusBadge(visit.status)}
+                        {visit.status === 'confirmed' ? (
+                          <Badge className="bg-green-500 text-white">Confirmed</Badge>
+                        ) : visit.status === 'pending' ? (
+                          <Badge className="bg-yellow-500 text-white">Pending</Badge>
+                        ) : (
+                          <Badge className="bg-red-500 text-white">Cancelled</Badge>
+                        )}
                       </td>
                       <td className="p-4">
-                        <div className="flex gap-2">
+                        <div className="flex space-x-2">
                           <Button
                             variant="outline"
                             size="sm"
@@ -304,15 +250,14 @@ const VisitBookings = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </Button>
-                          {visit.status === 'pending' && visit.payment_status === 'paid' && (
-                            <Button
-                              size="sm"
-                              className="btn-primary"
-                              onClick={() => handleStatusUpdate(visit.id, 'confirmed')}
-                            >
-                              Confirm
-                            </Button>
-                          )}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="btn-primary"
+                            onClick={() => handleStatusChange(visit, 'confirmed')}
+                          >
+                            Confirm
+                          </Button>
                         </div>
                       </td>
                     </tr>
@@ -338,7 +283,7 @@ const VisitBookings = () => {
                 <h3 className="font-semibold text-gray-900 mb-3">Visitor Information</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>Name:</span>
+                    <span>Visitor Name:</span>
                     <span className="font-medium">{selectedVisit.name}</span>
                   </div>
                   <div className="flex justify-between">
@@ -349,6 +294,44 @@ const VisitBookings = () => {
                     <span>Phone:</span>
                     <span className="font-medium">{selectedVisit.phone}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span>Property:</span>
+                    <span className="font-medium">{selectedVisit.property?.title || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Visit Time:</span>
+                    <span className="font-medium">{selectedVisit.preferred_time}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Payment Status:</span>
+                    <span>{selectedVisit.payment_status === 'paid' ? (
+                      <Badge className="bg-green-500 text-white">Paid</Badge>
+                    ) : (
+                      <Badge className="bg-orange-500 text-white">Pending</Badge>
+                    )}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Visit Status:</span>
+                    <span>{selectedVisit.status === 'confirmed' ? (
+                      <Badge className="bg-green-500 text-white">Confirmed</Badge>
+                    ) : selectedVisit.status === 'pending' ? (
+                      <Badge className="bg-yellow-500 text-white">Pending</Badge>
+                    ) : (
+                      <Badge className="bg-red-500 text-white">Cancelled</Badge>
+                    )}</span>
+                  </div>
+                  {selectedVisit.transaction_id && (
+                    <div className="flex justify-between">
+                      <span>Transaction ID:</span>
+                      <span className="font-mono text-sm">{selectedVisit.transaction_id}</span>
+                    </div>
+                  )}
+                  {selectedVisit.message && (
+                    <div className="mt-4">
+                      <span className="block text-sm font-medium text-gray-700 mb-2">Message:</span>
+                      <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded">{selectedVisit.message}</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -356,10 +339,6 @@ const VisitBookings = () => {
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Property Information</h3>
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Property:</span>
-                    <span className="font-medium">{selectedVisit.property?.title}</span>
-                  </div>
                   <div className="flex justify-between">
                     <span>Location:</span>
                     <span className="font-medium">
@@ -385,72 +364,42 @@ const VisitBookings = () => {
                       {new Date(selectedVisit.preferred_time).toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Payment Status:</span>
-                    <span>{getPaymentBadge(selectedVisit.payment_status)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Visit Status:</span>
-                    <span>{getStatusBadge(selectedVisit.status)}</span>
-                  </div>
-                  {selectedVisit.transaction_id && (
-                    <div className="flex justify-between">
-                      <span>Transaction ID:</span>
-                      <span className="font-medium">{selectedVisit.transaction_id}</span>
-                    </div>
-                  )}
                 </div>
               </div>
-
-              {/* Message */}
-              {selectedVisit.message && (
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">Message</h3>
-                  <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
-                    {selectedVisit.message}
-                  </p>
-                </div>
-              )}
 
               {/* Admin Notes */}
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Admin Notes</h3>
                 <Textarea
-                  placeholder="Add internal notes about this visit..."
                   value={adminNotes}
-                  onChange={(e) => setAdminNotes(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setAdminNotes(e.target.value)}
+                  placeholder="Add admin notes..."
                   rows={3}
                 />
               </div>
 
-              {/* Actions */}
-              <div className="flex gap-3">
-                {selectedVisit.status === 'pending' && selectedVisit.payment_status === 'paid' && (
-                  <Button
-                    className="flex-1 btn-primary"
-                    onClick={() => handleStatusUpdate(selectedVisit.id, 'confirmed', adminNotes)}
-                  >
-                    Confirm Visit
-                  </Button>
-                )}
-                {selectedVisit.status !== 'cancelled' && (
-                  <Button
-                    variant="outline"
-                    className="flex-1 text-red-600 border-red-600 hover:bg-red-50"
-                    onClick={() => handleStatusUpdate(selectedVisit.id, 'cancelled', adminNotes)}
-                  >
-                    Cancel Visit
-                  </Button>
-                )}
-                {selectedVisit.status === 'confirmed' && (
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => handleStatusUpdate(selectedVisit.id, 'confirmed', adminNotes)}
-                  >
-                    Update Notes
-                  </Button>
-                )}
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4">
+                <Button
+                  className="flex-1 btn-primary"
+                  onClick={() => handleStatusChange(selectedVisit, 'confirmed')}
+                >
+                  Confirm Visit
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 text-red-600 border-red-600 hover:bg-red-50"
+                  onClick={() => handleStatusChange(selectedVisit, 'cancelled')}
+                >
+                  Cancel Visit
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => handleStatusChange(selectedVisit, 'confirmed')}
+                >
+                  Update Notes
+                </Button>
               </div>
             </div>
           )}

@@ -14,6 +14,16 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      '/api': {
+        target: 'http://localhost:54321',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/supabase': {
+        target: 'http://localhost:54321',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/supabase/, ''),
+      },
       '/api/pesapal': {
         target: 'https://cybqa.pesapal.com/pesapalv3',
         changeOrigin: true,
@@ -21,13 +31,10 @@ export default defineConfig({
         timeout: 30000,
         proxyTimeout: 30000,
         configure: (proxy) => {
-          proxy.on('error', (err, _req, _res) => {
+          proxy.on('error', (err) => {
             console.log('Proxy error:', err);
           });
-          proxy.on('proxyReq', (proxyReq, req, res) => {
-            // Add any proxy request modifications here if needed
-          });
-          proxy.on('proxyRes', (proxyRes, req, _res) => {
+          proxy.on('proxyRes', (proxyRes, req) => {
             console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
           });
         },
@@ -39,13 +46,10 @@ export default defineConfig({
         timeout: 30000,
         proxyTimeout: 30000,
         configure: (proxy) => {
-          proxy.on('error', (err, _req, _res) => {
+          proxy.on('error', (err) => {
             console.log('Proxy error:', err);
           });
-          proxy.on('proxyReq', (proxyReq, req, res) => {
-            // Add any proxy request modifications here if needed
-          });
-          proxy.on('proxyRes', (proxyRes, req, _res) => {
+          proxy.on('proxyRes', (proxyRes, req) => {
             console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
           });
         },

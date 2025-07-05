@@ -7,7 +7,21 @@ import BlogPostForm from '@/components/admin/blog/BlogPostForm';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useBlog, useBlogPost } from '@/hooks/useBlog';
 import toast from 'react-hot-toast';
-import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
+
+// Define the form data type to match what BlogPostForm expects
+type BlogPostFormData = {
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  category_id?: string;
+  author_name: string;
+  tags?: string[];
+  published: boolean;
+  meta_title?: string;
+  meta_description?: string;
+  meta_keywords?: string[];
+};
 
 const BlogPostEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,7 +32,7 @@ const BlogPostEdit = () => {
   const { post, loading, error } = useBlogPost(id);
 
   const handleSubmit = async (
-    data: BlogPostFormType,
+    data: BlogPostFormData,
     featuredImageRemoved: boolean,
     featuredImage?: File
   ) => {
@@ -28,7 +42,7 @@ const BlogPostEdit = () => {
       const { category_id, tags = [], ...rest } = data;
       const updateObj: any = {
         ...rest,
-        tags,
+        tags: tags || [],
         author_id: post.author_id,
         featured_image_url:
           featuredImageRemoved && !featuredImage ? null : post.featured_image_url,
@@ -43,7 +57,7 @@ const BlogPostEdit = () => {
         published: data.published,
         author_name: data.author_name,
         excerpt: data.excerpt,
-        tags,
+        tags: tags || [],
         category_id: data.category_id,
         meta_title: data.meta_title,
         meta_description: data.meta_description,

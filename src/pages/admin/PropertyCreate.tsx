@@ -552,7 +552,6 @@ const PropertyCreate = () => {
           propertyId={createdPropertyId || ''}
           currentVideoUrl={watch('video_tour_url')}
           onVideoChange={handleVideoChange}
-          onVideoUpload={(videoUrl: string | null) => setValue('video_tour_url', videoUrl || undefined)}
         />
 
         {/* Upload Progress */}

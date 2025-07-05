@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Star, Image as ImageIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Star, Trash2, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useTestimonials } from '@/hooks/useTestimonials';
 import { supabase } from '@/lib/supabase';
