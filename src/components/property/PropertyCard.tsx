@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Bed, Bath, Square, Star, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';

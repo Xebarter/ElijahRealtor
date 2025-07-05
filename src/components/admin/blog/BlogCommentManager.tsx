@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   MessageSquare, 
   CheckCircle, 
@@ -163,7 +163,7 @@ const BlogCommentManager: React.FC = () => {
                         <div className="flex items-center">
                           <FileText className="w-3 h-3 mr-1 text-gray-400" />
                           <span className="text-sm text-gray-500">
-                            On: {comment.post_title || 'Unknown Post'}
+                            Post ID: {comment.post_id}
                           </span>
                         </div>
                       </div>

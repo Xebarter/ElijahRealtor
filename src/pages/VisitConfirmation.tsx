@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock, Home, Calendar, MapPin, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';

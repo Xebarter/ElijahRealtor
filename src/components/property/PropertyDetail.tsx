@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapPin, Bed, Bath, Square, Calendar, DollarSign, Building, Phone, Mail, Globe, ArrowLeft, Play, Heart, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';

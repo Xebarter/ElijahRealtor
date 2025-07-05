@@ -1,4 +1,3 @@
-import React from 'react';
 import { User, Calendar, MessageSquare } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useBlogComments } from '@/hooks/useBlog';
