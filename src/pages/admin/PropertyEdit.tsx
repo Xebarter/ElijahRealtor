@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Save, ArrowLeft, Loader2 } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Save, ArrowLeft, CheckCircle, Upload, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,11 +8,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import PropertyImageUpload from '@/components/admin/PropertyImageUpload';
-import VideoUpload from '@/components/admin/VideoUpload';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Progress } from '@/components/ui/progress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import LocationInput from '@/components/admin/LocationInput';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { supabase } from '@/lib/supabase';
+import VideoUpload from '@/components/admin/VideoUpload';
+import PropertyFeatureImageUpload from '@/components/admin/PropertyFeatureImageUpload';
+import DeveloperSelector from '@/components/admin/DeveloperSelector';
+import { supabase, uploadFile, getPublicUrl } from '@/lib/supabase';
 import { propertySchema } from '@/lib/validations';
 import { COUNTRIES } from '@/lib/countries';
 import { useProperty } from '@/hooks/useProperties';
@@ -466,12 +467,14 @@ const PropertyEdit = () => {
         {/* Video Tour */}
         <VideoUpload
           propertyId={property.id}
-          currentVideoUrl={watch('video_tour_url')}
-          onVideoChange={handleVideoChange}
+          currentVideoUrl={property.video_tour_url}
+          onVideoChange={(videoUrl: string | null) => {
+            setValue('video_tour_url', videoUrl || undefined);
+          }}
         />
 
         {/* Property Images */}
-        <PropertyImageUpload
+        <PropertyFeatureImageUpload
           propertyId={property.id}
           onImagesChange={() => {
             // Refresh property data if needed

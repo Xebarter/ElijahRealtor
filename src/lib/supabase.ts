@@ -533,3 +533,19 @@ export const updateVisitPaymentStatus = async (visitId: string, paymentReference
     throw error;
   }
 };
+
+export const getBlogPostBySlug = async (slug: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Get blog post by slug error:', error);
+    throw error;
+  }
+};

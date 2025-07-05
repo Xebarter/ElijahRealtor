@@ -1,134 +1,94 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { supabase } from '@/lib/supabase';
-import type { User, AuthState } from '@/types';
+import type { User } from '@supabase/supabase-js';
 
-interface AuthStore extends AuthState {
+interface AuthStore {
+  user: User | null;
+  loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  initialize: () => Promise<void>;
-  setUser: (user: User | null) => void;
-  setLoading: (loading: boolean) => void;
+  resetPassword: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
+  updateProfile: (updates: any) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
-      loading: false,
-      isAdmin: false,
+      loading: true,
 
       signIn: async (email: string, password: string) => {
-        set({ loading: true });
-        
         try {
-          const { data, error } = await supabase.auth.signInWithPassword({
+          const { error } = await supabase.auth.signInWithPassword({
             email,
             password,
           });
-
           if (error) throw error;
+        } catch (error: any) {
+          throw new Error(error.message);
+        }
+      },
 
-          if (data.user) {
-            const user: User = {
-              id: data.user.id,
-              email: data.user.email!,
-              user_metadata: data.user.user_metadata
-            };
-            
-            set({ 
-              user, 
-              isAdmin: true, // For now, all authenticated users are admin
-              loading: false 
-            });
-          }
-        } catch (error) {
-          set({ loading: false });
-          throw error;
+      signUp: async (email: string, password: string) => {
+        try {
+          const { error } = await supabase.auth.signUp({
+            email,
+            password,
+          });
+          if (error) throw error;
+        } catch (error: any) {
+          throw new Error(error.message);
         }
       },
 
       signOut: async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-        
-        set({ 
-          user: null, 
-          isAdmin: false, 
-          loading: false 
-        });
-      },
-
-      initialize: async () => {
-        set({ loading: true });
-        
         try {
-          const { data: { session } } = await supabase.auth.getSession();
-          
-          if (session?.user) {
-            const user: User = {
-              id: session.user.id,
-              email: session.user.email!,
-              user_metadata: session.user.user_metadata
-            };
-            
-            set({ 
-              user, 
-              isAdmin: true,
-              loading: false 
-            });
-          } else {
-            set({ 
-              user: null, 
-              isAdmin: false, 
-              loading: false 
-            });
-          }
-
-          // Listen for auth changes
-          supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN' && session?.user) {
-              const user: User = {
-                id: session.user.id,
-                email: session.user.email!,
-                user_metadata: session.user.user_metadata
-              };
-              
-              set({ 
-                user, 
-                isAdmin: true,
-                loading: false 
-              });
-            } else if (event === 'SIGNED_OUT') {
-              set({ 
-                user: null, 
-                isAdmin: false, 
-                loading: false 
-              });
-            }
-          });
-        } catch (error) {
-          console.error('Auth initialization error:', error);
-          set({ loading: false });
+          const { error } = await supabase.auth.signOut();
+          if (error) throw error;
+          set({ user: null });
+        } catch (error: any) {
+          throw new Error(error.message);
         }
       },
 
-      setUser: (user: User | null) => {
-        set({ 
-          user, 
-          isAdmin: !!user 
-        });
+      resetPassword: async (email: string) => {
+        try {
+          const { error } = await supabase.auth.resetPasswordForEmail(email);
+          if (error) throw error;
+        } catch (error: any) {
+          throw new Error(error.message);
+        }
       },
 
-      setLoading: (loading: boolean) => {
-        set({ loading });
+      updatePassword: async (password: string) => {
+        try {
+          const { error } = await supabase.auth.updateUser({
+            password,
+          });
+          if (error) throw error;
+        } catch (error: any) {
+          throw new Error(error.message);
+        }
+      },
+
+      updateProfile: async (updates: any) => {
+        try {
+          const { error } = await supabase.auth.updateUser(updates);
+          if (error) throw error;
+          const { data: { user } } = await supabase.auth.getUser();
+          set({ user });
+        } catch (error: any) {
+          throw new Error(error.message);
+        }
       },
     }),
     {
       name: 'auth-storage',
       partialize: (state) => ({
         user: state.user,
-        isAdmin: state.isAdmin,
       }),
     }
   )

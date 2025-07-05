@@ -31,7 +31,7 @@ import { useAllBlogComments } from '@/hooks/useBlog';
 import type { BlogComment } from '@/types/blog';
 
 const BlogCommentManager: React.FC = () => {
-  const [statusFilter, setStatusFilter] = useState<'pending' | 'approved' | 'rejected' | 'all'>('pending');
+  const [statusFilter, setStatusFilter] = useState<'pending' | 'approved' | 'rejected' | 'all' | undefined>('all');
   const [selectedComment, setSelectedComment] = useState<BlogComment | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   

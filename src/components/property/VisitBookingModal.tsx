@@ -1,8 +1,7 @@
 import { useState } from 'react';
+import { X, Calendar, Clock, User, Mail, Phone, MessageSquare } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Calendar, CreditCard } from 'lucide-react';
-import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,6 +11,7 @@ import { pesapalService, getVisitBookingFee } from '@/lib/payment';
 import { formatPrice } from '@/lib/countries';
 import type { Property } from '@/types';
 import type { z } from 'zod';
+import toast from 'react-hot-toast';
 
 interface VisitBookingModalProps {
   property: Property;
@@ -27,7 +27,7 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
   onClose,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [bookingData, setBookingData] = useState<VisitBookingFormData | null>(null);
 
   const visitFee = getVisitBookingFee(property.country);
@@ -36,7 +36,8 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    setValue,
+    watch,
   } = useForm<VisitBookingFormData>({
     resolver: zodResolver(visitBookingSchema),
     defaultValues: {
@@ -46,7 +47,7 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
 
   const onSubmit = async (data: VisitBookingFormData) => {
     setBookingData(data);
-    setShowPayment(true);
+    setShowSuccessModal(true);
   };
 
   const handlePayment = async () => {
@@ -88,8 +89,12 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
   };
 
   const handleClose = () => {
-    reset();
-    setShowPayment(false);
+    setValue('name', '');
+    setValue('email', '');
+    setValue('phone', '');
+    setValue('preferred_time', '');
+    setValue('message', '');
+    setShowSuccessModal(false);
     setBookingData(null);
     onClose();
   };
@@ -105,11 +110,11 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center">
             <Calendar className="w-5 h-5 mr-2 text-primary-gold" />
-            {showPayment ? 'Complete Payment' : 'Schedule Property Visit'}
+            {showSuccessModal ? 'Complete Payment' : 'Schedule Property Visit'}
           </DialogTitle>
         </DialogHeader>
 
-        {!showPayment ? (
+        {!showSuccessModal ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Property Info */}
             <div className="p-4 bg-gray-50 rounded-lg">
@@ -167,18 +172,18 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Preferred Time *
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Preferred Date & Time *
                 </label>
                 <Input
-                  type="datetime-local"
                   {...register('preferred_time')}
-                  min={minDate + 'T08:00'}
-                  max={minDate + 'T18:00'}
+                  type="datetime-local"
                   className={errors.preferred_time ? 'border-red-500' : ''}
                 />
                 {errors.preferred_time && (
-                  <p className="text-red-500 text-sm mt-1">{errors.preferred_time.message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {typeof errors.preferred_time.message === 'string' ? errors.preferred_time.message : 'Preferred time is required'}
+                  </p>
                 )}
               </div>
 
@@ -234,7 +239,6 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
 
             {/* Payment Info */}
             <div className="text-center">
-              <CreditCard className="w-12 h-12 text-primary-gold mx-auto mb-3" />
               <p className="text-gray-600 mb-4">
                 You will be redirected to PesaPal to complete your payment securely.
               </p>
@@ -244,7 +248,7 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={() => setShowPayment(false)}
+                onClick={() => setShowSuccessModal(false)}
                 className="flex-1"
               >
                 Back
@@ -256,6 +260,36 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
               >
                 {isSubmitting ? 'Processing...' : 'Pay Now'}
               </Button>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center">
+                <User className="w-4 h-4 mr-2 text-gray-500" />
+                <span className="font-medium">Name:</span>
+                <span className="ml-2">{bookingData?.name}</span>
+              </div>
+              <div className="flex items-center">
+                <Mail className="w-4 h-4 mr-2 text-gray-500" />
+                <span className="font-medium">Email:</span>
+                <span className="ml-2">{bookingData?.email}</span>
+              </div>
+              <div className="flex items-center">
+                <Phone className="w-4 h-4 mr-2 text-gray-500" />
+                <span className="font-medium">Phone:</span>
+                <span className="ml-2">{bookingData?.phone}</span>
+              </div>
+              <div className="flex items-center">
+                <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                <span className="font-medium">Preferred Time:</span>
+                <span className="ml-2">{bookingData?.preferred_time}</span>
+              </div>
+              {bookingData?.message && (
+                <div className="flex items-start">
+                  <MessageSquare className="w-4 h-4 mr-2 text-gray-500 mt-0.5" />
+                  <span className="font-medium">Message:</span>
+                  <span className="ml-2">{bookingData.message}</span>
+                </div>
+              )}
             </div>
           </div>
         )}

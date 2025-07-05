@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Square, Calendar, DollarSign, Building, Phone, Mail, Globe, ArrowLeft, Share2, Heart } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, DollarSign, Building, Phone, Mail, Globe, ArrowLeft, Share2, Heart, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +12,9 @@ import PropertyVideoPlayer from '@/components/property/PropertyVideoPlayer';
 import PropertyMap from '@/components/property/PropertyMap';
 import ScheduleVisitModal from '@/components/property/ScheduleVisitModal';
 import FinancingModal from '@/components/property/FinancingModal';
+import VisitBookingModal from './VisitBookingModal';
 import { useProperty, useRelatedProperties } from '@/hooks/useProperties';
+import { useAuthStore } from '@/store/auth';
 import { formatPrice } from '@/lib/countries';
 import { PROPERTY_FEATURES } from '@/types';
 import type { Property, PropertyImage } from '@/types';

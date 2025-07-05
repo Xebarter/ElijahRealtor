@@ -52,42 +52,46 @@ const BlogPostPage = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      if (!slug) return;
-      
-      setLoading(true);
-      setError(null);
-      
       try {
+        setLoading(true);
         const fetchedPost = await getPostBySlug(slug);
-        
-        if (!fetchedPost) {
-          setError('Blog post not found');
-          return;
-        }
-        
-        setPost(fetchedPost);
-        
-        // Find related posts (same category or tags)
-        if (sanitizedPosts.length > 0) {
-          const related = sanitizedPosts.filter(p => 
-            p.id !== fetchedPost.id && (
-              p.category_id === fetchedPost.category_id ||
-              p.tags?.some(tag => fetchedPost.tags?.includes(tag))
-            )
-          ).slice(0, 3);
-          
-          setRelatedPosts(related);
+        if (fetchedPost) {
+          setPost({
+            ...fetchedPost,
+            excerpt: fetchedPost.excerpt || undefined,
+            featured_image_url: fetchedPost.featured_image_url || undefined,
+            category: fetchedPost.category || undefined,
+            seo_title: fetchedPost.seo_title || undefined,
+            seo_description: fetchedPost.seo_description || undefined,
+            meta_keywords: fetchedPost.meta_keywords || undefined
+          });
+        } else {
+          setError('Post not found');
         }
       } catch (err: any) {
-        setError(err.message || 'Failed to fetch blog post');
-        console.error('Error fetching blog post:', err);
+        setError(err.message || 'Failed to load post');
       } finally {
         setLoading(false);
       }
     };
-    
-    fetchPost();
-  }, [slug, getPostBySlug, sanitizedPosts]);
+
+    if (slug) {
+      fetchPost();
+    }
+  }, [slug, getPostBySlug]);
+
+  useEffect(() => {
+    if (post && sanitizedPosts.length > 0) {
+      const related = sanitizedPosts.filter(p => 
+        p.id !== post.id && (
+          p.category_id === post.category_id ||
+          p.tags?.some(tag => post.tags?.includes(tag))
+        )
+      ).slice(0, 3);
+      
+      setRelatedPosts(related);
+    }
+  }, [post, sanitizedPosts]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

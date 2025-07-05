@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { MapPin, ExternalLink, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -111,50 +111,4 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title={`Map showing location of ${propertyTitle}`}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-200">
-              <div className="text-center">
-                <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 mb-4">Interactive map not available</p>
-                <Button onClick={openInGoogleMaps} className="btn-primary">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View in Google Maps
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Map Actions */}
-        <div className="p-4 bg-gray-50 border-t">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              onClick={getDirections}
-              className="flex-1 btn-primary"
-            >
-              <Navigation className="w-4 h-4 mr-2" />
-              Get Directions
-            </Button>
-            <Button
-              variant="outline"
-              onClick={openInGoogleMaps}
-              className="flex-1"
-            >
-              <ExternalLink className="w-4 h-4 mr-2" />
-              View Larger Map
-            </Button>
-          </div>
-          
-          {/* Additional Info */}
-          <div className="mt-3 text-xs text-gray-500 text-center">
-            Click "Get Directions" to navigate from your current location
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-export default PropertyMap;
+              title={`

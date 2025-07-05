@@ -15,17 +15,22 @@ import toast from 'react-hot-toast';
 import type { Property, PropertyFilters } from '@/types';
 
 const PropertyManagement = () => {
-  const [filters, setFilters] = useState<PropertyFilters>({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState<PropertyFilters>({});
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deletingProperty, setDeletingProperty] = useState<string | null>(null);
 
   const { properties, loading, error, meta, refetch } = useProperties(filters, currentPage, 10);
 
-  const handleFiltersChange = (newFilters: PropertyFilters) => {
-    setFilters(newFilters);
-    setCurrentPage(1);
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFilters(prev => ({ ...prev, search: searchTerm }));
+  };
+
+  const handleStatusFilter = (value: string) => {
+    setFilters(prev => ({ ...prev, status: value === 'all' ? undefined : value }));
   };
 
   const handleDeleteProperty = async (propertyId: string) => {
@@ -211,17 +216,14 @@ const PropertyManagement = () => {
             <div>
               <Input
                 placeholder="Search properties..."
-                value={filters.search || ''}
-                onChange={(e) => handleFiltersChange({ ...filters, search: e.target.value })}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
               />
             </div>
             <Select
               value={filters.status || 'all'}
-              onValueChange={(value) => handleFiltersChange({ 
-                ...filters, 
-                status: value === 'all' ? undefined : value as any 
-              })}
+              onValueChange={handleStatusFilter}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Filter by status" />
@@ -235,10 +237,7 @@ const PropertyManagement = () => {
             </Select>
             <Select
               value={filters.property_type || 'all'}
-              onValueChange={(value) => handleFiltersChange({ 
-                ...filters, 
-                property_type: value === 'all' ? undefined : value 
-              })}
+              onValueChange={(value) => setFilters(prev => ({ ...prev, property_type: value === 'all' ? undefined : value }))}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Filter by type" />
@@ -252,10 +251,7 @@ const PropertyManagement = () => {
             </Select>
             <Select
               value={filters.featured ? 'featured' : 'all'}
-              onValueChange={(value) => handleFiltersChange({ 
-                ...filters, 
-                featured: value === 'featured' ? true : undefined 
-              })}
+              onValueChange={(value) => setFilters(prev => ({ ...prev, featured: value === 'featured' ? true : undefined }))}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Filter by featured" />

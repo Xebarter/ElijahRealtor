@@ -1,27 +1,24 @@
-import { useState } from 'react';
-import { Calendar, Clock, Phone, Mail, MapPin, CheckCircle, Eye, Download } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Calendar, Clock, User, Mail, Phone, MapPin, Eye, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { useVisits } from '@/hooks/useVisits';
-import { formatPrice } from '@/lib/countries';
-
-import type { Visit } from '@/types';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { useVisitBookings } from '@/hooks/useVisitBookings';
+import type { VisitBooking } from '@/types';
+import toast from 'react-hot-toast';
 
 const VisitBookings = () => {
-  const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
+  const [selectedVisit, setSelectedVisit] = useState<VisitBooking | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [paymentFilter, setPaymentFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [adminNotes, setAdminNotes] = useState('');
 
-  const { visits, loading, error, updateVisitStatus } = useVisits();
+  const { visits, loading, error, updateVisitStatus } = useVisitBookings();
 
   const filteredVisits = visits.filter(visit => {
     const matchesStatus = statusFilter === 'all' || visit.status === statusFilter;
@@ -72,7 +69,7 @@ const VisitBookings = () => {
     }
   };
 
-  const handleViewDetails = (visit: Visit) => {
+  const handleViewDetails = (visit: VisitBooking) => {
     setSelectedVisit(visit);
     setAdminNotes(visit.admin_notes || '');
     setShowDetailsModal(true);

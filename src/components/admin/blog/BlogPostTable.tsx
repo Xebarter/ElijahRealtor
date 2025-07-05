@@ -272,7 +272,15 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => onEdit(post)}
+                            onClick={() => onEdit({
+                              ...post,
+                              excerpt: post.excerpt || undefined,
+                              featured_image_url: post.featured_image_url || undefined,
+                              category: post.category || undefined,
+                              seo_title: post.seo_title || undefined,
+                              seo_description: post.seo_description || undefined,
+                              meta_keywords: post.meta_keywords || undefined
+                            })}
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
@@ -280,7 +288,15 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                             <Button
                               variant={post.published ? 'outline' : 'default'}
                               size="sm"
-                              onClick={() => onTogglePublish(post)}
+                              onClick={() => onTogglePublish({
+                                ...post,
+                                excerpt: post.excerpt || undefined,
+                                featured_image_url: post.featured_image_url || undefined,
+                                category: post.category || undefined,
+                                seo_title: post.seo_title || undefined,
+                                seo_description: post.seo_description || undefined,
+                                meta_keywords: post.meta_keywords || undefined
+                              })}
                               className={post.published ? 'text-yellow-600' : 'bg-green-500'}
                             >
                               {post.published ? <XCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
@@ -289,7 +305,15 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => confirmDelete(post)}
+                            onClick={() => confirmDelete({
+                              ...post,
+                              excerpt: post.excerpt || undefined,
+                              featured_image_url: post.featured_image_url || undefined,
+                              category: post.category || undefined,
+                              seo_title: post.seo_title || undefined,
+                              seo_description: post.seo_description || undefined,
+                              meta_keywords: post.meta_keywords || undefined
+                            })}
                             className="text-red-600 hover:text-red-700"
                           >
                             <Trash2 className="w-4 h-4" />

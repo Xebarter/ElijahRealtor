@@ -7,14 +7,33 @@ import { useBlogPosts } from '@/hooks/useBlog';
 import { useAuthStore } from '@/store/auth';
 import toast from 'react-hot-toast';
 import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
+import { useForm } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { blogPostSchema } from '@/lib/validations/blog';
 
 const BlogPostCreate = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [featuredImage, setFeaturedImage] = useState<File | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<BlogPostFormType>({
+    resolver: zodResolver(blogPostSchema),
+    defaultValues: {
+      published: false,
+      tags: [],
+    },
+  });
+
   const { createPost } = useBlogPosts();
   const { user } = useAuthStore();
 
-  const handleSubmit = async (data: BlogPostFormType, featuredImage?: File) => {
+  const handleSubmitForm = async (data: BlogPostFormType, featuredImage?: File) => {
     setIsSubmitting(true);
     try {
       await createPost({
@@ -59,7 +78,7 @@ const BlogPostCreate = () => {
 
       {/* Form */}
       <BlogPostForm
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitForm}
         isSubmitting={isSubmitting}
       />
     </div>

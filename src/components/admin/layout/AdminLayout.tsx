@@ -1,20 +1,6 @@
 import { useState } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import {
-  Home,
-  Building,
-  Calendar,
-  DollarSign,
-  MessageSquare,
-  Users,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  BarChart3,
-  BookOpen,
-  Briefcase,
-} from 'lucide-react';
+import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Menu, X, Home, Building, FileText, MessageSquare, Users, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
 import toast from 'react-hot-toast';
@@ -22,7 +8,6 @@ import toast from 'react-hot-toast';
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const { user, signOut } = useAuthStore();
 
   const navigation = [

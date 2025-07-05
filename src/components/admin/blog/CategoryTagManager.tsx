@@ -1,27 +1,17 @@
 import { useState } from 'react';
-import { 
-  FolderOpen, 
-  Tag as TagIcon, 
-  Plus, 
-  Edit, 
-  Trash2,
-  Save
-} from 'lucide-react';
+import { Plus, Edit, Trash2, Tag, FolderOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle,
-  DialogFooter
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import { generateSlug } from '@/lib/utils';
 import type { BlogCategory, BlogTag } from '@/types/blog';
+import toast from 'react-hot-toast';
+import { CategoryForm } from './CategoryForm';
+import { TagForm } from './TagForm';
 
 const CategoryTagManager: React.FC = () => {
   // Category state
@@ -149,6 +139,33 @@ const CategoryTagManager: React.FC = () => {
     }
   };
 
+  const handleCreateCategory = async (data: { name: string; slug: string; description?: string }) => {
+    try {
+      await createCategory(data);
+      toast.success('Category created successfully');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to create category');
+    }
+  };
+
+  const handleUpdateCategory = async (id: string, data: { name: string; slug: string; description?: string }) => {
+    try {
+      await updateCategory(id, data);
+      toast.success('Category updated successfully');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update category');
+    }
+  };
+
+  const handleCreateTag = async (data: { name: string; slug: string }) => {
+    try {
+      await createTag(data);
+      toast.success('Tag created successfully');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to create tag');
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Categories */}
@@ -189,14 +206,20 @@ const CategoryTagManager: React.FC = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleEditCategory(category)}
+                      onClick={() => handleEditCategory({
+                        ...category,
+                        description: category.description || undefined
+                      })}
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDeleteCategory(category)}
+                      onClick={() => handleDeleteCategory({
+                        ...category,
+                        description: category.description || undefined
+                      })}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -212,7 +235,7 @@ const CategoryTagManager: React.FC = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center">
-            <TagIcon className="w-5 h-5 mr-2 text-primary-gold" />
+            <Tag className="w-5 h-5 mr-2 text-primary-gold" />
             Tags
           </CardTitle>
           <Button size="sm" onClick={handleAddTag}>
@@ -230,33 +253,12 @@ const CategoryTagManager: React.FC = () => {
               No tags found
             </div>
           ) : (
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <div key={tag.id} className="group relative">
-                  <Badge className="py-1 px-2">
-                    {tag.name}
-                  </Badge>
-                  <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 hidden group-hover:flex bg-white rounded-full shadow-sm border">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-6 w-6 p-0"
-                      onClick={() => handleEditTag(tag)}
-                    >
-                      <Edit className="w-3 h-3" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-6 w-6 p-0 text-red-600"
-                      onClick={() => handleDeleteTag(tag)}
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <TagForm
+              tags={tags}
+              onCreateTag={handleCreateTag}
+              onUpdateTag={updateTag}
+              onDeleteTag={deleteTag}
+            />
           )}
         </CardContent>
       </Card>
@@ -308,7 +310,6 @@ const CategoryTagManager: React.FC = () => {
               onClick={handleSaveCategory}
               disabled={!categoryName.trim()}
             >
-              <Save className="w-4 h-4 mr-1" />
               Save
             </Button>
           </DialogFooter>
@@ -375,7 +376,6 @@ const CategoryTagManager: React.FC = () => {
               onClick={handleSaveTag}
               disabled={!tagName.trim()}
             >
-              <Save className="w-4 h-4 mr-1" />
               Save
             </Button>
           </DialogFooter>

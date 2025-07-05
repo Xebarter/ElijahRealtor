@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { MessageSquare, Star, User, CheckCircle, XCircle, Clock, Eye, Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Edit, Trash2, Star, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useTestimonials } from '@/hooks/useTestimonials';
@@ -191,7 +191,7 @@ const TestimonialsManagement = () => {
                 <p className="text-sm font-medium text-gray-600">Total Testimonials</p>
                 <p className="text-3xl font-bold text-primary-navy">{testimonials.length}</p>
               </div>
-              <MessageSquare className="w-8 h-8 text-primary-gold" />
+              <ImageIcon className="w-8 h-8 text-primary-gold" />
             </div>
           </CardContent>
         </Card>
@@ -205,7 +205,7 @@ const TestimonialsManagement = () => {
                   {testimonials.filter(t => t.status === 'pending').length}
                 </p>
               </div>
-              <Clock className="w-8 h-8 text-yellow-600" />
+              <ImageIcon className="w-8 h-8 text-yellow-600" />
             </div>
           </CardContent>
         </Card>
@@ -219,7 +219,7 @@ const TestimonialsManagement = () => {
                   {testimonials.filter(t => t.status === 'approved').length}
                 </p>
               </div>
-              <CheckCircle className="w-8 h-8 text-green-600" />
+              <ImageIcon className="w-8 h-8 text-green-600" />
             </div>
           </CardContent>
         </Card>
@@ -273,7 +273,7 @@ const TestimonialsManagement = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTestimonials.length === 0 ? (
           <div className="col-span-full text-center py-12">
-            <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500">No testimonials found</p>
           </div>
         ) : (
@@ -291,7 +291,7 @@ const TestimonialsManagement = () => {
                       />
                     ) : (
                       <div className="w-10 h-10 bg-primary-gold/10 rounded-full flex items-center justify-center">
-                        <User className="w-5 h-5 text-primary-gold" />
+                        <ImageIcon className="w-5 h-5 text-primary-gold" />
                       </div>
                     )}
                     <div>
@@ -321,8 +321,8 @@ const TestimonialsManagement = () => {
                 {/* Media indicator */}
                 {testimonial.media_urls && testimonial.media_urls.length > 0 && (
                   <div className="flex items-center text-sm text-primary-gold mb-4">
-                    <MessageSquare className="w-4 h-4 mr-1" />
-                    {testimonial.type} testimonial with media
+                    <ImageIcon className="w-4 h-4 mr-1" />
+                    {testimonial.type} testimonial with {testimonial.media_urls.length} media files
                   </div>
                 )}
 
@@ -339,7 +339,7 @@ const TestimonialsManagement = () => {
                     onClick={() => handleViewDetails(testimonial)}
                     className="flex-1"
                   >
-                    <Eye className="w-4 h-4 mr-1" />
+                    <ImageIcon className="w-4 h-4 mr-1" />
                     View
                   </Button>
                   {testimonial.status === 'pending' && (
@@ -350,7 +350,7 @@ const TestimonialsManagement = () => {
                         onClick={() => updateTestimonialStatus(testimonial.id, 'approved')}
                         disabled={!!updatingStatus}
                       >
-                        <CheckCircle className="w-4 h-4" />
+                        <ImageIcon className="w-4 h-4" />
                       </Button>
                       <Button
                         variant="outline"
@@ -359,7 +359,7 @@ const TestimonialsManagement = () => {
                         disabled={!!updatingStatus}
                         className="text-red-600 hover:text-red-700"
                       >
-                        <XCircle className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </>
                   )}
@@ -389,7 +389,7 @@ const TestimonialsManagement = () => {
                   />
                 ) : (
                   <div className="w-16 h-16 bg-primary-gold/10 rounded-full flex items-center justify-center">
-                    <User className="w-8 h-8 text-primary-gold" />
+                    <ImageIcon className="w-8 h-8 text-primary-gold" />
                   </div>
                 )}
                 <div>
@@ -444,7 +444,7 @@ const TestimonialsManagement = () => {
                     onClick={() => updateTestimonialStatus(selectedTestimonial.id, 'approved')}
                     disabled={!!updatingStatus}
                   >
-                    <CheckCircle className="w-4 h-4 mr-2" />
+                    <ImageIcon className="w-4 h-4 mr-2" />
                     Approve
                   </Button>
                   <Button
@@ -453,7 +453,7 @@ const TestimonialsManagement = () => {
                     onClick={() => updateTestimonialStatus(selectedTestimonial.id, 'rejected')}
                     disabled={!!updatingStatus}
                   >
-                    <XCircle className="w-4 h-4 mr-2" />
+                    <Trash2 className="w-4 h-4 mr-2" />
                     Reject
                   </Button>
                 </div>

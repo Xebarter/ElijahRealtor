@@ -1,18 +1,17 @@
 import { useState } from 'react';
+import { X, DollarSign, Upload, FileText } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DollarSign, Upload, FileText } from 'lucide-react';
-import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { financingSchema } from '@/lib/validations';
+import type { z } from 'zod';
+import toast from 'react-hot-toast';
 import { COUNTRIES } from '@/lib/countries';
 import type { Property } from '@/types';
-import type { z } from 'zod';
 
 interface FinancingModalProps {
   property: Property;
@@ -28,7 +27,7 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
   onClose,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [idDocument, setIdDocument] = useState<File | null>(null);
   const [incomeProof, setIncomeProof] = useState<File | null>(null);
 
@@ -45,7 +44,8 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
     resolver: zodResolver(financingSchema),
     defaultValues: {
       property_id: property.id,
-      currency: property.currency,
+      currency: 'USD',
+      employment_status: 'employed',
     },
   });
 
@@ -126,7 +126,7 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
             <h4 className="font-semibold text-gray-900">Personal Information</h4>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Full Name *
               </label>
               <Input
@@ -134,38 +134,43 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
                 placeholder="Enter your full name"
                 className={errors.applicant_name ? 'border-red-500' : ''}
               />
-              {errors.applicant_name && typeof errors.applicant_name.message === 'string' && (
-                <p className="text-red-500 text-sm mt-1">{errors.applicant_name.message}</p>
+              {errors.applicant_name && (
+                <p className="text-red-500 text-sm mt-1">
+                  {typeof errors.applicant_name.message === 'string' ? errors.applicant_name.message : 'Full name is required'}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address *
               </label>
               <Input
-                type="email"
                 {...register('applicant_email')}
-                placeholder="Enter your email"
+                type="email"
+                placeholder="Enter your email address"
                 className={errors.applicant_email ? 'border-red-500' : ''}
               />
-              {errors.applicant_email && typeof errors.applicant_email.message === 'string' && (
-                <p className="text-red-500 text-sm mt-1">{errors.applicant_email.message}</p>
+              {errors.applicant_email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {typeof errors.applicant_email.message === 'string' ? errors.applicant_email.message : 'Valid email is required'}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Phone Number *
               </label>
               <Input
-                type="tel"
                 {...register('applicant_phone')}
                 placeholder="Enter your phone number"
                 className={errors.applicant_phone ? 'border-red-500' : ''}
               />
-              {errors.applicant_phone && typeof errors.applicant_phone.message === 'string' && (
-                <p className="text-red-500 text-sm mt-1">{errors.applicant_phone.message}</p>
+              {errors.applicant_phone && (
+                <p className="text-red-500 text-sm mt-1">
+                  {typeof errors.applicant_phone.message === 'string' ? errors.applicant_phone.message : 'Phone number is required'}
+                </p>
               )}
             </div>
           </div>
@@ -243,67 +248,69 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                ID Document (Passport/National ID) *
+                ID Document *
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                <input
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-sm text-gray-600 mb-2">
+                  Upload your ID document (Passport, Driver's License, etc.)
+                </p>
+                <Input
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleFileUpload(file, 'id');
-                  }}
+                  onChange={(e) => setIdDocument(e.target.files?.[0] || null)}
                   className="hidden"
                   id="id-document"
                 />
-                <label
-                  htmlFor="id-document"
-                  className="cursor-pointer flex flex-col items-center"
-                >
-                  <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                  <span className="text-sm text-gray-600">
-                    {idDocument ? idDocument.name : 'Click to upload ID document'}
-                  </span>
-                  <span className="text-xs text-gray-500 mt-1">
-                    PDF, JPG, PNG (max 5MB)
-                  </span>
+                <label htmlFor="id-document">
+                  <Button type="button" variant="outline" size="sm">
+                    Choose File
+                  </Button>
                 </label>
+                {idDocument && (
+                  <p className="text-sm text-green-600 mt-2">
+                    Selected: {idDocument.name}
+                  </p>
+                )}
               </div>
-              {errors.id_document && typeof errors.id_document.message === 'string' && (
-                <p className="text-red-500 text-sm mt-1">{errors.id_document.message}</p>
+              {errors.id_document && (
+                <p className="text-red-500 text-sm mt-1">
+                  {typeof errors.id_document.message === 'string' ? errors.id_document.message : 'ID document is required'}
+                </p>
               )}
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Income Proof (Payslip/Bank Statement) *
+                Income Proof *
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                <input
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                <FileText className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-sm text-gray-600 mb-2">
+                  Upload proof of income (Payslip, Bank Statement, etc.)
+                </p>
+                <Input
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleFileUpload(file, 'income');
-                  }}
+                  onChange={(e) => setIncomeProof(e.target.files?.[0] || null)}
                   className="hidden"
                   id="income-proof"
                 />
-                <label
-                  htmlFor="income-proof"
-                  className="cursor-pointer flex flex-col items-center"
-                >
-                  <FileText className="w-8 h-8 text-gray-400 mb-2" />
-                  <span className="text-sm text-gray-600">
-                    {incomeProof ? incomeProof.name : 'Click to upload income proof'}
-                  </span>
-                  <span className="text-xs text-gray-500 mt-1">
-                    PDF, JPG, PNG (max 5MB)
-                  </span>
+                <label htmlFor="income-proof">
+                  <Button type="button" variant="outline" size="sm">
+                    Choose File
+                  </Button>
                 </label>
+                {incomeProof && (
+                  <p className="text-sm text-green-600 mt-2">
+                    Selected: {incomeProof.name}
+                  </p>
+                )}
               </div>
-              {errors.income_proof && typeof errors.income_proof.message === 'string' && (
-                <p className="text-red-500 text-sm mt-1">{errors.income_proof.message}</p>
+              {errors.income_proof && (
+                <p className="text-red-500 text-sm mt-1">
+                  {typeof errors.income_proof.message === 'string' ? errors.income_proof.message : 'Income proof is required'}
+                </p>
               )}
             </div>
           </div>

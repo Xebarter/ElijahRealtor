@@ -1,14 +1,25 @@
 import { useState, useEffect } from 'react';
+import { Search, Filter, Calendar, User, Tag } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import BlogCard from '@/components/blog/BlogCard';
+import { useBlog } from '@/hooks/useBlog';
+import type { BlogPost } from '@/types/blog';
 import { useSearchParams } from 'react-router-dom';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogFilters } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<BlogFilters>({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState<string>('');
 
   // Update filters when URL params change
   useEffect(() => {
@@ -52,16 +63,9 @@ const Blog = () => {
     meta_keywords: post.meta_keywords ?? undefined
   }));
 
-  const handleSearch = (query: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (query) {
-      params.set('search', query);
-    } else {
-      params.delete('search');
-    }
-    params.delete('category');
-    params.delete('tag');
-    setSearchParams(params);
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Search functionality will be handled by the useBlog hook
   };
 
   const handlePageChange = (page: number) => {
@@ -97,10 +101,17 @@ const Blog = () => {
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2">
             <Input
-              type="text"
               placeholder="Search..."
-              value={filters.search}
-              onChange={(e) => handleSearch(e.target.value)}
+              value={filters.search || ''}
+              onChange={(e) => {
+                const params = new URLSearchParams(searchParams);
+                if (e.target.value) {
+                  params.set('search', e.target.value);
+                } else {
+                  params.delete('search');
+                }
+                setSearchParams(params);
+              }}
             />
           </div>
           <div className="md:w-1/2">

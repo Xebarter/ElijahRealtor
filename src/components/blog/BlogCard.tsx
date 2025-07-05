@@ -26,7 +26,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg ${className}`}>
       {/* Featured Image */}
       {post.featured_image_url && (
-        <Link to={`/blog/${post.slug || generateSlug(post.title || '')}`} className="block overflow-hidden">
+        <Link to={`/blog/${post.slug || generateSlug(post.title || 'Untitled')}`} className="block overflow-hidden">
           <div className="aspect-video overflow-hidden">
             <img
               src={post.featured_image_url}
@@ -52,9 +52,9 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
         )}
         
         {/* Title */}
-        <Link to={`/blog/${post.slug || generateSlug(post.title || '')}`}>
+        <Link to={`/blog/${post.slug || generateSlug(post.title || 'Untitled')}`}>
           <h3 className="text-xl font-semibold text-primary-navy mb-2 hover:text-primary-gold transition-colors">
-            {post.title}
+            {post.title || 'Untitled'}
           </h3>
         </Link>
         
@@ -113,7 +113,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
         
         {/* Read More Button */}
         {!compact && (
-          <Link to={`/blog/${post.slug || generateSlug(post.title || '')}`}>
+          <Link to={`/blog/${post.slug || generateSlug(post.title || 'Untitled')}`}>
             <Button variant="outline" className="mt-2">
               Read More
             </Button>

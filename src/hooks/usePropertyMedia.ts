@@ -59,7 +59,7 @@ export function usePropertyImages(propertyId?: string) {
         onProgress?.([progress]);
 
         // Upload file to Supabase Storage
-        const uploadData = await uploadFile('property-feature-images', fileName, file);
+        await uploadFile('property-feature-images', fileName, file);
         
         progress.progress = 50;
         onProgress?.([progress]);
@@ -184,14 +184,12 @@ export function usePropertyImages(propertyId?: string) {
 
 export function useVideoUpload(propertyId?: string) {
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const uploadVideo = useCallback(async (file: File, onProgress?: (progress: number) => void) => {
     if (!propertyId) throw new Error('Property ID is required');
     
     try {
       setUploading(true);
-      setError(null);
       
       const fileName = `${propertyId}/video-tour-${Date.now()}.${file.name.split('.').pop()}`;
       

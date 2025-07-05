@@ -42,7 +42,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
 
     try {
       setUploadProgress(0);
-      const uploadedVideoUrl = await uploadVideo(file, (progress) => {
+      const uploadedVideoUrl = await uploadVideo(file, (progress: number) => {
         setUploadProgress(progress);
       });
       setVideoUrl(uploadedVideoUrl);

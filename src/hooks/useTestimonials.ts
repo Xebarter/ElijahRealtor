@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase, uploadFile, getPublicUrl } from '@/lib/supabase';
 import type { Testimonial } from '@/types';
+import toast from 'react-hot-toast';
 
 export function useTestimonials(status?: 'pending' | 'approved' | 'rejected', limit?: number) {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
