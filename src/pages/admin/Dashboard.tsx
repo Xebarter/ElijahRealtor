@@ -1,20 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { 
-  Home, 
   Building, 
+  MessageSquare, 
+  Star, 
   Calendar, 
   DollarSign, 
-  MessageSquare, 
-  Users, 
-  Settings, 
-  LogOut, 
-  Menu, 
-  X,
-  BarChart3,
-  FileText,
-  BookOpen,
-  Plus,
-  Eye
+  TrendingUp 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -54,7 +45,7 @@ const Dashboard = () => {
     {
       title: 'Active Listings',
       value: stats.activeListings,
-      icon: BarChart3,
+      icon: TrendingUp,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
     },
@@ -83,11 +74,11 @@ const Dashboard = () => {
       case 'application_submitted':
         return DollarSign;
       case 'property_sold':
-        return BarChart3;
+        return TrendingUp;
       case 'contact_received':
         return MessageSquare;
       default:
-        return FileText;
+        return Star;
     }
   };
 
@@ -147,7 +138,7 @@ const Dashboard = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Home className="w-5 h-5 mr-2 text-primary-gold" />
+              <Building className="w-5 h-5 mr-2 text-primary-gold" />
               Properties by Country
             </CardTitle>
           </CardHeader>
@@ -167,7 +158,6 @@ const Dashboard = () => {
               <Link to="/admin/properties">
                 <Button variant="outline" className="w-full">
                   View All Properties
-                  <Eye className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
@@ -178,7 +168,7 @@ const Dashboard = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <FileText className="w-5 h-5 mr-2 text-primary-gold" />
+              <Star className="w-5 h-5 mr-2 text-primary-gold" />
               Recent Activity
             </CardTitle>
           </CardHeader>
@@ -212,7 +202,6 @@ const Dashboard = () => {
             <div className="mt-6">
               <Button variant="outline" className="w-full">
                 View All Activity
-                <Eye className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </CardContent>
@@ -230,7 +219,6 @@ const Dashboard = () => {
               className="w-full btn-primary"
               onClick={() => handleQuickAction('/admin/properties/create')}
             >
-              <Plus className="w-4 h-4 mr-2" />
               Add Property
             </Button>
             <Button 
@@ -238,7 +226,6 @@ const Dashboard = () => {
               className="w-full"
               onClick={() => handleQuickAction('/admin/visits')}
             >
-              <Calendar className="w-4 h-4 mr-2" />
               View Visits
             </Button>
             <Button 
@@ -246,7 +233,6 @@ const Dashboard = () => {
               className="w-full"
               onClick={() => handleQuickAction('/admin/financing')}
             >
-              <DollarSign className="w-4 h-4 mr-2" />
               Financing Apps
             </Button>
             <Button 
@@ -254,7 +240,6 @@ const Dashboard = () => {
               className="w-full"
               onClick={() => handleQuickAction('/admin/messages')}
             >
-              <MessageSquare className="w-4 h-4 mr-2" />
               Messages
             </Button>
           </div>

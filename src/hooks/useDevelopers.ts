@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase, uploadFile, getPublicUrl, deleteFile } from '@/lib/supabase';
-import toast from 'react-hot-toast';
 import type { Developer } from '@/types';
 
 export function useDevelopers() {

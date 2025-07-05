@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Tag as TagIcon, Eye, Clock, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Tag as TagIcon, Eye, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -260,7 +260,7 @@ const BlogPostPage = () => {
                         <span className="text-gray-700 mr-2">Tags:</span>
                         <div className="flex flex-wrap gap-2">
                           {post.tags.map((tag, index) => (
-                            <Link key={index} to={`/blog/tag/${generateSlug(tag)}`}>
+                            <Link key={index} to={`/blog/tag/${tag || generateSlug(tag || '')}`}>
                               <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
                                 {tag}
                               </Badge>

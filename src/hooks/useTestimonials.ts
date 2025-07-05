@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase, uploadFile, getPublicUrl } from '@/lib/supabase';
+import { supabase, uploadFile, getPublicUrl, deleteFile } from '@/lib/supabase';
 import type { Testimonial, TestimonialForm } from '@/types';
 
 export function useTestimonials(status?: 'pending' | 'approved' | 'rejected', limit?: number) {

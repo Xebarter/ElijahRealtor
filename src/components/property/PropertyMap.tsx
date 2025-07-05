@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { MapPin, ExternalLink, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,8 +18,6 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
   address,
   className = ''
 }) => {
-  const mapRef = useRef<HTMLDivElement>(null);
-
   // If no location data is provided, don't render the component
   if (!locationUrl && !locationCoordinates) {
     return null;

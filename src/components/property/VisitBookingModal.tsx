@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Calendar, Clock, X, CreditCard } from 'lucide-react';
+import { Calendar, CreditCard, MapPin, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -127,12 +127,12 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
                   Full Name *
                 </label>
                 <Input
-                  {...register('client_name')}
-                  placeholder="Enter your full name"
-                  className={errors.client_name ? 'border-red-500' : ''}
+                  {...register('name')}
+                  placeholder="Your full name"
+                  className={errors.name ? 'border-red-500' : ''}
                 />
-                {errors.client_name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.client_name.message}</p>
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
                 )}
               </div>
 
@@ -142,12 +142,12 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
                 </label>
                 <Input
                   type="email"
-                  {...register('client_email')}
-                  placeholder="Enter your email"
-                  className={errors.client_email ? 'border-red-500' : ''}
+                  {...register('email')}
+                  placeholder="Your email address"
+                  className={errors.email ? 'border-red-500' : ''}
                 />
-                {errors.client_email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.client_email.message}</p>
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
                 )}
               </div>
 
@@ -157,12 +157,12 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
                 </label>
                 <Input
                   type="tel"
-                  {...register('client_phone')}
-                  placeholder="Enter your phone number"
-                  className={errors.client_phone ? 'border-red-500' : ''}
+                  {...register('phone')}
+                  placeholder="Your phone number"
+                  className={errors.phone ? 'border-red-500' : ''}
                 />
-                {errors.client_phone && (
-                  <p className="text-red-500 text-sm mt-1">{errors.client_phone.message}</p>
+                {errors.phone && (
+                  <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
                 )}
               </div>
 
@@ -204,10 +204,14 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
                   Additional Notes
                 </label>
                 <Textarea
-                  {...register('notes')}
-                  placeholder="Any specific requirements or questions?"
+                  {...register('message')}
+                  placeholder="Any additional notes or special requests..."
                   rows={3}
+                  className={errors.message ? 'border-red-500' : ''}
                 />
+                {errors.message && (
+                  <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+                )}
               </div>
             </div>
 

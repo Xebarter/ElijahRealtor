@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Calendar, Clock, CreditCard, MapPin, AlertCircle, Wifi, WifiOff } from 'lucide-react';
+import { Calendar, CreditCard, MapPin, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

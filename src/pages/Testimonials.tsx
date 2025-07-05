@@ -4,7 +4,7 @@ import { Star, Quote, ArrowRight, MessageSquare, Users, Heart, Play } from 'luci
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';

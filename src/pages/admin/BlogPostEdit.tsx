@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import BlogPostForm from '@/components/admin/blog/BlogPostForm';
@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useBlog, useBlogPost } from '@/hooks/useBlog';
 import toast from 'react-hot-toast';
 import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
+import { deepSanitizeNulls } from '@/utils/deepSanitizeNulls';
 
 const BlogPostEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,11 +37,19 @@ const BlogPostEdit = () => {
       if (typeof category_id === 'string' && category_id.length > 0) {
         updateObj.category_id = category_id;
       }
-      await updatePost(
-        id,
-        updateObj,
-        featuredImage
-      );
+      await updatePost(id, {
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        published: data.published,
+        author_name: data.author_name,
+        excerpt: data.excerpt,
+        tags: data.tags || [],
+        category_id: data.category_id,
+        meta_title: data.meta_title,
+        meta_description: data.meta_description,
+        meta_keywords: data.meta_keywords || []
+      });
       toast.success('Blog post updated successfully!');
       navigate('/admin/blog');
     } catch (error: any) {

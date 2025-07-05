@@ -10,12 +10,9 @@ import {
   Eye, 
   Edit, 
   Trash2,
-  Filter,
-  Download,
   User,
   Building,
-  AlertCircle,
-  Plus
+  AlertCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -196,7 +193,6 @@ const PropertyVisits = () => {
         </div>
         <div className="flex gap-3">
           <Button onClick={exportVisits} variant="outline">
-            <Download className="w-4 h-4 mr-2" />
             Export CSV
           </Button>
         </div>

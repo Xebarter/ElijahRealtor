@@ -519,3 +519,17 @@ export const testConnection = async () => {
     return false;
   }
 };
+
+export const updateVisitPaymentStatus = async (visitId: string, paymentReference: string) => {
+  try {
+    const { error } = await supabase
+      .from('property_visits')
+      .update({ payment_status: 'paid', payment_reference: paymentReference })
+      .eq('id', visitId);
+
+    if (error) throw error;
+  } catch (error) {
+    console.error('Update visit payment status error:', error);
+    throw error;
+  }
+};

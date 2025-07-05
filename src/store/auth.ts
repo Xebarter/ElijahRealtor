@@ -133,3 +133,5 @@ export const useAuthStore = create<AuthStore>()(
     }
   )
 );
+
+const { set } = useAuthStore();

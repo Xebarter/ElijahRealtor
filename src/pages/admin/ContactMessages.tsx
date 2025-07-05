@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, MessageSquare, Eye, BookMarked as MarkAsRead, Reply, Download } from 'lucide-react';
+import { Mail, Phone, MapPin, MessageSquare, Eye, Reply, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,7 +19,6 @@ const ContactMessages = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [replyText, setReplyText] = useState('');
-  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
   const { messages, loading, error } = useContactMessages();
 
@@ -49,7 +48,6 @@ const ContactMessages = () => {
   };
 
   const updateMessageStatus = async (messageId: string, newStatus: string) => {
-    setUpdatingStatus(messageId);
     try {
       const { error } = await supabase
         .from('contact_messages')
@@ -64,8 +62,6 @@ const ContactMessages = () => {
       window.location.reload();
     } catch (error: any) {
       toast.error(error.message || 'Failed to update message status');
-    } finally {
-      setUpdatingStatus(null);
     }
   };
 

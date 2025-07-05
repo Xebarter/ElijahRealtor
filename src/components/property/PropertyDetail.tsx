@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Square, Calendar, DollarSign, Building, Phone, Mail, Globe, ArrowLeft, Play, Heart, Share2 } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, DollarSign, Building, Phone, Mail, Globe, ArrowLeft, Share2, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -106,7 +106,6 @@ const PropertyDetail = () => {
   const groupedImages = groupImagesByFeature(propertyImages);
   const hasImages = propertyImages.length > 0;
   const hasVideo = property.video_tour_url || property.video_url;
-  const hasLocation = property.location_url || property.location_coordinates;
 
   // Get ordered features that have images
   const featuresWithImages = PROPERTY_FEATURES

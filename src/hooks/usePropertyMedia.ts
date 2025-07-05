@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase, uploadFile, deleteFile, getPublicUrl } from '@/lib/supabase';
 import toast from 'react-hot-toast';
 import type { PropertyImage, MediaUploadProgress } from '@/types';
@@ -184,11 +184,13 @@ export function usePropertyImages(propertyId?: string) {
 
 export function useVideoUpload() {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const uploadVideo = async (file: File, propertyId: string): Promise<string> => {
-    setUploading(true);
-    
+  const uploadVideo = useCallback(async (file: File, onProgress?: (progress: number) => void) => {
     try {
+      setUploading(true);
+      setError(null);
+      
       const fileName = `${propertyId}/video-tour-${Date.now()}.${file.name.split('.').pop()}`;
       
       // Upload to Supabase Storage
@@ -204,7 +206,7 @@ export function useVideoUpload() {
     } finally {
       setUploading(false);
     }
-  };
+  }, []);
 
   const deleteVideo = async (videoPath: string) => {
     try {

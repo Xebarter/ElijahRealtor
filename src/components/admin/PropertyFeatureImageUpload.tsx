@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useCallback, useRef } from 'react';
 import { Upload, X, Image as ImageIcon, Plus, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';

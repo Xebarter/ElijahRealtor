@@ -17,10 +17,19 @@ const BlogPostCreate = () => {
   const handleSubmit = async (data: BlogPostFormType, featuredImage?: File) => {
     setIsSubmitting(true);
     try {
-      const newPost = await createPost({
-        ...data,
-        author_id: user?.id,
-      }, featuredImage);
+      await createPost({
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        published: data.published,
+        author_name: data.author_name,
+        excerpt: data.excerpt,
+        tags: data.tags || [],
+        category_id: data.category_id,
+        meta_title: data.meta_title,
+        meta_description: data.meta_description,
+        meta_keywords: data.meta_keywords || []
+      });
       
       toast.success('Blog post created successfully!');
       navigate('/admin/blog');

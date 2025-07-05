@@ -1,14 +1,14 @@
-import { User, Calendar, MessageSquare } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Calendar, User, MessageSquare } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useBlogComments } from '@/hooks/useBlog';
-import type { BlogComment } from '@/types/blog';
 
 interface BlogCommentListProps {
   postId: string;
 }
 
 const BlogCommentList: React.FC<BlogCommentListProps> = ({ postId }) => {
-  const { comments, loading, error } = useBlogComments(postId);
+  const { comments, loading, error } = useBlogComments();
 
   if (loading) {
     return (

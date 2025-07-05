@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { BookOpen, Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
 import type { BlogFilters } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
@@ -9,12 +7,7 @@ import { deepSanitizeNulls } from '@/lib/utils';
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState<BlogFilters>({
-    published: true,
-    search: searchParams.get('search') || undefined,
-    category_slug: searchParams.get('category') || undefined,
-    tag_slug: searchParams.get('tag') || undefined,
-  });
+  const [filters, setFilters] = useState<BlogFilters>({});
 
   // Update filters when URL params change
   useEffect(() => {

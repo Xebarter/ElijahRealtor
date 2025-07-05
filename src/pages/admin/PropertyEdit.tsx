@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -468,6 +468,7 @@ const PropertyEdit = () => {
           propertyId={property.id}
           currentVideoUrl={watch('video_tour_url')}
           onVideoChange={handleVideoChange}
+          onVideoUpload={(videoUrl) => setValue('video_url', videoUrl || undefined)}
         />
 
         {/* Property Images */}

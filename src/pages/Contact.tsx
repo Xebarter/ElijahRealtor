@@ -12,7 +12,6 @@ import SEO from '@/components/common/SEO';
 import { contactSchema } from '@/lib/validations';
 import { supabase } from '@/lib/supabase';
 import { COUNTRIES } from '@/lib/countries';
-import type { ContactForm } from '@/types';
 import type { z } from 'zod';
 
 type ContactFormData = z.infer<typeof contactSchema>;

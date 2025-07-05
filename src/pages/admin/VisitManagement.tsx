@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Clock, Phone, Mail, MapPin, CheckCircle, XCircle, Eye, Filter } from 'lucide-react';
+import { Calendar, Clock, Phone, Mail, MapPin, CheckCircle, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

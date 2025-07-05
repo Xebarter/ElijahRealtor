@@ -39,10 +39,14 @@ const BlogCommentManager: React.FC = () => {
     comments, 
     loading, 
     error, 
-  } = useAllBlogComments(statusFilter);
+    fetchAllComments, 
+    updateCommentStatus, 
+    deleteComment
+  } = useAllBlogComments();
 
   const handleStatusChange = (status: 'pending' | 'approved' | 'rejected' | 'all') => {
-    setStatusFilter(status === 'all' ? undefined : status);
+    setStatusFilter(status);
+    fetchAllComments({ status: status === 'all' ? undefined : status });
   };
 
   const confirmDelete = (comment: BlogComment) => {
@@ -51,14 +55,14 @@ const BlogCommentManager: React.FC = () => {
   };
 
   const handleDeleteConfirmed = async () => {
-    if (!selectedComment) return;
-    
-    try {
-      await deleteComment(selectedComment.id);
-      setShowDeleteDialog(false);
-      setSelectedComment(null);
-    } catch (error) {
-      console.error('Error deleting comment:', error);
+    if (selectedComment) {
+      try {
+        await deleteComment(selectedComment.id);
+        setShowDeleteDialog(false);
+        setSelectedComment(null);
+      } catch (error) {
+        console.error('Error deleting comment:', error);
+      }
     }
   };
 

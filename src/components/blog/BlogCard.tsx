@@ -25,7 +25,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg ${className}`}>
       {/* Featured Image */}
       {post.featured_image_url && (
-        <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
+        <Link to={`/blog/${post.slug || generateSlug(post.title)}`} className="block overflow-hidden">
           <div className="aspect-video overflow-hidden">
             <img
               src={post.featured_image_url}
@@ -51,7 +51,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
         )}
         
         {/* Title */}
-        <Link to={`/blog/${post.slug}`}>
+        <Link to={`/blog/${post.slug || generateSlug(post.title)}`}>
           <h3 className="text-xl font-semibold text-primary-navy mb-2 hover:text-primary-gold transition-colors">
             {post.title}
           </h3>
@@ -112,7 +112,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
         
         {/* Read More Button */}
         {!compact && (
-          <Link to={`/blog/${post.slug}`}>
+          <Link to={`/blog/${post.slug || generateSlug(post.title)}`}>
             <Button variant="outline" className="mt-2">
               Read More
             </Button>

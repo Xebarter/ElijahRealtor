@@ -24,7 +24,7 @@ interface BlogCommentFormProps {
 
 const BlogCommentForm: React.FC<BlogCommentFormProps> = ({ postId, onCommentSubmitted }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { createComment } = useBlogComments(postId);
+  const { createComment } = useBlogComments();
 
   const {
     register,

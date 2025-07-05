@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { Plus, Building, Edit, Trash2, Globe, Mail, Phone, MapPin, Search, Upload, X } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Plus, Building, Edit, Trash2, Globe, Mail, Phone, Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
