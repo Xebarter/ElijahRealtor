@@ -335,6 +335,7 @@ export const useBlogPosts = (
       setTotalPages(Math.ceil(filteredPosts.length / pageSize));
     } catch (err) {
       console.error('Posts fetch error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch posts');
       setPosts([]);
     } finally {
       setLoading(false);
@@ -487,14 +488,20 @@ export const useAllBlogComments = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchComments = async () => {
+  const fetchComments = async (filters?: { status?: string }) => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error: fetchError } = await supabase
+      let query = supabase
         .from('blog_comments')
         .select('*')
         .order('created_at', { ascending: false });
+
+      if (filters?.status) {
+        query = query.eq('status', filters.status);
+      }
+
+      const { data, error: fetchError } = await query;
       if (fetchError) throw fetchError;
       setComments(data || []);
     } catch (err: any) {
@@ -504,11 +511,52 @@ export const useAllBlogComments = () => {
     }
   };
 
+  const updateCommentStatus = async (commentId: string, status: 'pending' | 'approved' | 'rejected') => {
+    try {
+      const { error: updateError } = await supabase
+        .from('blog_comments')
+        .update({ status })
+        .eq('id', commentId);
+
+      if (updateError) throw updateError;
+      
+      // Refresh comments after update
+      await fetchComments();
+    } catch (err: any) {
+      setError(err.message || 'Failed to update comment status');
+      throw err;
+    }
+  };
+
+  const deleteComment = async (commentId: string) => {
+    try {
+      const { error: deleteError } = await supabase
+        .from('blog_comments')
+        .delete()
+        .eq('id', commentId);
+
+      if (deleteError) throw deleteError;
+      
+      // Refresh comments after deletion
+      await fetchComments();
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete comment');
+      throw err;
+    }
+  };
+
   useEffect(() => {
     fetchComments();
   }, []);
 
-  return { comments, loading, error, fetchComments };
+  return { 
+    comments, 
+    loading, 
+    error, 
+    fetchComments,
+    updateCommentStatus,
+    deleteComment
+  };
 };
 
 export const useBlogStats = () => {

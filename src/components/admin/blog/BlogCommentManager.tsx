@@ -39,14 +39,14 @@ const BlogCommentManager: React.FC = () => {
     comments, 
     loading, 
     error, 
-    fetchAllComments, 
-    updateCommentStatus, 
+    fetchComments,
+    updateCommentStatus,
     deleteComment
   } = useAllBlogComments();
 
   const handleStatusChange = (status: 'pending' | 'approved' | 'rejected' | 'all') => {
     setStatusFilter(status);
-    fetchAllComments({ status: status === 'all' ? undefined : status });
+    fetchComments({ status: status === 'all' ? undefined : status });
   };
 
   const confirmDelete = (comment: BlogComment) => {

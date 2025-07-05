@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Calendar, Clock, User, Mail, Phone, MessageSquare } from 'lucide-react';
+import { Calendar, User, Mail, Phone, MessageSquare } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -37,7 +37,6 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
   } = useForm<VisitBookingFormData>({
     resolver: zodResolver(visitBookingSchema),
     defaultValues: {
@@ -98,11 +97,6 @@ const VisitBookingModal: React.FC<VisitBookingModalProps> = ({
     setBookingData(null);
     onClose();
   };
-
-  // Get minimum date (tomorrow)
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split('T')[0];
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>

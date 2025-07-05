@@ -1,23 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Search, Filter, Calendar, User, Tag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import BlogCard from '@/components/blog/BlogCard';
-import { useBlogPosts, useBlog } from '@/hooks/useBlog';
-import type { BlogPost, BlogFilters } from '@/types/blog';
 import { useSearchParams } from 'react-router-dom';
+import { useBlogPosts, useBlog } from '@/hooks/useBlog';
 import { deepSanitizeNulls } from '@/lib/utils';
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState<BlogFilters>({});
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedTag, setSelectedTag] = useState<string>('');
+  const [filters, setFilters] = useState<{
+    published?: boolean;
+    search?: string;
+    category_slug?: string;
+    tag_slug?: string;
+  }>({});
 
   // Update filters when URL params change
   useEffect(() => {
@@ -44,31 +38,6 @@ const Blog = () => {
     ...cat,
     description: cat.description ?? undefined
   }));
-  const fixedPosts = sanitizedPosts.map(post => ({
-    ...post,
-    excerpt: post.excerpt ?? undefined,
-    featured_image_url: post.featured_image_url ?? undefined,
-    category: post.category ?? undefined,
-    category_id: post.category_id ?? undefined,
-    author_name: post.author_name ?? undefined,
-    author_id: post.author_id ?? undefined,
-    reading_time_minutes: post.reading_time_minutes ?? undefined,
-    seo_title: post.seo_title ?? undefined,
-    seo_description: post.seo_description ?? undefined,
-    meta_title: post.meta_title ?? undefined,
-    meta_description: post.meta_description ?? undefined,
-    meta_keywords: post.meta_keywords ?? undefined
-  }));
-
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Search functionality will be handled by the useBlog hook
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   // Get page title based on filters
   const getPageTitle = () => {
@@ -97,19 +66,7 @@ const Blog = () => {
         <h1>{getPageTitle()}</h1>
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2">
-            <Input
-              placeholder="Search..."
-              value={filters.search || ''}
-              onChange={(e) => {
-                const params = new URLSearchParams(searchParams);
-                if (e.target.value) {
-                  params.set('search', e.target.value);
-                } else {
-                  params.delete('search');
-                }
-                setSearchParams(params);
-              }}
-            />
+            {/* Add search input */}
           </div>
           <div className="md:w-1/2">
             {/* Add category and tag filters */}

@@ -185,7 +185,7 @@ export function usePropertyImages(propertyId?: string) {
 export function useVideoUpload(propertyId?: string) {
   const [uploading, setUploading] = useState(false);
 
-  const uploadVideo = useCallback(async (file: File, onProgress?: (progress: number) => void) => {
+  const uploadVideo = useCallback(async (file: File) => {
     if (!propertyId) throw new Error('Property ID is required');
     
     try {

@@ -48,9 +48,8 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const { initialize, loading } = useAuthStore((state) => ({
-    initialize: state.initialize,
-    loading: state.loading
+  const { initialize } = useAuthStore((state) => ({
+    initialize: state.initialize
   }));
 
   useEffect(() => {

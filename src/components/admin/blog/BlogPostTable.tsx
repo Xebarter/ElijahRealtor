@@ -6,8 +6,7 @@ import {
   Eye, 
   EyeOff, 
   User,
-  Calendar,
-  Tag as TagIcon
+  Calendar
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,7 +45,7 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
-  const { posts, loading, error, totalPages } = useBlogPosts(filters, currentPage, 10);
+  const { posts, loading, error } = useBlogPosts(filters, currentPage, 10);
   const { categories } = useBlog();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {

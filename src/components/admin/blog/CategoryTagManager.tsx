@@ -1,5 +1,4 @@
 import { useBlog } from '@/hooks/useBlog';
-import type { BlogCategory, BlogTag } from '@/types/blog';
 import toast from 'react-hot-toast';
 import { CategoryForm } from './CategoryForm';
 import { TagForm } from './TagForm';
@@ -10,13 +9,12 @@ const CategoryTagManager: React.FC = () => {
   const { 
     categories, 
     tags,
-    loading: categoriesLoading, 
-    loading: tagsLoading,
+    loading,
     fetchCategories,
     fetchTags
   } = useBlog();
 
-  const handleCreateCategory = async (data: { name: string; slug: string; description?: string }) => {
+  const handleCreateCategory = async () => {
     try {
       // TODO: Implement createCategory function in useBlog hook
       toast.success('Category created successfully');
@@ -26,7 +24,7 @@ const CategoryTagManager: React.FC = () => {
     }
   };
 
-  const handleUpdateCategory = async (id: string, data: { name: string; slug: string; description?: string }) => {
+  const handleUpdateCategory = async () => {
     try {
       // TODO: Implement updateCategory function in useBlog hook
       toast.success('Category updated successfully');
@@ -36,7 +34,7 @@ const CategoryTagManager: React.FC = () => {
     }
   };
 
-  const handleDeleteCategory = async (id: string) => {
+  const handleDeleteCategory = async () => {
     try {
       // TODO: Implement deleteCategory function in useBlog hook
       toast.success('Category deleted successfully');
@@ -46,7 +44,7 @@ const CategoryTagManager: React.FC = () => {
     }
   };
 
-  const handleCreateTag = async (data: { name: string; slug: string }) => {
+  const handleCreateTag = async () => {
     try {
       // TODO: Implement createTag function in useBlog hook
       toast.success('Tag created successfully');
@@ -56,7 +54,7 @@ const CategoryTagManager: React.FC = () => {
     }
   };
 
-  const handleUpdateTag = async (id: string, data: { name: string; slug: string }) => {
+  const handleUpdateTag = async () => {
     try {
       // TODO: Implement updateTag function in useBlog hook
       toast.success('Tag updated successfully');
@@ -66,7 +64,7 @@ const CategoryTagManager: React.FC = () => {
     }
   };
 
-  const handleDeleteTag = async (id: string) => {
+  const handleDeleteTag = async () => {
     try {
       // TODO: Implement deleteTag function in useBlog hook
       toast.success('Tag deleted successfully');
@@ -87,7 +85,7 @@ const CategoryTagManager: React.FC = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {categoriesLoading ? (
+          {loading ? (
             <div className="text-center py-4">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-gold mx-auto"></div>
             </div>
@@ -111,7 +109,7 @@ const CategoryTagManager: React.FC = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {tagsLoading ? (
+          {loading ? (
             <div className="text-center py-4">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-gold mx-auto"></div>
             </div>

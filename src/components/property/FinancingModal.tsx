@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { X, DollarSign, Upload, FileText } from 'lucide-react';
+import { DollarSign, Upload, FileText } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { financingSchema } from '@/lib/validations';
 import type { z } from 'zod';
 import toast from 'react-hot-toast';
@@ -27,11 +26,8 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
   onClose,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [idDocument, setIdDocument] = useState<File | null>(null);
   const [incomeProof, setIncomeProof] = useState<File | null>(null);
-
-  const country = COUNTRIES.find(c => c.name === property.country);
 
   const {
     register,
@@ -51,7 +47,7 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
 
   const watchCurrency = watch('currency');
 
-  const onSubmit = async (data: FinancingFormData) => {
+  const onSubmit = async () => {
     if (!idDocument || !incomeProof) {
       toast.error('Please upload all required documents');
       return;
@@ -60,12 +56,6 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
     setIsSubmitting(true);
     try {
       // In a real app, upload files to Supabase Storage and submit application
-      const applicationData = {
-        ...data,
-        id_document_url: 'uploaded_id_document_url',
-        income_proof_url: 'uploaded_income_proof_url',
-      };
-
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -84,21 +74,6 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
     setIdDocument(null);
     setIncomeProof(null);
     onClose();
-  };
-
-  const handleFileUpload = (file: File, type: 'id' | 'income') => {
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
-      toast.error('File size must be less than 5MB');
-      return;
-    }
-
-    if (type === 'id') {
-      setIdDocument(file);
-      setValue('id_document', file);
-    } else {
-      setIncomeProof(file);
-      setValue('income_proof', file);
-    }
   };
 
   return (
