@@ -20,7 +20,7 @@ const BlogCategoryPage = () => {
   
   // Use the correct hook for paginated posts
   const { posts, loading, error, totalPages } = useBlogPosts({ 
-    category_slug: slug,
+    category: slug,
     published: true 
   }, currentPage, 6);
 

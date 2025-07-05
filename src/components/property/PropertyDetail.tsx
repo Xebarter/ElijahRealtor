@@ -15,7 +15,7 @@ import FinancingModal from '@/components/property/FinancingModal';
 import { useProperty, useRelatedProperties } from '@/hooks/useProperties';
 import { PROPERTY_FEATURES } from '@/types';
 import { formatPrice } from '@/lib/utils';
-import type { PropertyImage } from '@/types';
+import type { Property, PropertyImage } from '@/types';
 
 const PropertyDetail = () => {
   const { id } = useParams<{ id: string }>();

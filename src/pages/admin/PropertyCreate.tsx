@@ -19,7 +19,6 @@ import PropertyFeatureImageUpload from '@/components/admin/PropertyFeatureImageU
 import { supabase, uploadFile, getPublicUrl } from '@/lib/supabase';
 import { propertySchema } from '@/lib/validations';
 import { COUNTRIES } from '@/lib/countries';
-import type { PropertyForm } from '@/types';
 import type { z } from 'zod';
 
 type PropertyFormData = z.infer<typeof propertySchema>;
@@ -550,10 +549,10 @@ const PropertyCreate = () => {
 
         {/* Video Tour */}
         <VideoUpload
-          propertyId={createdPropertyId}
+          propertyId={createdPropertyId || ''}
           currentVideoUrl={watch('video_tour_url')}
           onVideoChange={handleVideoChange}
-          onVideoUpload={(videoUrl) => setValue('video_tour_url', videoUrl || undefined)}
+          onVideoUpload={(videoUrl: string | null) => setValue('video_tour_url', videoUrl || undefined)}
         />
 
         {/* Upload Progress */}

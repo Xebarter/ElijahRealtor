@@ -24,16 +24,13 @@ const Blog = () => {
     setCurrentPage(1);
   }, [searchParams]);
 
-  const { 
-    posts, 
-  } = useBlogPosts(filters, currentPage, 6);
-  
+  const { posts } = useBlogPosts(filters, currentPage, 6);
   const { categories, tags } = useBlog();
 
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
 
-  const fixedCategories = sanitizedCategories.map(cat => ({
+  const fixedCategories = sanitizedCategories.map((cat: any) => ({
     ...cat,
     description: cat.description ?? null
   }));
@@ -45,12 +42,12 @@ const Blog = () => {
     }
     
     if (filters.category_slug) {
-      const category = fixedCategories.find(c => c.slug === filters.category_slug);
+      const category = fixedCategories.find((c: any) => c.slug === filters.category_slug);
       return category ? `Category: ${category.name}` : 'Blog';
     }
     
     if (filters.tag_slug) {
-      const tag = sanitizedTags.find(t => t.slug === filters.tag_slug);
+      const tag = sanitizedTags.find((t: any) => t.slug === filters.tag_slug);
       return tag ? `Tag: ${tag.name}` : 'Blog';
     }
     return 'Blog';

@@ -130,7 +130,7 @@ const BlogPostPage = () => {
         title={post.seo_title || post.title}
         description={post.seo_description || post.excerpt || `Read ${post.title} on ElijahRealtor Blog`}
         keywords={post.meta_keywords?.join(', ') || 'real estate, blog, property'}
-        image={post.featured_image_url || undefined}
+        image={post.featured_image_url || ''}
         type="article"
       />
 

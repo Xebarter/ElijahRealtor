@@ -6,7 +6,6 @@ import BlogPostForm from '@/components/admin/blog/BlogPostForm';
 import { useBlogPosts } from '@/hooks/useBlog';
 import { useAuthStore } from '@/store/auth';
 import toast from 'react-hot-toast';
-import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
 
 const BlogPostCreate = () => {
   const navigate = useNavigate();
