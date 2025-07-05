@@ -10,7 +10,7 @@ import BlogCommentList from '@/components/blog/BlogCommentList';
 import BlogCard from '@/components/blog/BlogCard';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
-import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
+import { useBlog } from '@/hooks/useBlog';
 import { generateSlug, deepSanitizeNulls } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import type { BlogPost } from '@/types/blog';
@@ -22,18 +22,10 @@ const BlogPostPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   
-  const { getPostBySlug, posts } = useBlogPosts({ published: true });
-  const { categories } = useBlogCategories();
-  const { tags } = useBlogTags();
+  const { getPostBySlug, posts } = useBlog({ published: true });
 
   const sanitizedPosts = deepSanitizeNulls(posts);
-  const sanitizedCategories = deepSanitizeNulls(categories);
-  const sanitizedTags = deepSanitizeNulls(tags);
 
-  const fixedCategories = sanitizedCategories.map(cat => ({
-    ...cat,
-    description: cat.description ?? undefined
-  }));
   const fixedPosts = sanitizedPosts.map(post => ({
     ...post,
     excerpt: post.excerpt ?? undefined,
@@ -299,8 +291,8 @@ const BlogPostPage = () => {
             {/* Sidebar */}
             <div>
               <BlogSidebar
-                categories={fixedCategories}
-                tags={sanitizedTags}
+                categories={fixedPosts}
+                tags={sanitizedPosts}
                 recentPosts={sanitizedPosts.filter(p => p.id !== post.id).slice(0, 5)}
               />
             </div>

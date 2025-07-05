@@ -48,10 +48,19 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const initialize = useAuthStore((state) => state.initialize);
+  const { initialize, loading } = useAuthStore((state) => ({
+    initialize: state.initialize,
+    loading: state.loading
+  }));
 
   useEffect(() => {
-    initialize();
+    try {
+      if (typeof initialize === 'function') {
+        initialize();
+      }
+    } catch (error) {
+      console.error('Error initializing auth:', error);
+    }
   }, [initialize]);
 
   return (

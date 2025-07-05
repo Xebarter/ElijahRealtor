@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { 
+  Search, 
   Edit, 
   Trash2, 
   Eye, 
-  Calendar, 
-  User, 
-  CheckCircle,
-  XCircle,
-  Search,
+  EyeOff, 
+  User,
+  Calendar,
+  Tag as TagIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { 
   Select, 
   SelectContent, 
@@ -21,14 +19,15 @@ import {
   SelectValue 
 } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { 
   Dialog, 
   DialogContent, 
   DialogHeader, 
-  DialogTitle,
-  DialogFooter
+  DialogTitle, 
+  DialogFooter 
 } from '@/components/ui/dialog';
-import { useBlogPosts, useBlogCategories } from '@/hooks/useBlog';
+import { useBlogPosts, useBlog } from '@/hooks/useBlog';
 import type { BlogPost, BlogFilters } from '@/types/blog';
 
 interface BlogPostTableProps {
@@ -48,7 +47,7 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
   const { posts, loading, error, totalPages } = useBlogPosts(filters, currentPage, 10);
-  const { categories } = useBlogCategories();
+  const { categories } = useBlog();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -246,8 +245,8 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                       </td>
                       <td className="p-4">
                         <Badge
-                          variant={post.published ? 'default' : 'outline'}
-                          className={post.published ? 'bg-green-500' : ''}
+                          variant={post.published ? 'default' : 'secondary'}
+                          className={post.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}
                         >
                           {post.published ? 'Published' : 'Draft'}
                         </Badge>
@@ -259,103 +258,42 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                         </div>
                       </td>
                       <td className="p-4">
-                        <div className="flex gap-2">
+                        <div className="flex items-center space-x-2">
                           <Button
                             variant="outline"
                             size="sm"
-                            asChild
-                          >
-                            <Link to={`/blog/${post.slug}`} target="_blank">
-                              <Eye className="w-4 h-4" />
-                            </Link>
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => onEdit({
-                              ...post,
-                              excerpt: post.excerpt || undefined,
-                              featured_image_url: post.featured_image_url || undefined,
-                              category: post.category || undefined,
-                              seo_title: post.seo_title || undefined,
-                              seo_description: post.seo_description || undefined,
-                              meta_keywords: post.meta_keywords || undefined
-                            })}
+                            onClick={() => onEdit(post)}
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
                           {onTogglePublish && (
                             <Button
-                              variant={post.published ? 'outline' : 'default'}
+                              variant="outline"
                               size="sm"
-                              onClick={() => onTogglePublish({
-                                ...post,
-                                excerpt: post.excerpt || undefined,
-                                featured_image_url: post.featured_image_url || undefined,
-                                category: post.category || undefined,
-                                seo_title: post.seo_title || undefined,
-                                seo_description: post.seo_description || undefined,
-                                meta_keywords: post.meta_keywords || undefined
-                              })}
-                              className={post.published ? 'text-yellow-600' : 'bg-green-500'}
+                              onClick={() => onTogglePublish(post)}
                             >
-                              {post.published ? <XCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
+                              {post.published ? (
+                                <EyeOff className="w-4 h-4" />
+                              ) : (
+                                <Eye className="w-4 h-4" />
+                              )}
                             </Button>
                           )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => confirmDelete({
-                              ...post,
-                              excerpt: post.excerpt || undefined,
-                              featured_image_url: post.featured_image_url || undefined,
-                              category: post.category || undefined,
-                              seo_title: post.seo_title || undefined,
-                              seo_description: post.seo_description || undefined,
-                              meta_keywords: post.meta_keywords || undefined
-                            })}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                          {onDelete && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => confirmDelete(post)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-6 gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </Button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </Button>
-              ))}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </Button>
             </div>
           )}
         </CardContent>

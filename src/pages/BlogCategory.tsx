@@ -6,7 +6,7 @@ import BlogCard from '@/components/blog/BlogCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
-import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
+import { useBlog } from '@/hooks/useBlog';
 import type { BlogCategory } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
 
@@ -15,14 +15,14 @@ const BlogCategoryPage = () => {
   const [category, setCategory] = useState<BlogCategory | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   
-  const { categories } = useBlogCategories();
-  const { tags } = useBlogTags();
+  const { categories } = useBlog();
+  const { tags } = useBlog();
   const { 
     posts, 
     loading, 
     error, 
     totalPages 
-  } = useBlogPosts({ 
+  } = useBlog({ 
     category_slug: slug,
     published: true 
   }, currentPage, 6);

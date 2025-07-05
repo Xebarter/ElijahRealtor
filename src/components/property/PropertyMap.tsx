@@ -111,4 +111,31 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title={`
+              title={`${propertyTitle} - Google Maps`}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                <p className="text-gray-500">Map not available</p>
+                {locationUrl && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={openInGoogleMaps}
+                    className="mt-2"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-1" />
+                    View Location
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default PropertyMap;

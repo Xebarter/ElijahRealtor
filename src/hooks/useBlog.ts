@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Database } from '../lib/supabase';
 import { deepSanitizeNulls } from '@/lib/utils';
+import type { BlogCommentForm, BlogStats } from '@/types/blog';
 
 type BlogPost = Database['public']['Tables']['blog_posts']['Row'];
 type BlogCategory = Database['public']['Tables']['blog_categories']['Row'];
@@ -406,4 +407,236 @@ export const useBlogPosts = (
 
       if (deleteError) {
         console.error('Error deleting post:', deleteError);
-        throw new Error(`
+        throw new Error(`Failed to delete post: ${deleteError.message}`);
+      }
+
+      await fetchPosts();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to delete post';
+      console.error('Post deletion error:', err);
+      throw new Error(errorMessage);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, [filters, page]);
+
+  return {
+    posts,
+    loading,
+    error,
+    totalPages,
+    createPost,
+    updatePost,
+    deletePost,
+  };
+};
+
+export const useBlogComments = (postId?: string) => {
+  const [comments, setComments] = useState<BlogComment[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchComments = async () => {
+    if (!postId) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('blog_comments')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true });
+      if (fetchError) throw fetchError;
+      setComments(data || []);
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch comments');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createComment = async (comment: BlogCommentForm) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { error: createError } = await supabase
+        .from('blog_comments')
+        .insert([comment]);
+      if (createError) throw createError;
+      await fetchComments();
+    } catch (err: any) {
+      setError(err.message || 'Failed to create comment');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (postId) fetchComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postId]);
+
+  return { comments, loading, error, createComment, fetchComments };
+};
+
+export const useAllBlogComments = () => {
+  const [comments, setComments] = useState<BlogComment[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchComments = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('blog_comments')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (fetchError) throw fetchError;
+      setComments(data || []);
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch comments');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  return { comments, loading, error, fetchComments };
+};
+
+export const useBlogStats = () => {
+  const [stats, setStats] = useState<BlogStats>({
+    total_posts: 0,
+    published_posts: 0,
+    draft_posts: 0,
+    total_categories: 0,
+    total_tags: 0,
+    total_comments: 0,
+    pending_comments: 0,
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchStats = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Fetch posts stats
+      const { count: totalPosts } = await supabase
+        .from('blog_posts')
+        .select('*', { count: 'exact', head: true });
+
+      const { count: publishedPosts } = await supabase
+        .from('blog_posts')
+        .select('*', { count: 'exact', head: true })
+        .eq('published', true);
+
+      const { count: draftPosts } = await supabase
+        .from('blog_posts')
+        .select('*', { count: 'exact', head: true })
+        .eq('published', false);
+
+      // Fetch categories count
+      const { count: totalCategories } = await supabase
+        .from('blog_categories')
+        .select('*', { count: 'exact', head: true });
+
+      // Fetch tags count
+      const { count: totalTags } = await supabase
+        .from('blog_tags')
+        .select('*', { count: 'exact', head: true });
+
+      // Fetch comments stats
+      const { count: totalComments } = await supabase
+        .from('blog_comments')
+        .select('*', { count: 'exact', head: true });
+
+      const { count: pendingComments } = await supabase
+        .from('blog_comments')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
+
+      setStats({
+        total_posts: totalPosts || 0,
+        published_posts: publishedPosts || 0,
+        draft_posts: draftPosts || 0,
+        total_categories: totalCategories || 0,
+        total_tags: totalTags || 0,
+        total_comments: totalComments || 0,
+        pending_comments: pendingComments || 0,
+      });
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch blog stats');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  return { stats, loading, error, fetchStats };
+};
+
+export const useBlogPost = (postId?: string) => {
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchPost = async () => {
+    if (!postId) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('id', postId)
+        .single();
+      
+      if (fetchError) throw fetchError;
+      setPost(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch blog post');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updatePost = async (updates: Partial<BlogPost>) => {
+    if (!postId) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: updateError } = await supabase
+        .from('blog_posts')
+        .update(updates)
+        .eq('id', postId)
+        .select()
+        .single();
+      
+      if (updateError) throw updateError;
+      setPost(data);
+      return data;
+    } catch (err: any) {
+      setError(err.message || 'Failed to update blog post');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (postId) fetchPost();
+  }, [postId]);
+
+  return { post, loading, error, fetchPost, updatePost };
+};

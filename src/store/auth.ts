@@ -6,6 +6,7 @@ import type { User } from '@supabase/supabase-js';
 interface AuthStore {
   user: User | null;
   loading: boolean;
+  initialize: () => void;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -19,6 +20,31 @@ export const useAuthStore = create<AuthStore>()(
     (set, get) => ({
       user: null,
       loading: true,
+
+      initialize: () => {
+        try {
+          // Get initial session
+          supabase.auth.getSession().then(({ data: { session } }) => {
+            set({ user: session?.user ?? null, loading: false });
+          }).catch((error) => {
+            console.error('Error getting session:', error);
+            set({ loading: false });
+          });
+
+          // Listen for auth changes
+          const {
+            data: { subscription },
+          } = supabase.auth.onAuthStateChange((_event, session) => {
+            set({ user: session?.user ?? null, loading: false });
+          });
+
+          // Return unsubscribe function (though Zustand doesn't use it)
+          return () => subscription.unsubscribe();
+        } catch (error) {
+          console.error('Error initializing auth:', error);
+          set({ loading: false });
+        }
+      },
 
       signIn: async (email: string, password: string) => {
         try {

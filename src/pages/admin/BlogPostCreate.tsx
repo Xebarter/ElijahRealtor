@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
 import { useForm } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { blogPostSchema } from '@/lib/validations/blog';
+import { blogPostSchema } from '@/lib/validations';
 
 const BlogPostCreate = () => {
   const navigate = useNavigate();

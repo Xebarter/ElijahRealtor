@@ -24,7 +24,7 @@ import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { useBlogCategories, useBlogTags } from '@/hooks/useBlog';
+import { useBlog } from '@/hooks/useBlog';
 import { useAuthStore } from '@/store/auth';
 import { generateSlug } from '@/lib/utils';
 import type { BlogPost } from '@/types/blog';
@@ -66,8 +66,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  const { categories } = useBlogCategories();
-  const { tags } = useBlogTags();
+  const { categories, tags } = useBlog();
   const { user } = useAuthStore();
 
   // Debug: log categories and tags

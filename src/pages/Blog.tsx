@@ -6,11 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import BlogCard from '@/components/blog/BlogCard';
-import { useBlog } from '@/hooks/useBlog';
-import type { BlogPost } from '@/types/blog';
+import { useBlogPosts, useBlog } from '@/hooks/useBlog';
+import type { BlogPost, BlogFilters } from '@/types/blog';
 import { useSearchParams } from 'react-router-dom';
-import { useBlogPosts, useBlogCategories, useBlogTags } from '@/hooks/useBlog';
-import type { BlogFilters } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
 
 const Blog = () => {
@@ -36,8 +34,7 @@ const Blog = () => {
     posts, 
   } = useBlogPosts(filters, currentPage, 6);
   
-  const { categories } = useBlogCategories();
-  const { tags } = useBlogTags();
+  const { categories, tags } = useBlog();
 
   const sanitizedPosts = deepSanitizeNulls(posts);
   const sanitizedCategories = deepSanitizeNulls(categories);
