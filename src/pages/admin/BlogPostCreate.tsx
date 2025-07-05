@@ -7,33 +7,15 @@ import { useBlogPosts } from '@/hooks/useBlog';
 import { useAuthStore } from '@/store/auth';
 import toast from 'react-hot-toast';
 import type { BlogPostForm as BlogPostFormType } from '@/types/blog';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { blogPostSchema } from '@/lib/validations';
 
 const BlogPostCreate = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [featuredImage, setFeaturedImage] = useState<File | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useForm<BlogPostFormType>({
-    resolver: zodResolver(blogPostSchema),
-    defaultValues: {
-      published: false,
-      tags: [],
-    },
-  });
 
   const { createPost } = useBlogPosts();
   const { user } = useAuthStore();
 
-  const handleSubmitForm = async (data: BlogPostFormType, featuredImage?: File) => {
+  const handleSubmitForm = async (data: any, featuredImageRemoved: boolean, featuredImage?: File) => {
     setIsSubmitting(true);
     try {
       await createPost({
@@ -42,11 +24,11 @@ const BlogPostCreate = () => {
         content: data.content,
         published: data.published,
         author_name: data.author_name,
-        excerpt: data.excerpt,
+        excerpt: data.excerpt || undefined,
         tags: data.tags || [],
-        category_id: data.category_id,
-        meta_title: data.meta_title,
-        meta_description: data.meta_description,
+        category: data.category_id || undefined,
+        seo_title: data.meta_title || undefined,
+        seo_description: data.meta_description || undefined,
         meta_keywords: data.meta_keywords || []
       });
       

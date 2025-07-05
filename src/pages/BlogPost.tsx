@@ -22,11 +22,13 @@ const BlogPostPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   
-  const { getPostBySlug, posts } = useBlog({ published: true });
+  const { getPostBySlug, posts, categories, tags } = useBlog();
 
   const sanitizedPosts = deepSanitizeNulls(posts);
+  const sanitizedCategories = deepSanitizeNulls(categories);
+  const sanitizedTags = deepSanitizeNulls(tags);
 
-  const fixedPosts = sanitizedPosts.map(post => ({
+  const fixedPosts = sanitizedPosts.map((post: any) => ({
     ...post,
     excerpt: post.excerpt ?? null,
     featured_image_url: post.featured_image_url ?? null,
@@ -46,16 +48,17 @@ const BlogPostPage = () => {
     const fetchPost = async () => {
       try {
         setLoading(true);
+        if (!slug) return;
         const fetchedPost = await getPostBySlug(slug);
         if (fetchedPost) {
           setPost({
             ...fetchedPost,
-            excerpt: fetchedPost.excerpt || null,
-            featured_image_url: fetchedPost.featured_image_url || null,
-            category: fetchedPost.category || null,
-            seo_title: fetchedPost.seo_title || null,
-            seo_description: fetchedPost.seo_description || null,
-            meta_keywords: fetchedPost.meta_keywords || null
+            excerpt: fetchedPost.excerpt ?? null,
+            featured_image_url: fetchedPost.featured_image_url ?? null,
+            category: fetchedPost.category ?? null,
+            seo_title: fetchedPost.seo_title ?? null,
+            seo_description: fetchedPost.seo_description ?? null,
+            meta_keywords: fetchedPost.meta_keywords ?? null
           });
         } else {
           setError('Post not found');
@@ -74,10 +77,10 @@ const BlogPostPage = () => {
 
   useEffect(() => {
     if (post && sanitizedPosts.length > 0) {
-      const related = sanitizedPosts.filter(p => 
+      const related = sanitizedPosts.filter((p: any) => 
         p.id !== post.id && (
           p.category_id === post.category_id ||
-          p.tags?.some(tag => post.tags?.includes(tag))
+          p.tags?.some((tag: string) => post.tags?.includes(tag))
         )
       ).slice(0, 3);
       
@@ -127,7 +130,7 @@ const BlogPostPage = () => {
         title={post.seo_title || post.title}
         description={post.seo_description || post.excerpt || `Read ${post.title} on ElijahRealtor Blog`}
         keywords={post.meta_keywords?.join(', ') || 'real estate, blog, property'}
-        image={post.featured_image_url}
+        image={post.featured_image_url || undefined}
         type="article"
       />
 
@@ -236,9 +239,9 @@ const BlogPostPage = () => {
                 <CardContent className="p-8">
                   {/* Category */}
                   {post.category && (
-                    <Link to={`/blog/category/${typeof post.category === 'object' && post.category !== null && 'slug' in post.category ? post.category.slug ?? '' : ''}`}>
+                    <Link to={`/blog/category/${post.category}`}>
                       <Badge variant="outline" className="mb-4 text-primary-gold border-primary-gold">
-                        {typeof post.category === 'object' && post.category !== null && 'name' in post.category ? post.category.name ?? '' : ''}
+                        {post.category}
                       </Badge>
                     </Link>
                   )}
@@ -256,7 +259,7 @@ const BlogPostPage = () => {
                         <span className="text-gray-700 mr-2">Tags:</span>
                         <div className="flex flex-wrap gap-2">
                           {post.tags.map((tag, index) => (
-                            <Link key={index} to={`/blog/tag/${tag || generateSlug(tag || '')}`}>
+                            <Link key={index} to={`/blog/tag/${tag}`}>
                               <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
                                 {tag}
                               </Badge>
@@ -271,7 +274,7 @@ const BlogPostPage = () => {
               
               {/* Comments */}
               <div className="space-y-6">
-                <BlogCommentList postId={post.id} />
+                <BlogCommentList />
                 <BlogCommentForm postId={post.id} />
               </div>
               
@@ -291,9 +294,9 @@ const BlogPostPage = () => {
             {/* Sidebar */}
             <div>
               <BlogSidebar
-                categories={sanitizedPosts}
-                tags={sanitizedPosts}
-                recentPosts={sanitizedPosts.filter(p => p.id !== post.id).slice(0, 5)}
+                categories={sanitizedCategories}
+                tags={sanitizedTags}
+                recentPosts={sanitizedPosts.filter((p: any) => p.id !== post.id).slice(0, 5)}
               />
             </div>
           </div>

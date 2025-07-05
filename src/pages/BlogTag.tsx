@@ -6,7 +6,7 @@ import BlogCard from '@/components/blog/BlogCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
-import { useBlog } from '@/hooks/useBlog';
+import { useBlog, useBlogPosts } from '@/hooks/useBlog';
 import type { BlogTag } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
 
@@ -22,8 +22,8 @@ const BlogTagPage = () => {
     loading, 
     error, 
     totalPages 
-  } = useBlog({ 
-    tag_slug: slug,
+  } = useBlogPosts({ 
+    tag: slug,
     published: true 
   }, currentPage, 6);
 
@@ -31,8 +31,8 @@ const BlogTagPage = () => {
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
 
-  const fixedCategories = sanitizedCategories.map(cat => ({...cat, description: cat.description ?? null}));
-  const fixedPosts = sanitizedPosts.map(post => ({
+  const fixedCategories = sanitizedCategories.map((cat: any) => ({...cat, description: cat.description ?? null}));
+  const fixedPosts = sanitizedPosts.map((post: any) => ({
     ...post,
     excerpt: post.excerpt ?? null,
     featured_image_url: post.featured_image_url ?? null,
@@ -50,7 +50,7 @@ const BlogTagPage = () => {
 
   useEffect(() => {
     // Find tag by slug
-    const foundTag = sanitizedTags.find(t => t.slug === slug);
+    const foundTag = sanitizedTags.find((t: any) => t.slug === slug);
     setTag(foundTag || null);
   }, [slug, sanitizedTags]);
 

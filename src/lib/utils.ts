@@ -33,6 +33,26 @@ export function formatDate(dateString: string, options?: Intl.DateTimeFormatOpti
   return date.toLocaleDateString('en-US', options || defaultOptions);
 }
 
+export function formatPrice(price: number, currency: string = 'USD'): string {
+  const currencySymbols: Record<string, string> = {
+    USD: '$',
+    KES: 'KSh',
+    UGX: 'USh',
+    TZS: 'TSh',
+    EUR: '€',
+    GBP: '£'
+  };
+
+  const symbol = currencySymbols[currency] || currency;
+  
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
+}
+
 export function calculateReadingTime(content: string): number {
   const wordsPerMinute = 200;
   const wordCount = content.trim().split(/\s+/).length;

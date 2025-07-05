@@ -4,7 +4,7 @@ import { useBlogPosts, useBlog } from '@/hooks/useBlog';
 import { deepSanitizeNulls } from '@/lib/utils';
 
 const Blog = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<{
     published?: boolean;
@@ -30,13 +30,12 @@ const Blog = () => {
   
   const { categories, tags } = useBlog();
 
-  const sanitizedPosts = deepSanitizeNulls(posts);
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
 
   const fixedCategories = sanitizedCategories.map(cat => ({
     ...cat,
-    description: cat.description ?? undefined
+    description: cat.description ?? null
   }));
 
   // Get page title based on filters
