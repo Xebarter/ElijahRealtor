@@ -36,21 +36,18 @@ export function formatDate(dateString: string, options?: Intl.DateTimeFormatOpti
 export function formatPrice(price: number, currency: string = 'USD'): string {
   const currencySymbols: Record<string, string> = {
     USD: '$',
-    KES: 'KSh',
-    UGX: 'USh',
-    TZS: 'TSh',
     EUR: '€',
-    GBP: '£'
+    GBP: '£',
+    AED: 'AED ',
+    SAR: 'SAR ',
+    QAR: 'QAR ',
+    KWD: 'KWD ',
+    BHD: 'BHD ',
+    OMR: 'OMR ',
   };
 
   const symbol = currencySymbols[currency] || currency;
-  
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(price);
+  return `${symbol}${price.toLocaleString()}`;
 }
 
 export function calculateReadingTime(content: string): number {

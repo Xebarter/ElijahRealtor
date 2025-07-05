@@ -24,7 +24,7 @@ const Blog = () => {
     setCurrentPage(1);
   }, [searchParams]);
 
-  const { posts } = useBlogPosts(filters, currentPage, 6);
+  useBlogPosts(filters, currentPage, 6);
   const { categories, tags } = useBlog();
 
   const sanitizedCategories = deepSanitizeNulls(categories);

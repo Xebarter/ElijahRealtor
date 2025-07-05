@@ -7,7 +7,7 @@ import BlogSidebar from '@/components/blog/BlogSidebar';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlog, useBlogPosts } from '@/hooks/useBlog';
-import type { BlogCategory, BlogPost } from '@/types/blog';
+import type { BlogCategory } from '@/types/blog';
 import { deepSanitizeNulls } from '@/lib/utils';
 
 const BlogCategoryPage = () => {

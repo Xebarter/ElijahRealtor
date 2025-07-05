@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Tag as TagIcon, Eye, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Eye, TagIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import BlogSidebar from '@/components/blog/BlogSidebar';
-import BlogCommentForm from '@/components/blog/BlogCommentForm';
-import BlogCommentList from '@/components/blog/BlogCommentList';
 import BlogCard from '@/components/blog/BlogCard';
+import BlogSidebar from '@/components/blog/BlogSidebar';
+import BlogCommentList from '@/components/blog/BlogCommentList';
+import BlogCommentForm from '@/components/blog/BlogCommentForm';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SEO from '@/components/common/SEO';
 import { useBlog } from '@/hooks/useBlog';
-import { generateSlug, deepSanitizeNulls } from '@/lib/utils';
+import { deepSanitizeNulls } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import type { BlogPost } from '@/types/blog';
 
@@ -27,22 +27,6 @@ const BlogPostPage = () => {
   const sanitizedPosts = deepSanitizeNulls(posts);
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
-
-  const fixedPosts = sanitizedPosts.map((post: any) => ({
-    ...post,
-    excerpt: post.excerpt ?? null,
-    featured_image_url: post.featured_image_url ?? null,
-    category: post.category ?? null,
-    category_id: post.category_id ?? null,
-    author_name: post.author_name ?? null,
-    author_id: post.author_id ?? null,
-    reading_time_minutes: post.reading_time_minutes ?? null,
-    seo_title: post.seo_title ?? null,
-    seo_description: post.seo_description ?? null,
-    meta_title: post.meta_title ?? null,
-    meta_description: post.meta_description ?? null,
-    meta_keywords: post.meta_keywords ?? null
-  }));
 
   useEffect(() => {
     const fetchPost = async () => {

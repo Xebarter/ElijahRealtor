@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Save, ArrowLeft, CheckCircle, Upload, AlertCircle } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Save, ArrowLeft, Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,21 +10,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import LocationInput from '@/components/admin/LocationInput';
 import VideoUpload from '@/components/admin/VideoUpload';
 import PropertyFeatureImageUpload from '@/components/admin/PropertyFeatureImageUpload';
-import DeveloperSelector from '@/components/admin/DeveloperSelector';
-import { supabase, uploadFile, getPublicUrl } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { propertySchema } from '@/lib/validations';
 import { COUNTRIES } from '@/lib/countries';
 import { useProperty } from '@/hooks/useProperties';
-import type { PropertyForm } from '@/types';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import type { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 type PropertyFormData = z.infer<typeof propertySchema>;
 
@@ -98,10 +94,6 @@ const PropertyEdit = () => {
   const handleLocationChange = (locationData: { url?: string; coordinates?: { lat: number; lng: number } }) => {
     setValue('location_url', locationData.url);
     setValue('location_coordinates', locationData.coordinates);
-  };
-
-  const handleVideoChange = (videoUrl: string | null) => {
-    setValue('video_tour_url', videoUrl || undefined);
   };
 
   const onSubmit = async (data: PropertyFormData) => {
@@ -477,7 +469,6 @@ const PropertyEdit = () => {
 
         {/* Property Images */}
         <PropertyFeatureImageUpload
-          propertyId={property.id}
           onImagesChange={() => {
             // Refresh property data if needed
             console.log('Images updated');

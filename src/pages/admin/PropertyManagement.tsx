@@ -16,7 +16,17 @@ import type { Property, PropertyFilters } from '@/types';
 
 const PropertyManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState<PropertyFilters>({});
+  const [filters, setFilters] = useState<PropertyFilters>({
+    status: undefined,
+    search: undefined,
+    property_type: undefined,
+    min_price: undefined,
+    max_price: undefined,
+    location: undefined,
+    city: undefined,
+    country: undefined,
+    featured: undefined,
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -24,13 +34,8 @@ const PropertyManagement = () => {
 
   const { properties, loading, error, meta, refetch } = useProperties(filters, currentPage, 10);
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setFilters(prev => ({ ...prev, search: searchTerm }));
-  };
-
   const handleStatusFilter = (value: string) => {
-    setFilters(prev => ({ ...prev, status: value === 'all' ? undefined : value }));
+    setFilters(prev => ({ ...prev, status: value === 'all' ? undefined : value as 'available' | 'sold' | 'pending' }));
   };
 
   const handleDeleteProperty = async (propertyId: string) => {
@@ -106,10 +111,6 @@ const PropertyManagement = () => {
     }
     
     return null;
-  };
-
-  const handleStatusChange = (newStatus: string) => {
-    setFilters(prev => ({ ...prev }));
   };
 
   if (loading) {

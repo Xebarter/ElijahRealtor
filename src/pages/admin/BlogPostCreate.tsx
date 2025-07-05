@@ -4,7 +4,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BlogPostForm from '@/components/admin/blog/BlogPostForm';
 import { useBlogPosts } from '@/hooks/useBlog';
-import { useAuthStore } from '@/store/auth';
 import toast from 'react-hot-toast';
 
 const BlogPostCreate = () => {
@@ -12,9 +11,8 @@ const BlogPostCreate = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { createPost } = useBlogPosts();
-  const { user } = useAuthStore();
 
-  const handleSubmitForm = async (data: any, featuredImageRemoved: boolean, featuredImage?: File) => {
+  const handleSubmitForm = async (data: any) => {
     setIsSubmitting(true);
     try {
       await createPost({
