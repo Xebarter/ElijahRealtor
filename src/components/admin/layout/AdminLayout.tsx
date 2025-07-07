@@ -18,6 +18,7 @@ const AdminLayout = () => {
     { name: 'Property Visits', href: '/admin/visits', icon: Calendar },
     { name: 'Financing', href: '/admin/financing', icon: DollarSign },
     { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
+    { name: 'About Us', href: '/admin/about-us', icon: Users },
     { name: 'Messages', href: '/admin/messages', icon: Users },
     { name: 'Blog', href: '/admin/blog', icon: BookOpen },
   ];

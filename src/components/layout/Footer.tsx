@@ -13,10 +13,10 @@ const Footer = () => {
       { name: 'Contact', href: '/contact' },
     ],
     services: [
-      { name: 'Property Sales', href: '/properties' },
-      { name: 'Property Management', href: '/services/management' },
-      { name: 'Investment Advisory', href: '/services/advisory' },
-      { name: 'Property Valuation', href: '/services/valuation' },
+      { name: 'Property Sales', href: '/about#sales' },
+      { name: 'Property Management', href: '/about#management' },
+      { name: 'Investment Advisory', href: '/about#advisory' },
+      { name: 'Property Valuation', href: '/about#valuation' },
     ],
     resources: [
       { name: 'Testimonials', href: '/testimonials' },

@@ -273,6 +273,13 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+        <Link to="/admin/about-us" className="block bg-primary-navy text-white rounded-lg shadow p-6 hover:bg-primary-gold hover:text-primary-navy transition-colors">
+          <h3 className="text-lg font-bold mb-2">About Us Management</h3>
+          <p>Edit About Us page content and images</p>
+        </Link>
+      </div>
     </div>
   );
 };

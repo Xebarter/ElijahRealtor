@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { usePropertyImages } from '@/hooks/usePropertyMedia';
 import { PROPERTY_FEATURES } from '@/types';
 import type { PropertyFeatureType, MediaUploadProgress } from '@/types';
+import imageCompression from 'browser-image-compression';
 
 interface PropertyImageUploadProps {
   propertyId?: string;
@@ -49,8 +50,22 @@ const PropertyImageUpload: React.FC<PropertyImageUploadProps> = ({
       return;
     }
 
+    // Compress images before upload
+    const compressedFiles = await Promise.all(validFiles.map(async (file) => {
+      try {
+        return await imageCompression(file, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true
+        });
+      } catch (err) {
+        console.warn('Compression failed for', file.name, err);
+        return file; // fallback to original if compression fails
+      }
+    }));
+
     try {
-      await uploadImages(validFiles, selectedFeature, setUploadProgress);
+      await uploadImages(compressedFiles, selectedFeature, setUploadProgress);
       onImagesChange?.(images);
     } catch (error) {
       console.error('Upload failed:', error);

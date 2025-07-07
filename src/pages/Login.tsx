@@ -51,7 +51,7 @@ const Login = () => {
         description="Login to access the ElijahRealtor admin dashboard"
       />
 
-      <div className="min-h-screen bg-bg-primary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="fixed inset-0 z-10 flex items-center justify-center min-h-screen bg-bg-primary">
         <div className="max-w-md w-full space-y-8">
           {/* Logo and Back Link */}
           <div className="text-center">
@@ -133,13 +133,7 @@ const Login = () => {
               </form>
 
               {/* Demo Credentials */}
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Demo Credentials:</h4>
-                <div className="text-sm text-gray-600 space-y-1">
-                  <p><strong>Email:</strong> admin@elijahrealtor.com</p>
-                  <p><strong>Password:</strong> admin123</p>
-                </div>
-              </div>
+              
             </CardContent>
           </Card>
         </div>

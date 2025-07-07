@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { formatPrice } from '@/lib/countries';
 import type { Property } from '@/types';
+import React, { useState } from 'react';
 
 interface PropertyCardProps {
   property: Property;
@@ -53,19 +54,24 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, featured = false 
   const mainImage = getMainImage();
   const hasVideo = property.video_tour_url || property.video_url;
 
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   return (
     <div className={`property-card ${featured ? 'border border-primary-gold' : ''}`}>
       {/* Image Container */}
-      <div className="relative overflow-hidden h-48 bg-gray-200">
+      <div className="relative w-full h-64 rounded-lg overflow-hidden bg-gray-200">
+        {!imgLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse">
+            <span className="w-12 h-12 bg-gray-300 rounded-full" />
+          </div>
+        )}
         {mainImage ? (
           <img
             src={mainImage}
             alt={property.title}
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg';
-            }}
+            loading="lazy"
+            className={`object-cover w-full h-64 transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setImgLoaded(true)}
           />
         ) : (
           <div className="w-full h-full bg-gray-300 flex items-center justify-center">

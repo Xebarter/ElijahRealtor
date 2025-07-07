@@ -18,6 +18,7 @@ import Testimonials from '@/pages/Testimonials';
 import SubmitTestimonial from '@/pages/SubmitTestimonial';
 import MockPayment from '@/pages/MockPayment';
 import PesaPalConfig from '@/pages/PesaPalConfig';
+import About from '@/pages/About';
 
 // Import blog pages
 import Blog from '@/pages/Blog';
@@ -38,6 +39,7 @@ import ContactMessages from '@/pages/admin/ContactMessages';
 import BlogManagement from '@/pages/admin/BlogManagement';
 import BlogPostCreate from '@/pages/admin/BlogPostCreate';
 import BlogPostEdit from '@/pages/admin/BlogPostEdit';
+import AboutUsManagement from '@/pages/admin/AboutUsManagement';
 
 // Create query client
 const queryClient = new QueryClient({
@@ -77,7 +79,7 @@ function App() {
               <Route path="contact" element={<Contact />} />
               <Route path="testimonials" element={<Testimonials />} />
               <Route path="submit-testimonial" element={<SubmitTestimonial />} />
-              <Route path="about" element={<div>About - Coming Soon</div>} />
+              <Route path="about" element={<About />} />
               
               {/* Blog routes */}
               <Route path="blog" element={<Blog />} />
@@ -112,6 +114,7 @@ function App() {
               <Route path="financing" element={<FinancingManagement />} />
               <Route path="testimonials" element={<TestimonialsManagement />} />
               <Route path="messages" element={<ContactMessages />} />
+              <Route path="about-us" element={<AboutUsManagement />} />
               
               {/* Blog admin routes */}
               <Route path="blog" element={<BlogManagement />} />

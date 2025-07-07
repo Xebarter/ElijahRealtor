@@ -4,10 +4,38 @@ import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useFeaturedProperties } from '@/hooks/useProperties';
+import { heroImages } from '../../heroImages';
+
+const SLIDE_DURATION = 8000; // ms (time each image is shown)
+const FADE_DURATION = 2000; // ms (duration of fade transition)
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
-  const { properties } = useFeaturedProperties(1); // Only fetch the first property
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [nextIndex, setNextIndex] = React.useState(1);
+  const [isTransitioning, setIsTransitioning] = React.useState(false);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      
+      setTimeout(() => {
+        setCurrentIndex(nextIndex);
+        setNextIndex((nextIndex + 1) % heroImages.length);
+        setIsTransitioning(false);
+      }, FADE_DURATION);
+    }, SLIDE_DURATION);
+    
+    return () => clearInterval(interval);
+  }, [nextIndex]);
+
+  // Preload images
+  React.useEffect(() => {
+    heroImages.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,25 +44,35 @@ const HeroSection = () => {
     }
   };
 
-  // Get the first image from the first featured property, or use a fallback
-  const backgroundImage = properties && properties.length > 0 && properties[0].images && properties[0].images.length > 0
-    ? properties[0].images[0]
-    : 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg';
-
   return (
-    <section className="relative bg-gradient-to-br from-primary-navy via-blue-900 to-primary-navy min-h-[80vh] flex items-center">
-      {/* Background Image Overlay */}
-      <div 
-        className="absolute inset-0 bg-black/50"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
+    <section className="relative bg-gradient-to-br from-primary-navy via-blue-900 to-primary-navy min-h-[80vh] flex items-center overflow-hidden">
+      {/* Background Images with Smooth Crossfade */}
+      <div className="absolute inset-0 w-full h-full">
+        {/* Current Image - Always visible */}
+        <img
+          src={heroImages[currentIndex]}
+          alt="Hero background"
+          className="w-full h-full object-cover absolute inset-0 z-10"
+          style={{ pointerEvents: 'none' }}
+          loading="eager"
+        />
+        
+        {/* Next Image - Fades in during transition */}
+        <img
+          src={heroImages[nextIndex]}
+          alt="Hero background"
+          className={`w-full h-full object-cover absolute inset-0 z-20 transition-opacity duration-[${FADE_DURATION}ms] ease-in-out ${
+            isTransitioning ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{ pointerEvents: 'none' }}
+          loading="eager"
+        />
+      </div>
       
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50 z-30" />
+      
+      <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
           {/* Main Heading */}
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
@@ -46,7 +84,7 @@ const HeroSection = () => {
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             Discover luxury residential and commercial properties in Africa's most prestigious locations across multiple countries
           </p>
-
+          
           {/* Search Bar */}
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <div className="flex flex-col sm:flex-row gap-4 bg-white/95 backdrop-blur-sm p-4 rounded-lg shadow-xl">
@@ -65,7 +103,7 @@ const HeroSection = () => {
               </Button>
             </div>
           </form>
-
+          
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <Link to="/properties">
@@ -73,16 +111,12 @@ const HeroSection = () => {
                 Browse All Properties
               </Button>
             </Link>
-            
-            
           </div>
-
-          
         </div>
       </div>
-
+      
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-50">
         <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
         </div>

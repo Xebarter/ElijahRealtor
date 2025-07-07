@@ -22,6 +22,7 @@ const PropertyDetail = () => {
   const [showVisitModal, setShowVisitModal] = useState(false);
   const [showFinancingModal, setShowFinancingModal] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const { property, loading, error } = useProperty(id!);
   const { properties: relatedProperties } = useRelatedProperties(
@@ -262,11 +263,20 @@ const PropertyDetail = () => {
                     <CardContent>
                       <div className="flex items-start space-x-4">
                         {property.developer.logo_url && (
+                          <div className="relative w-16 h-16 rounded-lg overflow-hidden">
+                            {!imgLoaded && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse">
+                                <span className="w-12 h-12 bg-gray-300 rounded-full" />
+                              </div>
+                            )}
                           <img
                             src={property.developer.logo_url}
                             alt={property.developer.name}
-                            className="w-16 h-16 rounded-lg object-cover"
+                              loading="lazy"
+                              className={`object-cover w-full h-16 transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                              onLoad={() => setImgLoaded(true)}
                           />
+                          </div>
                         )}
                         <div className="flex-1">
                           <h3 className="text-lg font-semibold text-primary-navy mb-2">

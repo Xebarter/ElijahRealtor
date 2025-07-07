@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,6 +17,7 @@ const PropertyFeatureGallery: React.FC<PropertyFeatureGalleryProps> = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState<PropertyImage | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   // Group images by feature
   const groupedImages: FeatureImageGroup[] = PROPERTY_FEATURES
@@ -81,15 +82,18 @@ const PropertyFeatureGallery: React.FC<PropertyFeatureGalleryProps> = ({
                 className="relative cursor-pointer group"
                 onClick={() => openLightbox(group.images[0])}
               >
-                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                <div className="relative w-full h-64 rounded-lg overflow-hidden bg-gray-200">
+                  {!imgLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse">
+                      <span className="w-12 h-12 bg-gray-300 rounded-full" />
+                    </div>
+                  )}
                   <img
                     src={group.images[0].image_url}
                     alt={group.images[0].alt_text || `${getFeatureLabel(group.feature)} image`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg';
-                    }}
+                    loading="lazy"
+                    className={`w-full h-64 transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    onLoad={() => setImgLoaded(true)}
                   />
                 </div>
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 rounded-lg flex items-center justify-center">
@@ -105,15 +109,18 @@ const PropertyFeatureGallery: React.FC<PropertyFeatureGalleryProps> = ({
                     className="relative cursor-pointer group"
                     onClick={() => openLightbox(image)}
                   >
-                    <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                    <div className="relative w-full h-64 rounded-lg overflow-hidden bg-gray-200">
+                      {!imgLoaded && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse">
+                          <span className="w-12 h-12 bg-gray-300 rounded-full" />
+                        </div>
+                      )}
                       <img
                         src={image.image_url}
                         alt={image.alt_text || `${getFeatureLabel(group.feature)} image ${index + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg';
-                        }}
+                        loading="lazy"
+                        className={`object-cover w-full h-64 transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                        onLoad={() => setImgLoaded(true)}
                       />
                     </div>
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 rounded-lg flex items-center justify-center">
