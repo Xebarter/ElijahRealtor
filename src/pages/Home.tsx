@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="Premium Real Estate in Kenya"
+        title="Premium Real Estate in Africa"
         description="Find your dream property with ElijahRealtor. We specialize in luxury residential and commercial real estate in Kenya's most prestigious locations."
         keywords="real estate Kenya, properties Nairobi, luxury homes, apartments for sale, commercial property"
       />
