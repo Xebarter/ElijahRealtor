@@ -1,3 +1,5 @@
+import { Card, CardContent } from '../../components/ui/card';
+
 const ServicesSection = () => {
   const services = [
     {
