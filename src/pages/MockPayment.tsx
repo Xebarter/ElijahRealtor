@@ -30,7 +30,7 @@ const MockPayment = () => {
       
       // Simulate payment verification
       try {
-        const verification = await mockPesaPalService.verifyPayment(orderTrackingId);
+        const verification = await mockPesaPalService.verifyPayment();
         
         if (verification.payment_status === 'COMPLETED') {
           setStatus('success');
