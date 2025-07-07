@@ -28,28 +28,23 @@ class MockPesaPalService {
     return this.token;
   }
 
-  async initiatePayment(paymentData: any): Promise<any> {
+  async initiatePayment(): Promise<any> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const orderTrackingId = `MOCK_ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
     // Simulate successful payment initiation
     return {
       status: 'success',
-      payment_url: `http://localhost:5173/mock-payment?orderTrackingId=${orderTrackingId}`,
-      order_tracking_id: orderTrackingId
+      payment_url: `http://localhost:5173/mock-payment`,
+      order_tracking_id: 'MOCK_ORDER_ID'
     };
   }
 
-  async verifyPayment(orderTrackingId: string): Promise<any> {
+  async verifyPayment(): Promise<any> {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
-
     // Simulate payment verification
     // In a real scenario, this would check the actual payment status
     const isCompleted = Math.random() > 0.3; // 70% success rate for demo
-
     return {
       status: isCompleted ? 'COMPLETED' : 'PENDING',
       payment_status: isCompleted ? 'COMPLETED' : 'PENDING',

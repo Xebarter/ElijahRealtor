@@ -32,7 +32,7 @@ const About = () => {
 
   useEffect(() => {
     const fetchSections = async () => {
-      const { data, error } = await supabase.from('about_us').select('*');
+      const { data } = await supabase.from('about_us').select('*');
       if (data) {
         const newSections = { ...fallbackContent };
         data.forEach((row: any) => {

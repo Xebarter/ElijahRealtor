@@ -4,32 +4,26 @@ import { Card, CardContent } from '@/components/ui/card';
 const ServicesSection = () => {
   const services = [
     {
-      icon: Home,
       title: 'Property Sales',
       description: 'Expert guidance in buying and selling residential and commercial properties with maximum value.',
     },
     {
-      icon: TrendingUp,
       title: 'Investment Advisory',
       description: 'Strategic property investment advice to help you build wealth through real estate.',
     },
     {
-      icon: Shield,
       title: 'Property Management',
       description: 'Comprehensive property management services to maximize your rental income and property value.',
     },
     {
-      icon: Users,
       title: 'Client Support',
       description: '24/7 dedicated support throughout your property journey with personalized service.',
     },
     {
-      icon: Building,
       title: 'Commercial Properties',
       description: 'Specialized expertise in commercial real estate for businesses and investors.',
     },
     {
-      icon: Heart,
       title: 'Customer Satisfaction',
       description: 'Our commitment to excellence ensures every client receives exceptional service and results.',
     },
@@ -52,7 +46,6 @@ const ServicesSection = () => {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => {
-            const Icon = service.icon;
             return (
               <Card 
                 key={service.title} 
@@ -60,9 +53,6 @@ const ServicesSection = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-primary-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-8 h-8 text-primary-gold" />
-                  </div>
                   <h3 className="text-xl font-semibold text-primary-navy mb-3">
                     {service.title}
                   </h3>
