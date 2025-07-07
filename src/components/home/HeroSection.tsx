@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useFeaturedProperties } from '@/hooks/useProperties';
 import { supabase } from '../../lib/supabase';
 
 const SLIDE_DURATION = 8000; // ms (time each image is shown)

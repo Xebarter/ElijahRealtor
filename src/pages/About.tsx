@@ -29,12 +29,10 @@ const fallbackContent = {
 };
 
 const About = () => {
-  const [sections, setSections] = useState(fallbackContent);
-  const [loading, setLoading] = useState(true);
+  const [sections, setSections] = useState<Record<string, { content: string; image_url: string }>>(fallbackContent);
 
   useEffect(() => {
     const fetchSections = async () => {
-      setLoading(true);
       const { data, error } = await supabase.from('about_us').select('*');
       if (data) {
         const newSections = { ...fallbackContent };
@@ -46,7 +44,6 @@ const About = () => {
         });
         setSections(newSections);
       }
-      setLoading(false);
     };
     fetchSections();
   }, []);
@@ -83,7 +80,7 @@ const About = () => {
             {sections[service.id].image_url && (
               <img src={sections[service.id].image_url} alt={service.title} className="w-full max-w-md rounded-lg mb-4" />
             )}
-            <div className="prose prose-lg max-w-none mb-4" dangerouslySetInnerHTML={{ __html: sections[service.id].content }} />
+            <div className="prose prose-lg max-w-none mb-4" dangerouslySetInnerHTML={{ __html: (sections as Record<string, { content: string; image_url: string }>)[service.id].content }} />
             <a
               href="#top"
               className="text-primary-gold hover:underline text-sm"

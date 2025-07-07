@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { Building } from 'lucide-react';
 import { useDevelopers } from '@/hooks/useDevelopers';
 
 const DevelopersSection = () => {

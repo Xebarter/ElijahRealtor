@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Home, TrendingUp, Shield, Users, Building, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const ServicesSection = () => {

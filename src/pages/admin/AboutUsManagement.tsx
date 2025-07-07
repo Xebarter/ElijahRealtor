@@ -65,12 +65,7 @@ const AboutUsManagement = () => {
     if (imageFile) {
       const fileExt = imageFile.name.split('.').pop();
       const filePath = `about_us/${sectionId}.${fileExt}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage.from('aboutus').upload(filePath, imageFile, { upsert: true });
-      if (uploadError) {
-        toast({ title: 'Image Upload Error', description: uploadError.message, variant: 'destructive' });
-        setLoading(false);
-        return;
-      }
+      // Remove: const { data: uploadData, error: uploadError } = await supabase.storage.from('aboutus').upload(...)
       image_url = supabase.storage.from('aboutus').getPublicUrl(filePath).data.publicUrl;
     }
 

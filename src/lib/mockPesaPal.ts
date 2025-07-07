@@ -1,21 +1,6 @@
 // Mock PesaPal service for development
 // This simulates PesaPal responses without making actual API calls
 
-interface MockPesaPalTokenResponse {
-  token: string;
-  expiryDate: string;
-  status: string;
-  message: string;
-}
-
-interface MockPesaPalOrderResponse {
-  order_tracking_id: string;
-  merchant_reference: string;
-  redirect_url: string;
-  status: string;
-  message: string;
-}
-
 class MockPesaPalService {
   private token: string | null = null;
   private tokenExpiry: Date | null = null;

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, Filter, Grid, List } from 'lucide-react';
 import { useBlogPosts, useBlog } from '@/hooks/useBlog';
 import { deepSanitizeNulls } from '@/lib/utils';
 import BlogCard from '@/components/blog/BlogCard';
@@ -97,17 +96,6 @@ const Blog = () => {
     setSearchParams(params);
   };
 
-  const handleTagFilter = (tagId: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (tagId) {
-      params.set('tag', tagId);
-    } else {
-      params.delete('tag');
-    }
-    params.delete('page');
-    setSearchParams(params);
-  };
-
   const clearFilters = () => {
     setSearchParams({});
     setSearchQuery('');
@@ -156,7 +144,7 @@ const Blog = () => {
                         className="flex-1"
                       />
                       <Button type="submit" size="sm">
-                        <Search className="w-4 h-4" />
+                        Search
                       </Button>
                     </form>
                   </div>
@@ -188,14 +176,14 @@ const Blog = () => {
                       size="sm"
                       onClick={() => setViewMode('grid')}
                     >
-                      <Grid className="w-4 h-4" />
+                      Grid
                     </Button>
                     <Button
                       variant={viewMode === 'list' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setViewMode('list')}
                     >
-                      <List className="w-4 h-4" />
+                      List
                     </Button>
                   </div>
                 </div>
@@ -254,7 +242,7 @@ const Blog = () => {
                       compact={viewMode === 'list'}
                     />
                   ))}
-          </div>
+                </div>
 
                 {/* Pagination */}
                 {totalPages > 1 && (
@@ -285,8 +273,8 @@ const Blog = () => {
                       >
                         Next
                       </Button>
-          </div>
-        </div>
+                    </div>
+                  </div>
                 )}
               </>
             )}
