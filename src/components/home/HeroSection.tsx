@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useFeaturedProperties } from '@/hooks/useProperties';
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
+  const { properties } = useFeaturedProperties(1); // Only fetch the first property
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,13 +16,18 @@ const HeroSection = () => {
     }
   };
 
+  // Get the first image from the first featured property, or use a fallback
+  const backgroundImage = properties && properties.length > 0 && properties[0].images && properties[0].images.length > 0
+    ? properties[0].images[0]
+    : 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg';
+
   return (
     <section className="relative bg-gradient-to-br from-primary-navy via-blue-900 to-primary-navy min-h-[80vh] flex items-center">
       {/* Background Image Overlay */}
       <div 
         className="absolute inset-0 bg-black/50"
         style={{
-          backgroundImage: 'url(https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg)',
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

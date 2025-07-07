@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { COUNTRIES } from '@/lib/countries';
+import { useDevelopers } from '@/hooks/useDevelopers';
 import type { PropertyFilters } from '@/types';
 
 interface PropertyFiltersProps {
@@ -20,6 +21,7 @@ const PropertyFiltersComponent: React.FC<PropertyFiltersProps> = ({
   onClear,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const { developers, loading: developersLoading } = useDevelopers();
 
   const handleInputChange = (key: keyof PropertyFilters, value: any) => {
     onChange({
@@ -77,6 +79,30 @@ const PropertyFiltersComponent: React.FC<PropertyFiltersProps> = ({
                       <SelectItem value="apartment">Apartment</SelectItem>
                       <SelectItem value="house">House</SelectItem>
                       <SelectItem value="commercial">Commercial</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Developer */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Developer
+                  </label>
+                  <Select
+                    value={filters.developer_id || 'all'}
+                    onValueChange={(value) => handleInputChange('developer_id', value === 'all' ? undefined : value)}
+                    disabled={developersLoading}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={developersLoading ? "Loading..." : "Any Developer"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Any Developer</SelectItem>
+                      {developers.map((developer) => (
+                        <SelectItem key={developer.id} value={developer.id}>
+                          {developer.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

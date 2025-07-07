@@ -106,4 +106,5 @@ export const propertyFiltersSchema = z.object({
   bedrooms: z.number().min(0).optional(),
   bathrooms: z.number().min(0).optional(),
   featured: z.boolean().optional(),
+  developer_id: z.string().optional(),
 });

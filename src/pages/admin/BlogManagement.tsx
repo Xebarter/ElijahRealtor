@@ -8,17 +8,43 @@ import BlogPostTable from '@/components/admin/blog/BlogPostTable';
 import CategoryTagManager from '@/components/admin/blog/CategoryTagManager';
 import BlogCommentManager from '@/components/admin/blog/BlogCommentManager';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { useBlogStats } from '@/hooks/useBlog';
+import { useBlogStats, useBlogPosts } from '@/hooks/useBlog';
 import type { BlogPost } from '@/types/blog';
+import toast from 'react-hot-toast';
 
 const BlogManagement = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('posts');
   
-  const { stats, loading: statsLoading } = useBlogStats();
+  const { stats, loading: statsLoading, fetchStats } = useBlogStats();
+  const { updatePost, deletePost } = useBlogPosts();
 
   const handleEditPost = (post: BlogPost) => {
     navigate(`/admin/blog/edit/${post.id}`);
+  };
+
+  const handleDeletePost = async (post: BlogPost) => {
+    try {
+      await deletePost(post.id);
+      toast.success('Blog post deleted successfully!');
+      // Refresh stats after deletion
+      fetchStats();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to delete blog post');
+      console.error('Error deleting blog post:', error);
+    }
+  };
+
+  const handleTogglePublish = async (post: BlogPost) => {
+    try {
+      await updatePost(post.id, { published: !post.published });
+      toast.success(`Blog post ${post.published ? 'unpublished' : 'published'} successfully!`);
+      // Refresh stats after status change
+      fetchStats();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update blog post status');
+      console.error('Error updating blog post status:', error);
+    }
   };
 
   return (
@@ -126,6 +152,8 @@ const BlogManagement = () => {
         <TabsContent value="posts" className="mt-6">
           <BlogPostTable
             onEdit={handleEditPost}
+            onDelete={handleDeletePost}
+            onTogglePublish={handleTogglePublish}
           />
         </TabsContent>
 

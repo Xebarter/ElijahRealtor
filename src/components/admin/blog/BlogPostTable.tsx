@@ -6,7 +6,9 @@ import {
   Eye, 
   EyeOff, 
   User,
-  Calendar
+  Calendar,
+  ExternalLink,
+  Plus
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +30,7 @@ import {
 } from '@/components/ui/dialog';
 import { useBlogPosts, useBlog } from '@/hooks/useBlog';
 import type { BlogPost, BlogFilters } from '@/types/blog';
+import { Link } from 'react-router-dom';
 
 interface BlogPostTableProps {
   onEdit: (post: BlogPost) => void;
@@ -164,7 +167,15 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
       {/* Posts Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Blog Posts</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>Blog Posts</CardTitle>
+            <Link to="/admin/blog/new">
+              <Button size="sm" className="btn-primary">
+                <Plus className="w-4 h-4 mr-2" />
+                New Post
+              </Button>
+            </Link>
+          </div>
         </CardHeader>
         <CardContent>
           {loading ? (
@@ -240,7 +251,10 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                         </div>
                       </td>
                       <td className="p-4">
-                        {post.category || '-'}
+                        {(() => {
+                          const category = categories.find(cat => cat.id === post.category_id);
+                          return category ? category.name : '-';
+                        })()}
                       </td>
                       <td className="p-4">
                         <Badge
@@ -261,7 +275,16 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
+                            onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
+                            title="View post"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
                             onClick={() => onEdit(post)}
+                            title="Edit post"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
@@ -270,6 +293,7 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                               variant="outline"
                               size="sm"
                               onClick={() => onTogglePublish(post)}
+                              title={post.published ? 'Unpublish' : 'Publish'}
                             >
                               {post.published ? (
                                 <EyeOff className="w-4 h-4" />
@@ -283,6 +307,7 @@ const BlogPostTable: React.FC<BlogPostTableProps> = ({
                               variant="outline"
                               size="sm"
                               onClick={() => confirmDelete(post)}
+                              title="Delete post"
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>

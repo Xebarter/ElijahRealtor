@@ -1,29 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Home, TrendingUp, Shield, Users, Building, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { useDevelopers } from '@/hooks/useDevelopers';
 
 const ServicesSection = () => {
-  const { developers } = useDevelopers();
-  const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
-
-  // Filter developers with logos
-  const developersWithLogos = developers.filter(dev => dev.logo_url);
-  const firstFiveDevelopers = developersWithLogos.slice(0, 5);
-
-  // Set up logo carousel animation
-  useEffect(() => {
-    if (developersWithLogos.length <= 1) return;
-    
-    const interval = setInterval(() => {
-      setCurrentLogoIndex(prevIndex => 
-        prevIndex === developersWithLogos.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 3000); // Change logo every 3 seconds
-    
-    return () => clearInterval(interval);
-  }, [developersWithLogos.length]);
-
   const services = [
     {
       icon: Home,
@@ -96,84 +75,6 @@ const ServicesSection = () => {
             );
           })}
         </div>
-
-        {/* Developer Logos Row and Carousel */}
-        {developersWithLogos.length > 0 && (
-          <div className="mt-16 bg-white rounded-2xl shadow-lg p-8">
-            <h3 className="text-xl font-semibold text-primary-navy mb-6 text-center">
-              Our Trusted Development Partners
-            </h3>
-
-            {/* Row of up to 5 developer logos */}
-            <div className="flex flex-wrap justify-center gap-8 mb-8">
-              {firstFiveDevelopers.map((developer) => (
-                <div key={developer.id} className="flex flex-col items-center">
-                  <img
-                    src={developer.logo_url}
-                    alt={developer.name}
-                    className="h-24 w-40 object-contain mx-auto drop-shadow-lg bg-white rounded-lg border border-gray-200"
-                    style={{ maxWidth: 180 }}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = 'https://via.placeholder.com/180x96?text=Logo';
-                    }}
-                  />
-                  <p className="text-base font-medium text-gray-700 mt-2">{developer.name}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Animated carousel for the rest */}
-            {developersWithLogos.length > 5 && (
-              <div className="relative h-36 overflow-hidden">
-                <div className="flex justify-center items-center h-full">
-                  {developersWithLogos.slice(5).map((developer, index) => (
-                    <div
-                      key={developer.id}
-                      className={`absolute transition-all duration-1000 transform ${
-                        index === currentLogoIndex
-                          ? 'opacity-100 scale-100'
-                          : 'opacity-0 scale-95'
-                      }`}
-                      style={{
-                        zIndex: index === currentLogoIndex ? 10 : 1
-                      }}
-                    >
-                      <div className="flex flex-col items-center">
-                        <img
-                          src={developer.logo_url}
-                          alt={developer.name}
-                          className="h-24 w-40 object-contain mx-auto drop-shadow-lg bg-white rounded-lg border border-gray-200"
-                          style={{ maxWidth: 180 }}
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = 'https://via.placeholder.com/180x96?text=Logo';
-                          }}
-                        />
-                        <p className="text-base font-medium text-gray-700 mt-2">{developer.name}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Logo Navigation Dots for carousel */}
-            {developersWithLogos.length > 6 && (
-              <div className="flex justify-center mt-4 space-x-2">
-                {developersWithLogos.slice(5).map((_, index) => (
-                  <button
-                    key={index}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentLogoIndex ? 'bg-primary-gold' : 'bg-gray-300'
-                    }`}
-                    onClick={() => setCurrentLogoIndex(index)}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
 
         {/* Stats Section */}
         <div className="mt-16 bg-white rounded-2xl shadow-lg p-8">

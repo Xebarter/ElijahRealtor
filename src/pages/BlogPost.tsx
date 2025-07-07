@@ -57,7 +57,7 @@ const BlogPostPage = () => {
     if (slug) {
       fetchPost();
     }
-  }, [slug, getPostBySlug]);
+  }, [slug]);
 
   useEffect(() => {
     if (post && sanitizedPosts.length > 0) {

@@ -1,6 +1,7 @@
 import SEO from '@/components/common/SEO';
 import HeroSection from '@/components/home/HeroSection';
 import FeaturedProperties from '@/components/home/FeaturedProperties';
+import DevelopersSection from '@/components/home/DevelopersSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 
@@ -16,6 +17,7 @@ const Home = () => {
       <div className="animate-fade-in">
         <HeroSection />
         <FeaturedProperties />
+        <DevelopersSection />
         <ServicesSection />
         <TestimonialsSection />
       </div>

@@ -33,7 +33,7 @@ export const useBlog = () => {
         .order('created_at', { ascending: false });
 
       if (filters?.category) {
-        query = query.eq('category', filters.category);
+        query = query.eq('category_id', filters.category);
       }
 
       if (filters?.published !== undefined) {
@@ -309,7 +309,7 @@ export const useBlogPosts = (
       }
 
       if (filters.category) {
-        query = query.eq('category', filters.category);
+        query = query.eq('category_id', filters.category);
       }
 
       if (filters.search) {

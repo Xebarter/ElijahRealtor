@@ -71,6 +71,10 @@ export function useProperties(filters?: PropertyFilters, page = 1, limit = 12) {
         query = query.eq('featured', true);
       }
 
+      if (filters?.developer_id) {
+        query = query.eq('developer_id', filters.developer_id);
+      }
+
       // Apply pagination
       const startIndex = (page - 1) * limit;
       query = query.range(startIndex, startIndex + limit - 1);

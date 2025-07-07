@@ -41,6 +41,9 @@ const Properties = () => {
     if (searchParams.get('featured')) {
       initialFilters.featured = searchParams.get('featured') === 'true';
     }
+    if (searchParams.get('developer_id')) {
+      initialFilters.developer_id = searchParams.get('developer_id') || undefined;
+    }
 
     setFilters(initialFilters);
   }, [searchParams]);

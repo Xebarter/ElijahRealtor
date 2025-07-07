@@ -1,3 +1,5 @@
+import { mockPesaPalService } from './mockPesaPal';
+
 interface PesaPalConfig {
   consumerKey: string;
   consumerSecret: string;
@@ -57,25 +59,9 @@ class PesaPalService {
       environment: (import.meta.env.VITE_PESAPAL_ENVIRONMENT as 'sandbox' | 'live') || 'sandbox'
     };
 
-    // Use proxy URLs in development, direct URLs in production
-    const isDevelopment = import.meta.env.DEV;
-    
-    if (isDevelopment) {
-      this.baseUrl = this.config.environment === 'sandbox' 
-        ? '/api/pesapal'
-        : '/api/pesapal-live';
-      
-      // Fallback to direct URLs if proxy fails
-      this.fallbackUrl = this.config.environment === 'sandbox' 
-        ? 'https://cybqa.pesapal.com/pesapalv3'
-        : 'https://pay.pesapal.com/pesapalv3';
-    } else {
-      this.baseUrl = this.config.environment === 'sandbox' 
-        ? 'https://cybqa.pesapal.com/pesapalv3'
-        : 'https://pay.pesapal.com/pesapalv3';
-      
-      this.fallbackUrl = this.baseUrl;
-    }
+    // Use proxy server for real PesaPal integration
+    this.baseUrl = 'http://localhost:3001/api/pesapal-proxy';
+    this.fallbackUrl = this.baseUrl;
   }
 
   private isTokenValid(): boolean {
@@ -137,7 +123,7 @@ class PesaPalService {
     try {
       // Validate required config
       if (!this.config.consumerKey || !this.config.consumerSecret) {
-        throw new Error('PesaPal credentials not configured. Please check your environment variables.');
+        throw new Error('PesaPal credentials not configured. Please create a .env file with VITE_PESAPAL_CONSUMER_KEY and VITE_PESAPAL_CONSUMER_SECRET. For development, you can use PesaPal sandbox credentials.');
       }
 
       console.log('Requesting PesaPal access token...');
@@ -169,7 +155,9 @@ class PesaPalService {
       console.error('PesaPal Auth Error:', error);
       
       // Provide more specific error messages
-      if (error.message.includes('socket hang up')) {
+      if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
+        throw new Error('CORS Error: PesaPal doesn\'t allow direct browser requests. You need a backend proxy server to handle PesaPal API calls. Please set up a backend server or use the mock service for development.');
+      } else if (error.message.includes('socket hang up')) {
         throw new Error('Unable to connect to PesaPal servers. Please check your internet connection and try again.');
       } else if (error.message.includes('timeout')) {
         throw new Error('Connection to PesaPal timed out. Please try again.');
@@ -319,9 +307,41 @@ class PesaPalService {
       return { success: false, message: error.message };
     }
   }
+
+  // Method to check if PesaPal is configured
+  isConfigured(): boolean {
+    return !!(this.config.consumerKey && this.config.consumerSecret);
+  }
+
+  // Method to get configuration status
+  getConfigurationStatus(): { configured: boolean; missing: string[] } {
+    const missing: string[] = [];
+    
+    if (!this.config.consumerKey) missing.push('VITE_PESAPAL_CONSUMER_KEY');
+    if (!this.config.consumerSecret) missing.push('VITE_PESAPAL_CONSUMER_SECRET');
+    if (!this.config.ipnId) missing.push('VITE_PESAPAL_IPN_ID');
+    if (!this.config.callbackUrl) missing.push('VITE_PESAPAL_CALLBACK_URL');
+    
+    return {
+      configured: missing.length === 0,
+      missing
+    };
+  }
 }
 
-export const pesapalService = new PesaPalService();
+// Use real PesaPal service (with fallback to mock if not configured)
+const isDevelopment = import.meta.env.DEV;
+const realPesaPalService = new PesaPalService();
+
+// Use real service if configured, otherwise use mock for development
+export const pesapalService = isDevelopment && !realPesaPalService.isConfigured() 
+  ? mockPesaPalService 
+  : realPesaPalService;
+
+// Export configuration check helper
+export const checkPesaPalConfiguration = () => {
+  return pesapalService.getConfigurationStatus();
+};
 
 // Utility function to get visit booking fee by country
 export const getVisitBookingFee = (country: string): { amount: number; currency: string } => {

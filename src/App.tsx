@@ -16,6 +16,8 @@ import Login from '@/pages/Login';
 import VisitConfirmation from '@/pages/VisitConfirmation';
 import Testimonials from '@/pages/Testimonials';
 import SubmitTestimonial from '@/pages/SubmitTestimonial';
+import MockPayment from '@/pages/MockPayment';
+import PesaPalConfig from '@/pages/PesaPalConfig';
 
 // Import blog pages
 import Blog from '@/pages/Blog';
@@ -87,6 +89,10 @@ function App() {
             {/* Auth routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/visit-confirmed" element={<VisitConfirmation />} />
+            
+            {/* Development/Testing routes */}
+            <Route path="/mock-payment" element={<MockPayment />} />
+            <Route path="/pesapal-config" element={<PesaPalConfig />} />
 
             {/* Protected admin routes */}
             <Route

@@ -225,6 +225,7 @@ export interface PropertyFilters {
   bedrooms?: number;
   bathrooms?: number;
   featured?: boolean;
+  developer_id?: string;
 }
 
 export interface PaginationMeta {
