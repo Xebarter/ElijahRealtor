@@ -18,7 +18,7 @@ const HeroSection = () => {
   React.useEffect(() => {
     // Fetch hero images from Supabase
     const fetchImages = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('hero_images')
         .select('image_url')
         .order('order', { ascending: true });
