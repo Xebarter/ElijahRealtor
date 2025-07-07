@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
-const services = [
+const services: Array<{ id: keyof typeof fallbackContent; title: string }> = [
   { id: 'sales', title: 'Property Sales' },
   { id: 'management', title: 'Property Management' },
   { id: 'advisory', title: 'Investment Advisory' },
@@ -28,14 +28,14 @@ const fallbackContent = {
 };
 
 const About = () => {
-  const [sections, setSections] = useState<Record<string, { content: string; image_url: string }>>(fallbackContent);
+  const [sections, setSections] = useState<Record<keyof typeof fallbackContent, { content: string; image_url: string }>>(fallbackContent);
 
   useEffect(() => {
     const fetchSections = async () => {
       const { data } = await supabase.from('about_us').select('*');
       if (data) {
         const newSections = { ...fallbackContent };
-        data.forEach((row: any) => {
+        data.forEach((row: { section: keyof typeof fallbackContent; content: string; image_url: string }) => {
           newSections[row.section] = {
             content: row.content || fallbackContent[row.section].content,
             image_url: row.image_url || '',
@@ -76,8 +76,8 @@ const About = () => {
               {service.title}
               <span className="text-primary-gold text-lg">#</span>
             </h2>
-            {sections[service.id].image_url && (
-              <img src={sections[service.id].image_url} alt={service.title} className="w-full max-w-md rounded-lg mb-4" />
+            {(sections as Record<string, { content: string; image_url: string }>)[service.id].image_url && (
+              <img src={(sections as Record<string, { content: string; image_url: string }>)[service.id].image_url} alt={service.title} className="w-full max-w-md rounded-lg mb-4" />
             )}
             <div className="prose prose-lg max-w-none mb-4" dangerouslySetInnerHTML={{ __html: (sections as Record<string, { content: string; image_url: string }>)[service.id].content }} />
             <a
