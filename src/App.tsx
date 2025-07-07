@@ -40,6 +40,7 @@ import BlogManagement from '@/pages/admin/BlogManagement';
 import BlogPostCreate from '@/pages/admin/BlogPostCreate';
 import BlogPostEdit from '@/pages/admin/BlogPostEdit';
 import AboutUsManagement from '@/pages/admin/AboutUsManagement';
+import HeroImagesManagement from '@/pages/admin/HeroImagesManagement';
 
 // Create query client
 const queryClient = new QueryClient({
@@ -122,6 +123,7 @@ function App() {
               <Route path="blog/edit/:id" element={<BlogPostEdit />} />
               
               <Route path="settings" element={<div>Settings - Coming Soon</div>} />
+              <Route path="hero-images" element={<HeroImagesManagement />} />
             </Route>
 
             {/* 404 page */}

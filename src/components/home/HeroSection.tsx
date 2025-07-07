@@ -4,38 +4,50 @@ import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useFeaturedProperties } from '@/hooks/useProperties';
-import { heroImages } from '../../heroImages';
+import { supabase } from '../../lib/supabase';
 
 const SLIDE_DURATION = 8000; // ms (time each image is shown)
 const FADE_DURATION = 2000; // ms (duration of fade transition)
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [images, setImages] = React.useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [nextIndex, setNextIndex] = React.useState(1);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
 
   React.useEffect(() => {
+    // Fetch hero images from Supabase
+    const fetchImages = async () => {
+      const { data, error } = await supabase
+        .from('hero_images')
+        .select('image_url')
+        .order('order', { ascending: true });
+      if (data) setImages(data.map((d: any) => d.image_url));
+    };
+    fetchImages();
+  }, []);
+
+  React.useEffect(() => {
+    if (images.length < 2) return;
     const interval = setInterval(() => {
       setIsTransitioning(true);
-      
       setTimeout(() => {
         setCurrentIndex(nextIndex);
-        setNextIndex((nextIndex + 1) % heroImages.length);
+        setNextIndex((nextIndex + 1) % images.length);
         setIsTransitioning(false);
       }, FADE_DURATION);
     }, SLIDE_DURATION);
-    
     return () => clearInterval(interval);
-  }, [nextIndex]);
+  }, [nextIndex, images.length]);
 
   // Preload images
   React.useEffect(() => {
-    heroImages.forEach((src) => {
+    images.forEach((src) => {
       const img = new window.Image();
       img.src = src;
     });
-  }, []);
+  }, [images]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,24 +61,28 @@ const HeroSection = () => {
       {/* Background Images with Smooth Crossfade */}
       <div className="absolute inset-0 w-full h-full">
         {/* Current Image - Always visible */}
-        <img
-          src={heroImages[currentIndex]}
-          alt="Hero background"
-          className="w-full h-full object-cover absolute inset-0 z-10"
-          style={{ pointerEvents: 'none' }}
-          loading="eager"
-        />
+        {images.length > 0 && (
+          <img
+            src={images[currentIndex]}
+            alt="Hero background"
+            className="w-full h-full object-cover absolute inset-0 z-10"
+            style={{ pointerEvents: 'none' }}
+            loading="eager"
+          />
+        )}
         
         {/* Next Image - Fades in during transition */}
-        <img
-          src={heroImages[nextIndex]}
-          alt="Hero background"
-          className={`w-full h-full object-cover absolute inset-0 z-20 transition-opacity duration-[${FADE_DURATION}ms] ease-in-out ${
-            isTransitioning ? 'opacity-100' : 'opacity-0'
-          }`}
-          style={{ pointerEvents: 'none' }}
-          loading="eager"
-        />
+        {images.length > 1 && (
+          <img
+            src={images[nextIndex]}
+            alt="Hero background"
+            className={`w-full h-full object-cover absolute inset-0 z-20 transition-opacity duration-[${FADE_DURATION}ms] ease-in-out ${
+              isTransitioning ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ pointerEvents: 'none' }}
+            loading="eager"
+          />
+        )}
       </div>
       
       {/* Overlay */}

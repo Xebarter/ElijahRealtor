@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
-import { Menu, X, Home, Building, MessageSquare, Users, BarChart3, Briefcase, Calendar, DollarSign, BookOpen, LogOut } from 'lucide-react';
+import { Menu, X, Home, Building, MessageSquare, Users, BarChart3, Briefcase, Calendar, DollarSign, BookOpen, LogOut, Image } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
 import toast from 'react-hot-toast';
@@ -19,6 +19,7 @@ const AdminLayout = () => {
     { name: 'Financing', href: '/admin/financing', icon: DollarSign },
     { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
     { name: 'About Us', href: '/admin/about-us', icon: Users },
+    { name: 'Hero Images', href: '/admin/hero-images', icon: Image },
     { name: 'Messages', href: '/admin/messages', icon: Users },
     { name: 'Blog', href: '/admin/blog', icon: BookOpen },
   ];
