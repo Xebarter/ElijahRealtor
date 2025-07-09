@@ -1,3 +1,4 @@
+import React, { useEffect, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -5,13 +6,11 @@ import Layout from '@/components/layout/Layout';
 import AdminLayout from '@/components/admin/layout/AdminLayout';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
 import { useAuthStore } from '@/store/auth';
-import { useEffect } from 'react';
-import React, { Suspense } from 'react';
 
-// Import pages
+// Lazy load public pages
 const Home = React.lazy(() => import('@/pages/Home'));
 const Properties = React.lazy(() => import('@/pages/Properties'));
-const PropertyDetail = React.lazy(() => import('@/components/property/PropertyDetail'));
+const PropertyDetail = React.lazy(() => import('@/components/property/PropertyDetail')); // Fixed path
 const Contact = React.lazy(() => import('@/pages/Contact'));
 const Login = React.lazy(() => import('@/pages/Login'));
 const VisitConfirmation = React.lazy(() => import('@/pages/VisitConfirmation'));
@@ -20,14 +19,15 @@ const SubmitTestimonial = React.lazy(() => import('@/pages/SubmitTestimonial'));
 const MockPayment = React.lazy(() => import('@/pages/MockPayment'));
 const PesaPalConfig = React.lazy(() => import('@/pages/PesaPalConfig'));
 const About = React.lazy(() => import('@/pages/About'));
+const NotFound = React.lazy(() => import('@/pages/NotFound')); // Fixed missing NotFound
 
-// Import blog pages
+// Lazy load blog pages
 const Blog = React.lazy(() => import('@/pages/Blog'));
 const BlogPost = React.lazy(() => import('@/pages/BlogPost'));
 const BlogCategory = React.lazy(() => import('@/pages/BlogCategory'));
 const BlogTag = React.lazy(() => import('@/pages/BlogTag'));
 
-// Import admin pages
+// Lazy load admin pages
 const Dashboard = React.lazy(() => import('@/pages/admin/Dashboard'));
 const PropertyManagement = React.lazy(() => import('@/pages/admin/PropertyManagement'));
 const PropertyCreate = React.lazy(() => import('@/components/admin/PropertyCreate'));
@@ -55,7 +55,7 @@ const queryClient = new QueryClient({
 
 function App() {
   const { initialize } = useAuthStore((state) => ({
-    initialize: state.initialize
+    initialize: state.initialize,
   }));
 
   useEffect(() => {
@@ -72,7 +72,13 @@ function App() {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <Router>
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-lg">Loading...</div>}>
+          <Suspense
+            fallback={
+              <div className="min-h-screen flex items-center justify-center text-lg">
+                Loading...
+              </div>
+            }
+          >
             <Routes>
               {/* Public routes with layout */}
               <Route path="/" element={<Layout />}>
@@ -83,19 +89,21 @@ function App() {
                 <Route path="testimonials" element={<Testimonials />} />
                 <Route path="submit-testimonial" element={<SubmitTestimonial />} />
                 <Route path="about" element={<About />} />
-                {/* Blog routes */}
+
+                {/* Blog */}
                 <Route path="blog" element={<Blog />} />
                 <Route path="blog/:slug" element={<BlogPost />} />
                 <Route path="blog/category/:slug" element={<BlogCategory />} />
                 <Route path="blog/tag/:slug" element={<BlogTag />} />
               </Route>
-              {/* Auth routes */}
+
+              {/* Auth and utility */}
               <Route path="/login" element={<Login />} />
               <Route path="/visit-confirmed" element={<VisitConfirmation />} />
-              {/* Development/Testing routes */}
               <Route path="/mock-payment" element={<MockPayment />} />
               <Route path="/pesapal-config" element={<PesaPalConfig />} />
-              {/* Protected admin routes */}
+
+              {/* Admin (protected) */}
               <Route
                 path="/admin"
                 element={
@@ -114,15 +122,15 @@ function App() {
                 <Route path="testimonials" element={<TestimonialsManagement />} />
                 <Route path="messages" element={<ContactMessages />} />
                 <Route path="about-us" element={<AboutUsManagement />} />
-                {/* Blog admin routes */}
+                <Route path="hero-images" element={<HeroImagesManagement />} />
                 <Route path="blog" element={<BlogManagement />} />
                 <Route path="blog/new" element={<BlogPostCreate />} />
                 <Route path="blog/edit/:id" element={<BlogPostEdit />} />
                 <Route path="settings" element={<div>Settings - Coming Soon</div>} />
-                <Route path="hero-images" element={<HeroImagesManagement />} />
               </Route>
-              {/* 404 page */}
-              <Route path="*" element={<div>404 - Page Not Found</div>} />
+
+              {/* Catch-all 404 */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </Router>
