@@ -14,6 +14,7 @@ const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [nextIndex, setNextIndex] = React.useState(1);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
+  const [imagesLoaded, setImagesLoaded] = React.useState(false);
 
   React.useEffect(() => {
     // Fetch hero images from Supabase
@@ -40,10 +41,24 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [nextIndex, images.length]);
 
-  // Preload images
+  // Preload images and track loading state
   React.useEffect(() => {
+    if (images.length === 0) return;
+    
+    let loadedCount = 0;
+    const totalImages = images.length;
+    
+    const handleImageLoad = () => {
+      loadedCount++;
+      if (loadedCount === totalImages) {
+        setImagesLoaded(true);
+      }
+    };
+
     images.forEach((src) => {
       const img = new window.Image();
+      img.onload = handleImageLoad;
+      img.onerror = handleImageLoad; // Count errors as loaded to prevent hanging
       img.src = src;
     });
   }, [images]);
@@ -56,50 +71,74 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-primary-navy via-blue-900 to-primary-navy min-h-[40vw] min-h-[320px] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden w-full overflow-x-hidden max-h-screen aspect-[16/9] sm:aspect-auto">
-      {/* Background Images with Smooth Crossfade */}
-      <div className="absolute inset-0 w-full h-full">
-        {/* Current Image - Always visible */}
-        {images.length > 0 && (
-          <img
-            src={images[currentIndex]}
-            alt="Hero background"
-            className="w-full h-full max-w-full max-h-full object-cover absolute inset-0 z-10"
-            style={{ pointerEvents: 'none' }}
-            loading="eager"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1920px"
-            srcSet={`
-              ${images[currentIndex]}?w=800 800w,
-              ${images[currentIndex]}?w=1200 1200w,
-              ${images[currentIndex]}?w=1920 1920w
-            `}
+    <section 
+      className="relative bg-gradient-to-br from-primary-navy via-blue-900 to-primary-navy flex items-center justify-center overflow-hidden"
+      style={{ 
+        minHeight: '70vh',
+        height: 'clamp(60vh, 90vh, 100vh)'
+      }}
+    >
+      {/* Background Images Container - Fixed positioning to prevent layout shifts */}
+      <div 
+        className="fixed inset-0 w-full h-full"
+        style={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 1
+        }}
+      >
+        {/* Current Image */}
+        {images.length > 0 && imagesLoaded && (
+          <div
+            className="absolute inset-0 w-full h-full transition-opacity duration-300"
+            style={{
+              backgroundImage: `url(${images[currentIndex]})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              willChange: 'opacity',
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)', // Force hardware acceleration
+              zIndex: 10
+            }}
           />
         )}
         
-        {/* Next Image - Fades in during transition */}
-        {images.length > 1 && (
-          <img
-            src={images[nextIndex]}
-            alt="Hero background"
-            className={`w-full h-full max-w-full max-h-full object-cover absolute inset-0 z-20 transition-opacity duration-[${FADE_DURATION}ms] ease-in-out ${
+        {/* Next Image - Crossfade */}
+        {images.length > 1 && imagesLoaded && (
+          <div
+            className={`absolute inset-0 w-full h-full transition-opacity ease-in-out ${
               isTransitioning ? 'opacity-100' : 'opacity-0'
             }`}
-            style={{ pointerEvents: 'none' }}
-            loading="eager"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1920px"
-            srcSet={`
-              ${images[nextIndex]}?w=800 800w,
-              ${images[nextIndex]}?w=1200 1200w,
-              ${images[nextIndex]}?w=1920 1920w
-            `}
+            style={{
+              backgroundImage: `url(${images[nextIndex]})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              willChange: 'opacity',
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)', // Force hardware acceleration
+              transitionDuration: `${FADE_DURATION}ms`,
+              zIndex: 20
+            }}
           />
         )}
       </div>
       
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60 z-30" />
+      <div 
+        className="absolute inset-0 bg-black/60"
+        style={{ zIndex: 30 }}
+      />
       
-      <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20 w-full">
+      {/* Content Container - Fixed positioning relative to viewport */}
+      <div 
+        className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20 w-full"
+        style={{ zIndex: 40 }}
+      >
         <div className="text-center w-full">
           <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 md:mb-8 animate-fade-in-up break-words">
             Find Your Dream
@@ -136,7 +175,10 @@ const HeroSection = () => {
       </div>
       
       {/* Scroll Indicator */}
-      <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-50 hidden sm:block">
+      <div 
+        className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block"
+        style={{ zIndex: 50 }}
+      >
         <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
         </div>
