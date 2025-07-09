@@ -11,7 +11,7 @@ const FeaturedProperties = () => {
   if (loading) {
     return (
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <LoadingSpinner size="lg" />
             <p className="mt-4 text-gray-600">Loading featured properties...</p>
@@ -24,7 +24,7 @@ const FeaturedProperties = () => {
   if (error) {
     return (
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-red-600">{error}</p>
           </div>
@@ -35,7 +35,7 @@ const FeaturedProperties = () => {
 
   return (
     <section className="py-10 sm:py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
+      <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-2 sm:mb-4">

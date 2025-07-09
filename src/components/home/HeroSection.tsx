@@ -86,7 +86,7 @@ const HeroSection = () => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60 z-30" />
       
-      <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20 w-full">
+      <div className="relative z-40 max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20 w-full">
         <div className="text-center w-full">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 md:mb-8 animate-fade-in-up">
             Find Your Dream
