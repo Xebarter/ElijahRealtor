@@ -22,8 +22,10 @@ export default async function handler(req, res) {
 
   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  // Extract the sub-path after /api/pesapal-proxy
-  const subPath = req.url.replace(/^\/api\/pesapal-proxy/, '');
+  // Extract and normalize the sub-path after /api/pesapal-proxy
+  let subPath = req.url.replace(/^\/api\/pesapal-proxy/, '');
+  if (subPath.endsWith('/')) subPath = subPath.slice(0, -1);
+  console.log('subPath:', subPath);
 
   // Route: /api/pesapal-proxy/Auth/RequestToken
   if (req.method === 'POST' && subPath === '/Auth/RequestToken') {
