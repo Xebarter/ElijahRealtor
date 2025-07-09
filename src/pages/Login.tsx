@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Home } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,7 +12,6 @@ import SEO from '@/components/common/SEO';
 import { useAuthStore } from '@/store/auth';
 import { loginSchema } from '@/lib/validations';
 import type { z } from 'zod';
-import { useState } from 'react';
 
 type LoginForm = z.infer<typeof loginSchema>;
 
@@ -35,10 +36,10 @@ const Login = () => {
     setIsLoading(true);
     try {
       await signIn(data.email, data.password);
-      toast.success('Login successful!');
+      toast.success('Login successful.');
       navigate(from, { replace: true });
     } catch (error) {
-      toast.error('Invalid email or password');
+      toast.error('Invalid email or password.');
     } finally {
       setIsLoading(false);
     }
@@ -47,35 +48,40 @@ const Login = () => {
   return (
     <>
       <SEO
-        title="Admin Login"
-        description="Login to access the ElijahRealtor admin dashboard"
+        title="Admin Login | ElijahRealtor"
+        description="Secure access to the ElijahRealtor administrative dashboard."
       />
 
-      <div className="min-h-screen flex items-center justify-center bg-bg-primary px-2 sm:px-0">
-        <div className="max-w-md w-full space-y-8">
-          {/* Logo and Back Link */}
+      <div className="min-h-screen flex items-center justify-center bg-bg-primary px-4 sm:px-6">
+        <div className="w-full max-w-md space-y-6">
+          {/* Back to Home */}
           <div className="text-center">
-            <Link to="/" className="inline-flex items-center space-x-2 text-primary-navy hover:text-primary-gold transition-colors">
-              <Home className="w-6 h-6" />
-              <span className="text-lg font-semibold">Back to Home</span>
+            <Link
+              to="/"
+              className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors"
+            >
+              <Home className="w-5 h-5 mr-2" />
+              <span className="font-medium text-sm sm:text-base">Back to Home</span>
             </Link>
           </div>
 
-          <Card className="shadow-xl p-4 sm:p-8">
-            <CardHeader className="text-center">
-              <div className="w-16 h-16 bg-primary-navy rounded-full flex items-center justify-center mx-auto mb-4">
+          {/* Login Card */}
+          <Card className="shadow-xl p-5 sm:p-8">
+            <CardHeader className="text-center space-y-2">
+              <div className="w-16 h-16 bg-primary-navy rounded-full flex items-center justify-center mx-auto">
                 <Home className="w-8 h-8 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-primary-navy">
                 Admin Login
               </CardTitle>
-              <CardDescription>
-                Sign in to access the ElijahRealtor dashboard
+              <CardDescription className="text-gray-600">
+                Authorized personnel only.
               </CardDescription>
             </CardHeader>
+
             <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Email Field */}
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email Address
@@ -83,16 +89,16 @@ const Login = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@elijahrealtor.com"
                     {...register('email')}
                     className={errors.email ? 'border-red-500' : ''}
+                    autoComplete="email"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                    <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
                   )}
                 </div>
 
-                {/* Password Field */}
+                {/* Password */}
                 <div>
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                     Password
@@ -101,14 +107,15 @@ const Login = () => {
                     <Input
                       id="password"
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Enter your password"
                       {...register('password')}
-                      className={errors.password ? 'border-red-500 pr-10' : 'pr-10'}
+                      className={`${errors.password ? 'border-red-500' : ''} pr-10`}
+                      autoComplete="current-password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4 text-gray-400" />
@@ -118,22 +125,15 @@ const Login = () => {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                    <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
                   )}
                 </div>
 
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  className="w-full btn-primary"
-                  disabled={isLoading}
-                >
+                {/* Submit */}
+                <Button type="submit" className="w-full btn-primary" disabled={isLoading}>
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
               </form>
-
-              {/* Demo Credentials */}
-              
             </CardContent>
           </Card>
         </div>

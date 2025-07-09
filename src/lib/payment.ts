@@ -60,7 +60,7 @@ class PesaPalService {
     };
 
     // Use proxy server for real PesaPal integration
-    this.baseUrl = 'http://localhost:3001/api/pesapal-proxy';
+    this.baseUrl = import.meta.env.VITE_PESAPAL_PROXY_URL || 'http://localhost:3001/api/pesapal-proxy';
     this.fallbackUrl = this.baseUrl;
   }
 
