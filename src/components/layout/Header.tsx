@@ -98,7 +98,7 @@ const Header = () => {
         {isMenuOpen && (
           <div
             ref={menuRef}
-            className="md:hidden border-t border-gray-200 py-4 animate-slide-in bg-primary-navy text-white shadow-2xl fixed left-0 top-0 w-full h-full z-50"
+            className="md:hidden border-t border-gray-200 py-4 animate-slide-in bg-primary-navy text-white shadow-2xl fixed right-0 top-0 h-full w-4/5 max-w-xs z-50"
           >
             <nav className="flex flex-col space-y-2 sm:space-y-4 mt-16 px-4">
               {navigation.map((item) => {
@@ -131,6 +131,14 @@ const Header = () => {
               </div>
             </nav>
           </div>
+        )}
+        {/* Overlay for click-outside-to-close */}
+        {isMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
+            onClick={() => setIsMenuOpen(false)}
+            aria-hidden="true"
+          />
         )}
       </div>
     </header>
