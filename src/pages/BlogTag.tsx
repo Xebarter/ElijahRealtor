@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Tag as TagIcon } from 'lucide-react';
+import { Tag as TagIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BlogCard from '@/components/blog/BlogCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';

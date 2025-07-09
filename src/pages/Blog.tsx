@@ -4,10 +4,6 @@ import { useBlogPosts, useBlog } from '@/hooks/useBlog';
 import { deepSanitizeNulls } from '@/lib/utils';
 import BlogCard from '@/components/blog/BlogCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent } from '@/components/ui/card';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 const Blog = () => {
@@ -32,7 +28,7 @@ const Blog = () => {
     setCurrentPage(1);
   }, [searchParams]);
 
-  const { posts, loading, error, totalPages } = useBlogPosts(filters, currentPage, 9);
+  const { posts, loading } = useBlogPosts(filters, currentPage, 9);
   const { categories, tags, getRecentPosts } = useBlog();
 
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
@@ -54,59 +50,6 @@ const Blog = () => {
     };
     fetchRecentPosts();
   }, [getRecentPosts]);
-
-  // Get page title based on filters
-  const getPageTitle = () => {
-    if (filters.search) {
-      return `Search Results: ${filters.search}`;
-    }
-    
-    if (filters.category) {
-      const category = sanitizedCategories.find((c: any) => c.id === filters.category);
-      return category ? `Category: ${category.name}` : 'Blog';
-    }
-    
-    if (filters.tag) {
-      const tag = sanitizedTags.find((t: any) => t.id === filters.tag);
-      return tag ? `Tag: ${tag.name}` : 'Blog';
-    }
-    return 'Blog';
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const params = new URLSearchParams(searchParams);
-    if (searchQuery.trim()) {
-      params.set('search', searchQuery.trim());
-    } else {
-      params.delete('search');
-    }
-    params.delete('page');
-    setSearchParams(params);
-  };
-
-  const handleCategoryFilter = (categoryId: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (categoryId && categoryId !== "all") {
-      params.set('category', categoryId);
-    } else {
-      params.delete('category');
-    }
-    params.delete('page');
-    setSearchParams(params);
-  };
-
-  const clearFilters = () => {
-    setSearchParams({});
-    setSearchQuery('');
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
-    setSearchParams(params);
-  };
 
   if (loading) {
   return (
