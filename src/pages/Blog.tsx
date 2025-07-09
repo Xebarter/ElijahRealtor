@@ -7,9 +7,8 @@ import BlogSidebar from '@/components/blog/BlogSidebar';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 const Blog = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [filters, setFilters] = useState<{
     published?: boolean;
     search?: string;
@@ -32,7 +31,6 @@ const Blog = () => {
   const { categories, tags, getRecentPosts } = useBlog();
 
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
 
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
