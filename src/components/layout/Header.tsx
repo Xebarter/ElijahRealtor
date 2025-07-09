@@ -70,12 +70,12 @@ const Header = () => {
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
-              className="p-2"
+              className="p-2 bg-primary-navy hover:bg-primary-gold"
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 text-white" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu className="w-6 h-6 text-white" />
               )}
             </Button>
           </div>
@@ -83,7 +83,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4 animate-slide-in">
+          <div className="md:hidden border-t border-gray-200 py-4 animate-slide-in bg-primary-navy">
             <nav className="flex flex-col space-y-2 sm:space-y-4">
               {navigation.map((item) => {
                 const Icon = item.icon;
