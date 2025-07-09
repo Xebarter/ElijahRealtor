@@ -7,7 +7,7 @@
     "generate-hero-images": "tsx scripts/generateHeroImages.ts",
     "dev": "npm run generate-hero-images && vite",
     "build": "npm run generate-hero-images && vite build",
-    "vercel-build": "tsc -b && vite build",
+    "vercel-build": "tsc --noEmit && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

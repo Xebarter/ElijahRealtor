@@ -72,12 +72,13 @@ const HeroSection = () => {
         {/* Next Image - Fades in during transition */}
         {images.length > 1 && (
           <div
-            className={`absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-20 transition-opacity duration-[${FADE_DURATION}ms] ease-in-out ${
+            className={`absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-20 transition-opacity ease-in-out ${
               isTransitioning ? 'opacity-100' : 'opacity-0'
             }`}
             style={{
               backgroundImage: `url(${images[nextIndex]})`,
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              transitionDuration: `${FADE_DURATION}ms`
             }}
           />
         )}
