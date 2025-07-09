@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  console.log('Incoming request:', req.method, req.url);
   // Pesapal API base
   const PESA_BASE = process.env.PESAPAL_API_BASE || 'https://pay.pesapal.com/v3/api';
 
