@@ -104,27 +104,31 @@ const BlogPostEdit = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-primary-navy">Edit Blog Post</h1>
-          <p className="text-gray-600 mt-2">Edit and update your blog post</p>
-        </div>
-        <Link to="/admin/blog">
-          <Button variant="outline" className="flex items-center">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blog
-          </Button>
-        </Link>
-      </div>
+    <div className="min-h-screen bg-bg-primary py-6 sm:py-8">
+      <div className="max-w-3xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-primary-navy">Edit Blog Post</h1>
+              <p className="text-gray-600 mt-2">Edit and update your blog post</p>
+            </div>
+            <Link to="/admin/blog">
+              <Button variant="outline" className="flex items-center">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Blog
+              </Button>
+            </Link>
+          </div>
 
-      {/* Form */}
-      <BlogPostForm
-        initialData={post}
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-      />
+          {/* Form */}
+          <BlogPostForm
+            initialData={post}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+      </div>
     </div>
   );
 };

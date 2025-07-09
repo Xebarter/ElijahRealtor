@@ -117,181 +117,27 @@ const Blog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-primary-navy mb-4">{getPageTitle()}</h1>
-          <p className="text-gray-600">
-            Discover insights, tips, and trends in African real estate
-          </p>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Content */}
-          <div className="lg:w-3/4">
-            {/* Search and Filters */}
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row gap-4">
-                  {/* Search */}
-                  <div className="flex-1">
-                    <form onSubmit={handleSearch} className="flex gap-2">
-                      <Input
-                        placeholder="Search blog posts..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="flex-1"
-                      />
-                      <Button type="submit" size="sm">
-                        Search
-                      </Button>
-                    </form>
-                  </div>
-
-                  {/* Category Filter */}
-                  <div className="md:w-48">
-                    <Select
-                      value={filters.category || "all"}
-                      onValueChange={handleCategoryFilter}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="All Categories" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
-                        {sanitizedCategories.map((category: any) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* View Mode Toggle */}
-                  <div className="flex gap-2">
-                    <Button
-                      variant={viewMode === 'grid' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setViewMode('grid')}
-                    >
-                      Grid
-                    </Button>
-                    <Button
-                      variant={viewMode === 'list' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setViewMode('list')}
-                    >
-                      List
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Active Filters */}
-                {(filters.search || filters.category || filters.tag) && (
-                  <div className="mt-4 flex items-center gap-2 flex-wrap">
-                    <span className="text-sm text-gray-500">Active filters:</span>
-                    {filters.search && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                        Search: {filters.search}
-                      </span>
-                    )}
-                    {filters.category && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                        Category: {sanitizedCategories.find((c: any) => c.id === filters.category)?.name}
-                      </span>
-                    )}
-                    {filters.tag && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
-                        Tag: {sanitizedTags.find((t: any) => t.id === filters.tag)?.name}
-                      </span>
-                    )}
-                    <Button variant="ghost" size="sm" onClick={clearFilters}>
-                      Clear all
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Blog Posts */}
-            {error ? (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <p className="text-red-500">Error loading blog posts: {error}</p>
-                </CardContent>
-              </Card>
-            ) : sanitizedPosts.length === 0 ? (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <p className="text-gray-500">No blog posts found.</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <>
-                <div className={`grid gap-6 ${
-                  viewMode === 'grid' 
-                    ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
-                    : 'grid-cols-1'
-                }`}>
-                  {sanitizedPosts.map((post: any) => (
-                    <BlogCard 
-                      key={post.id} 
-                      post={post} 
-                      compact={viewMode === 'list'}
-                    />
-                  ))}
-                </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="mt-8 flex justify-center">
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                      >
-                        Previous
-                      </Button>
-                      
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                        <Button
-                          key={page}
-                          variant={currentPage === page ? 'default' : 'outline'}
-                          onClick={() => handlePageChange(page)}
-                        >
-                          {page}
-                        </Button>
-                      ))}
-                      
-                      <Button
-                        variant="outline"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
+    <div className="min-h-screen bg-bg-primary py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Blog Posts Grid */}
+          <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-8 mb-8">
+              {sanitizedPosts.length === 0 ? (
+                <div className="col-span-full text-center text-gray-500">No blog posts found.</div>
+              ) : (
+                sanitizedPosts.map((post: any) => (
+                  <BlogCard key={post.id} post={post} />
+                ))
+              )}
+            </div>
           </div>
-
           {/* Sidebar */}
-          <div className="lg:w-1/4">
+          <div>
             <BlogSidebar
               categories={sanitizedCategories}
               tags={sanitizedTags}
               recentPosts={recentPosts}
-              onSearch={(query) => {
-                setSearchQuery(query);
-                const params = new URLSearchParams(searchParams);
-                params.set('search', query);
-                setSearchParams(params);
-              }}
             />
           </div>
         </div>

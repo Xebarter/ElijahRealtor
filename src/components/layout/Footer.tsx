@@ -44,49 +44,49 @@ const Footer = () => {
 
   return (
     <footer className="bg-primary-navy text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Company Info */}
-          <div className="col-span-1 lg:col-span-1">
-            <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-primary-gold rounded-lg flex items-center justify-center">
-                <Home className="w-6 h-6 text-primary-navy" />
+          <div className="col-span-1 lg:col-span-1 mb-6 lg:mb-0">
+            <Link to="/" className="flex items-center space-x-2 mb-3 sm:mb-4 min-w-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-gold rounded-lg flex items-center justify-center">
+                <Home className="w-5 h-5 sm:w-6 sm:h-6 text-primary-navy" />
               </div>
-              <span className="text-xl font-bold">ElijahRealtor</span>
+              <span className="text-lg sm:text-xl font-bold truncate">ElijahRealtor</span>
             </Link>
-            <p className="text-gray-300 mb-6">
+            <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
               Your trusted partner in finding the perfect property across Africa. We specialize in luxury residential 
               and commercial real estate in multiple countries.
             </p>
             
             {/* Contact Info */}
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <MapPin className="w-5 h-5 text-primary-gold flex-shrink-0" />
-                <span className="text-sm text-gray-300">
+            <div className="space-y-2 sm:space-y-3">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary-gold flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-gray-300">
                   Mutungo Hill, Kampala
                 </span>
               </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-primary-gold flex-shrink-0" />
-                <span className="text-sm text-gray-300">+254 700 123 456</span>
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary-gold flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-gray-300">+254 700 123 456</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-primary-gold flex-shrink-0" />
-                <span className="text-sm text-gray-300">lwangabluhan@yahoo.com</span>
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary-gold flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-gray-300">lwangabluhan@yahoo.com</span>
               </div>
             </div>
           </div>
 
           {/* Company Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Company</h3>
+            <ul className="space-y-1 sm:space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-gray-300 hover:text-primary-gold transition-colors duration-200"
+                    className="text-gray-300 hover:text-primary-gold transition-colors duration-200 text-xs sm:text-sm"
                   >
                     {link.name}
                   </Link>
@@ -97,13 +97,13 @@ const Footer = () => {
 
           {/* Services Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Services</h3>
-            <ul className="space-y-2">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Services</h3>
+            <ul className="space-y-1 sm:space-y-2">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-gray-300 hover:text-primary-gold transition-colors duration-200"
+                    className="text-gray-300 hover:text-primary-gold transition-colors duration-200 text-xs sm:text-sm"
                   >
                     {link.name}
                   </Link>
@@ -114,11 +114,11 @@ const Footer = () => {
 
           {/* Operating Countries */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">We Operate In</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">We Operate In</h3>
+            <div className="grid grid-cols-2 gap-1 sm:gap-2">
               {operatingCountries.map((country) => (
-                <div key={country.code} className="flex items-center text-sm text-gray-300">
-                  <span className="mr-2">{country.flag}</span>
+                <div key={country.code} className="flex items-center text-xs sm:text-sm text-gray-300">
+                  <span className="mr-1 sm:mr-2">{country.flag}</span>
                   <span>{country.name}</span>
                 </div>
               ))}
@@ -127,8 +127,8 @@ const Footer = () => {
         </div>
 
         {/* Social Links & Copyright */}
-        <div className="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="flex space-x-6 mb-4 md:mb-0">
+        <div className="border-t border-gray-700 mt-6 sm:mt-8 pt-6 sm:pt-8 flex flex-col md:flex-row justify-between items-center">
+          <div className="flex space-x-4 sm:space-x-6 mb-4 md:mb-0">
             {socialLinks.map((social) => {
               const Icon = social.icon;
               return (
@@ -146,10 +146,10 @@ const Footer = () => {
             })}
           </div>
           <div className="text-center md:text-right">
-            <p className="text-gray-300 text-sm">
+            <p className="text-gray-300 text-xs sm:text-sm">
               © {currentYear} ElijahRealtor. All rights reserved.
             </p>
-            <p className="text-gray-400 text-xs mt-1">
+            <p className="text-gray-400 text-[10px] sm:text-xs mt-1">
               Built with ❤️ for exceptional real estate experiences across Africa
             </p>
           </div>

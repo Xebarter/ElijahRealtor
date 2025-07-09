@@ -130,7 +130,8 @@ const PropertyManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-bg-primary py-6 sm:py-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -278,8 +279,8 @@ const PropertyManagement = () => {
               <p className="text-gray-500">No properties found</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
+              <div className="overflow-x-auto rounded-lg shadow bg-white">
+                <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b">
                     <th className="text-left p-4 font-semibold">Property</th>
@@ -469,6 +470,7 @@ const PropertyManagement = () => {
           </div>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 };

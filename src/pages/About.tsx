@@ -50,17 +50,17 @@ const About = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-primary-navy text-white py-16 px-4 text-center">
-        <h1 className="text-4xl font-bold mb-4">About ElijahRealtor</h1>
-        <p className="max-w-2xl mx-auto text-lg mb-6">
+      <section className="bg-primary-navy text-white py-10 sm:py-16 px-2 sm:px-4 text-center">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">About ElijahRealtor</h1>
+        <p className="max-w-2xl mx-auto text-base sm:text-lg mb-4 sm:mb-6">
           ElijahRealtor is your trusted partner for luxury real estate across Africa. We are committed to delivering exceptional service, expert advice, and a seamless experience for buyers, sellers, and investors alike.
         </p>
-        <div className="flex flex-wrap justify-center gap-4 mt-8">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mt-6 sm:mt-8">
           {services.map((service) => (
             <a
               key={service.id}
               href={`#${service.id}`}
-              className="bg-primary-gold text-primary-navy px-6 py-2 rounded-full font-semibold shadow hover:bg-yellow-400 transition-colors"
+              className="bg-primary-gold text-primary-navy px-4 sm:px-6 py-2 rounded-full font-semibold shadow hover:bg-yellow-400 transition-colors text-sm sm:text-base"
             >
               {service.title}
             </a>
@@ -69,20 +69,20 @@ const About = () => {
       </section>
 
       {/* Services Sections */}
-      <section className="max-w-4xl mx-auto py-16 px-4 space-y-16">
+      <section className="max-w-4xl mx-auto py-10 sm:py-16 px-2 sm:px-4 space-y-10 sm:space-y-16">
         {services.map((service) => (
           <div key={service.id} id={service.id} className="scroll-mt-24">
-            <h2 className="text-2xl font-bold text-primary-navy mb-2 flex items-center gap-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-primary-navy mb-2 flex items-center gap-2">
               {service.title}
               <span className="text-primary-gold text-lg">#</span>
             </h2>
             {(sections as Record<string, { content: string; image_url: string }>)[service.id].image_url && (
-              <img src={(sections as Record<string, { content: string; image_url: string }>)[service.id].image_url} alt={service.title} className="w-full max-w-md rounded-lg mb-4" />
+              <img src={(sections as Record<string, { content: string; image_url: string }>)[service.id].image_url} alt={service.title} className="w-full max-w-md rounded-lg mb-3 sm:mb-4" />
             )}
-            <div className="prose prose-lg max-w-none mb-4" dangerouslySetInnerHTML={{ __html: (sections as Record<string, { content: string; image_url: string }>)[service.id].content }} />
+            <div className="prose prose-sm sm:prose-lg max-w-none mb-3 sm:mb-4" dangerouslySetInnerHTML={{ __html: (sections as Record<string, { content: string; image_url: string }>)[service.id].content }} />
             <a
               href="#top"
-              className="text-primary-gold hover:underline text-sm"
+              className="text-primary-gold hover:underline text-xs sm:text-sm"
             >
               Back to top
             </a>

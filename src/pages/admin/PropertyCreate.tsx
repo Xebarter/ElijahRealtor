@@ -244,6 +244,8 @@ const PropertyCreate = () => {
   };
 
   return (
+    <div className="min-h-screen bg-bg-primary py-6 sm:py-8">
+      <div className="max-w-3xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -675,6 +677,8 @@ const PropertyCreate = () => {
           </div>
         </DialogContent>
       </Dialog>
+        </div>
+      </div>
     </div>
   );
 };

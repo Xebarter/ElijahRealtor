@@ -83,14 +83,14 @@ const Properties = () => {
         keywords="properties for sale Kenya, real estate listings, apartments Nairobi, houses for sale"
       />
 
-      <div className="min-h-screen bg-bg-primary py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-bg-primary py-6 sm:py-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           {/* Page Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-primary-navy mb-4">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-2 sm:mb-4">
               Properties for Sale
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-base sm:text-lg text-gray-600">
               Discover your perfect property from our curated selection of premium real estate
             </p>
           </div>
@@ -104,8 +104,8 @@ const Properties = () => {
 
           {/* Results Summary */}
           {!loading && (
-            <div className="mb-6 flex justify-between items-center">
-              <p className="text-gray-600">
+            <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
+              <p className="text-gray-600 text-sm sm:text-base">
                 {meta.total > 0 ? (
                   <>
                     Showing {((meta.page - 1) * meta.limit) + 1} to {Math.min(meta.page * meta.limit, meta.total)} of {meta.total} properties
@@ -115,7 +115,7 @@ const Properties = () => {
                 )}
               </p>
               {meta.total > 0 && (
-                <p className="text-sm text-gray-500">
+                <p className="text-xs sm:text-sm text-gray-500">
                   Page {meta.page} of {meta.totalPages}
                 </p>
               )}
@@ -124,15 +124,15 @@ const Properties = () => {
 
           {/* Loading State */}
           {loading && (
-            <div className="flex justify-center items-center py-12">
+            <div className="flex justify-center items-center py-8 sm:py-12">
               <LoadingSpinner size="lg" />
-              <span className="ml-3 text-gray-600">Loading properties...</span>
+              <span className="ml-3 text-gray-600 text-sm sm:text-base">Loading properties...</span>
             </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="text-center py-12">
+            <div className="text-center py-8 sm:py-12">
               <p className="text-red-600 mb-4">{error}</p>
               <Button onClick={() => window.location.reload()}>
                 Try Again
@@ -143,7 +143,7 @@ const Properties = () => {
           {/* Properties Grid */}
           {!loading && !error && properties.length > 0 && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 mb-8 sm:mb-12">
                 {properties.map((property) => (
                   <PropertyCard key={property.id} property={property} />
                 ))}
@@ -151,11 +151,12 @@ const Properties = () => {
 
               {/* Pagination */}
               {meta.totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2">
+                <div className="flex flex-wrap justify-center items-center gap-2">
                   <Button
                     variant="outline"
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
+                    className="text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2"
                   >
                     Previous
                   </Button>
@@ -167,7 +168,7 @@ const Properties = () => {
                         key={page}
                         variant={page === currentPage ? "default" : "outline"}
                         onClick={() => handlePageChange(page)}
-                        className={page === currentPage ? "btn-primary" : ""}
+                        className={page === currentPage ? "btn-primary text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2" : "text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2"}
                       >
                         {page}
                       </Button>
@@ -178,6 +179,7 @@ const Properties = () => {
                     variant="outline"
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === meta.totalPages}
+                    className="text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2"
                   >
                     Next
                   </Button>
@@ -188,8 +190,8 @@ const Properties = () => {
 
           {/* No Results */}
           {!loading && !error && properties.length === 0 && (
-            <div className="text-center py-12">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <div className="text-center py-8 sm:py-12">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
                 No properties found
               </h3>
               <p className="text-gray-600 mb-4">

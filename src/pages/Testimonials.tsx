@@ -163,15 +163,14 @@ const Testimonials = () => {
 
       <div className="min-h-screen bg-bg-primary">
         {/* Hero Section */}
-        <div className="bg-primary-navy text-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Client Testimonials</h1>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8">
+        <div className="bg-primary-navy text-white py-10 sm:py-16">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Client Testimonials</h1>
+            <p className="text-base sm:text-xl text-gray-200 max-w-2xl mx-auto mb-6 sm:mb-8">
               Hear from our satisfied clients who found their dream properties with ElijahRealtor
             </p>
-            
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-2xl mx-auto mb-6 sm:mb-8">
               <div className="text-center">
                 <div className="text-3xl font-bold text-primary-gold mb-1">{stats.all}</div>
                 <div className="text-sm text-gray-300">Total Reviews</div>
@@ -191,12 +190,11 @@ const Testimonials = () => {
             </div>
           </div>
         </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-10 sm:py-16">
           {/* Filter Tabs */}
-          <div className="mb-12">
+          <div className="mb-8 sm:mb-12">
             <Tabs value={selectedType} onValueChange={(value: any) => setSelectedType(value)}>
-              <TabsList className="grid w-full grid-cols-4 max-w-md mx-auto">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 max-w-md mx-auto">
                 <TabsTrigger value="all" className="flex items-center">
                   <Users className="w-4 h-4 mr-1" />
                   All ({stats.all})
@@ -216,10 +214,9 @@ const Testimonials = () => {
               </TabsList>
             </Tabs>
           </div>
-
           {/* Testimonials Grid */}
           {filteredTestimonials.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 mb-8 sm:mb-12">
               {filteredTestimonials.map((testimonial, index) => (
                 <Card 
                   key={testimonial.id} 

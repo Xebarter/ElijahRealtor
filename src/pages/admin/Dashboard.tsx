@@ -104,27 +104,27 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-primary-navy">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome back! Here's what's happening with your properties.</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary-navy">Dashboard</h1>
+        <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">Welcome back! Here's what's happening with your properties.</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <Card key={index}>
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                    <p className="text-3xl font-bold text-primary-navy">{stat.value}</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">{stat.title}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-primary-navy">{stat.value}</p>
                   </div>
-                  <div className={`p-3 rounded-full ${stat.bgColor}`}>
-                    <Icon className={`w-6 h-6 ${stat.color}`} />
+                  <div className={`p-2 sm:p-3 rounded-full ${stat.bgColor}`}>
+                    <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -133,30 +133,30 @@ const Dashboard = () => {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
         {/* Properties by Country */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-base sm:text-lg">
               <Building className="w-5 h-5 mr-2 text-primary-gold" />
               Properties by Country
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {stats.propertiesByCountry.map((item, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="w-3 h-3 bg-primary-gold rounded-full mr-3"></div>
-                    <span className="font-medium">{item.country}</span>
+                    <div className="w-3 h-3 bg-primary-gold rounded-full mr-2 sm:mr-3"></div>
+                    <span className="font-medium text-xs sm:text-base">{item.country}</span>
                   </div>
-                  <Badge variant="secondary">{item.count} properties</Badge>
+                  <Badge variant="secondary" className="text-xs sm:text-sm">{item.count} properties</Badge>
                 </div>
               ))}
             </div>
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <Link to="/admin/properties">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full text-xs sm:text-base">
                   View All Properties
                 </Button>
               </Link>
@@ -167,29 +167,29 @@ const Dashboard = () => {
         {/* Recent Activity */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-base sm:text-lg">
               <Star className="w-5 h-5 mr-2 text-primary-gold" />
               Recent Activity
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {stats.recentActivity.map((activity, index) => {
                 const Icon = getActivityIcon(activity.type);
                 const color = getActivityColor(activity.type);
                 return (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className={`p-2 rounded-full bg-gray-50`}>
+                  <div key={index} className="flex items-start space-x-2 sm:space-x-3">
+                    <div className={`p-1 sm:p-2 rounded-full bg-gray-50`}>
                       <Icon className={`w-4 h-4 ${color}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-900">{activity.description}</p>
-                      <div className="flex items-center mt-1 space-x-2">
-                        <p className="text-xs text-gray-500">
+                      <p className="text-xs sm:text-sm text-gray-900">{activity.description}</p>
+                      <div className="flex items-center mt-1 space-x-1 sm:space-x-2">
+                        <p className="text-[10px] sm:text-xs text-gray-500">
                           {new Date(activity.timestamp).toLocaleDateString()}
                         </p>
                         {activity.country && (
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-[10px] sm:text-xs">
                             {activity.country}
                           </Badge>
                         )}
@@ -198,11 +198,6 @@ const Dashboard = () => {
                   </div>
                 );
               })}
-            </div>
-            <div className="mt-6">
-              <Button variant="outline" className="w-full">
-                View All Activity
-              </Button>
             </div>
           </CardContent>
         </Card>

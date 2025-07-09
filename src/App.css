@@ -1,6 +1,8 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem; /* only horizontal padding */
   text-align: center;
+  overflow-x: hidden; /* prevents horizontal scroll inside root */
+  box-sizing: border-box;
 }

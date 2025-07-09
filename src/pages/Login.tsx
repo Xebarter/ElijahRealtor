@@ -51,7 +51,7 @@ const Login = () => {
         description="Login to access the ElijahRealtor admin dashboard"
       />
 
-      <div className="fixed inset-0 z-10 flex items-center justify-center min-h-screen bg-bg-primary">
+      <div className="min-h-screen flex items-center justify-center bg-bg-primary px-2 sm:px-0">
         <div className="max-w-md w-full space-y-8">
           {/* Logo and Back Link */}
           <div className="text-center">
@@ -61,7 +61,7 @@ const Login = () => {
             </Link>
           </div>
 
-          <Card className="shadow-xl">
+          <Card className="shadow-xl p-4 sm:p-8">
             <CardHeader className="text-center">
               <div className="w-16 h-16 bg-primary-navy rounded-full flex items-center justify-center mx-auto mb-4">
                 <Home className="w-8 h-8 text-white" />

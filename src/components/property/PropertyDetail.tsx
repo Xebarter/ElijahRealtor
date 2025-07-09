@@ -117,19 +117,18 @@ const PropertyDetail = () => {
     <div className="min-h-screen bg-bg-primary">
       {/* Back Navigation */}
       <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4">
           <Link 
             to="/properties" 
-            className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors"
+            className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Properties
           </Link>
         </div>
       </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Property Images by Feature */}
@@ -170,25 +169,25 @@ const PropertyDetail = () => {
 
             {/* Property Details */}
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="amenities">Amenities</TabsTrigger>
                 <TabsTrigger value="location">Location</TabsTrigger>
                 <TabsTrigger value="developer">Developer</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="overview" className="mt-6">
+              <TabsContent value="overview" className="mt-4 sm:mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Property Description</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-700 leading-relaxed whitespace-pre-line mb-6">
+                    <p className="text-gray-700 leading-relaxed whitespace-pre-line mb-4 sm:mb-6 text-sm sm:text-base">
                       {property.description}
                     </p>
                     
                     {/* Property Specifications */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
                       {property.bedrooms && (
                         <div className="text-center">
                           <Bed className="w-6 h-6 mx-auto mb-2 text-primary-gold" />

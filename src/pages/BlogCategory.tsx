@@ -69,33 +69,10 @@ const BlogCategoryPage = () => {
         keywords={`blog, ${category?.name}, real estate, property`}
       />
 
-      <div className="min-h-screen bg-bg-primary">
-        {/* Hero Section */}
-        <div className="bg-primary-navy text-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center justify-center bg-white/10 p-3 rounded-full mb-4">
-              <FolderOpen className="w-8 h-8 text-primary-gold" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {category ? category.name : 'Category'}
-            </h1>
-            {category?.description && (
-              <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-                {category.description}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Back to Blog */}
-          <Link to="/blog" className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors mb-8">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blog
-          </Link>
-          
+      <div className="min-h-screen bg-bg-primary py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
+            {/* Category Posts Grid */}
             <div className="lg:col-span-2">
               {loading ? (
                 <div className="flex items-center justify-center min-h-96">
@@ -120,7 +97,7 @@ const BlogCategoryPage = () => {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-8 mb-8">
                     {fixedPosts.map((post: any) => (
                       <BlogCard key={post.id} post={post} />
                     ))}

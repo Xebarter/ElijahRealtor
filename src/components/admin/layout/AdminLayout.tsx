@@ -42,20 +42,22 @@ const AdminLayout = () => {
   return (
     <div className="flex h-screen w-screen bg-gray-100 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="h-16 border-b border-gray-200 px-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
+      <aside className={`fixed z-40 inset-y-0 left-0 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="h-16 border-b border-gray-200 px-4 sm:px-6 flex items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2 min-w-0">
             <div className="w-8 h-8 bg-primary-navy rounded flex items-center justify-center">
               <Home className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-semibold text-primary-navy">
+            <span className="text-lg font-semibold text-primary-navy truncate">
               ElijahRealtor
             </span>
           </Link>
+          <Button variant="ghost" size="sm" className="lg:hidden ml-2" onClick={() => setSidebarOpen(false)} aria-label="Close sidebar">
+            <X className="w-5 h-5" />
+          </Button>
         </div>
-
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-4 overflow-y-auto">
+        <nav className="flex-1 px-2 sm:px-4 py-4 overflow-y-auto">
           <ul className="space-y-1">
             {navigation.map(({ name, href, icon: Icon }) => (
               <li key={name}>
@@ -66,6 +68,7 @@ const AdminLayout = () => {
                       ? 'bg-primary-gold text-primary-navy'
                       : 'text-gray-700 hover:bg-gray-200'
                   }`}
+                  onClick={() => setSidebarOpen(false)}
                 >
                   <Icon className="w-5 h-5 mr-3" />
                   {name}
@@ -74,7 +77,6 @@ const AdminLayout = () => {
             ))}
           </ul>
         </nav>
-
         {/* User Info & Sign Out */}
         <div className="border-t border-gray-200 p-4">
           <div className="flex items-center space-x-3 mb-3">
@@ -101,20 +103,20 @@ const AdminLayout = () => {
           </Button>
         </div>
       </aside>
-
       {/* Content Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-between">
+        <header className="h-14 sm:h-16 bg-white border-b border-gray-200 px-2 sm:px-4 flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
             className="lg:hidden"
             onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label="Open sidebar"
           >
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <Menu className="w-5 h-5" />
           </Button>
-          <div className="flex items-center space-x-4 ml-auto">
+          <div className="flex items-center space-x-2 sm:space-x-4 ml-auto">
             <Link to="/" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm">
                 View Site
@@ -122,9 +124,8 @@ const AdminLayout = () => {
             </Link>
           </div>
         </header>
-
         {/* Main Content */}
-        <main className="flex-1 p-4 overflow-y-auto bg-gray-50">
+        <main className="flex-1 p-2 sm:p-4 overflow-y-auto bg-gray-50">
           <Outlet />
         </main>
       </div>
