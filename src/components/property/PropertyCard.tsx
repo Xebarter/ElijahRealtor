@@ -57,7 +57,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, featured = false 
   const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
-    <div className={`property-card ${featured ? 'border border-primary-gold' : ''}`}>
+    <Link
+      to={`/properties/${property.id}`}
+      className={`block property-card transition-shadow hover:shadow-lg focus:shadow-lg outline-none ${featured ? 'border border-primary-gold' : ''}`}
+      role="link"
+      tabIndex={0}
+      aria-label={`View details for ${property.title}`}
+    >
       {/* Image Container */}
       <div className="relative w-full h-64 rounded-lg overflow-hidden bg-gray-200">
         {!imgLoaded && (
@@ -170,12 +176,12 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, featured = false 
 
         {/* Actions */}
         <div className="flex gap-2">
-          <Link to={`/properties/${property.id}`} className="flex-1">
-            <Button className="w-full btn-primary">View Details</Button>
-          </Link>
+          <span className="w-full">
+            <Button className="w-full btn-primary pointer-events-none" tabIndex={-1}>View Details</Button>
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
