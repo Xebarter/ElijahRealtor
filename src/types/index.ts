@@ -25,6 +25,11 @@ export interface Property {
   updated_at: string;
   developer?: Developer;
   property_images?: PropertyImage[];
+  apartment_units?: number;
+  apartment_monthly_income?: number;
+  apartment_occupancy_rate?: number;
+  apartment_projected_roi?: number;
+  apartment_notes?: string;
 }
 
 export interface PropertyImage {
@@ -170,6 +175,11 @@ export interface PropertyForm {
   location_coordinates?: { lat: number; lng: number };
   location_url?: string;
   developer_id?: string;
+  apartment_units?: number;
+  apartment_monthly_income?: number;
+  apartment_occupancy_rate?: number;
+  apartment_projected_roi?: number;
+  apartment_notes?: string;
 }
 
 export interface VisitBookingForm {

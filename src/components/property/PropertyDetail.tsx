@@ -186,6 +186,40 @@ const PropertyDetail = () => {
                       {property.description}
                     </p>
                     
+                    {property.property_type === 'apartment' && (
+                      (property.apartment_units || property.apartment_monthly_income || property.apartment_occupancy_rate || property.apartment_projected_roi || property.apartment_notes) && (
+                        <div className="mb-6">
+                          <h3 className="text-lg font-semibold text-primary-navy mb-2">Apartment Block Details</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {property.apartment_units && (
+                              <div>
+                                <span className="font-medium text-gray-700">Units Available:</span> {property.apartment_units}
+                              </div>
+                            )}
+                            {property.apartment_monthly_income && (
+                              <div>
+                                <span className="font-medium text-gray-700">Monthly Income per Unit:</span> {property.apartment_monthly_income.toLocaleString()}
+                              </div>
+                            )}
+                            {property.apartment_occupancy_rate && (
+                              <div>
+                                <span className="font-medium text-gray-700">Occupancy Rate:</span> {property.apartment_occupancy_rate}%
+                              </div>
+                            )}
+                            {property.apartment_projected_roi && (
+                              <div>
+                                <span className="font-medium text-gray-700">Projected ROI:</span> {property.apartment_projected_roi}%
+                              </div>
+                            )}
+                            {property.apartment_notes && (
+                              <div className="md:col-span-2">
+                                <span className="font-medium text-gray-700">Notes:</span> {property.apartment_notes}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )
+                    )}
                     {/* Property Specifications */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
                       {property.bedrooms && (

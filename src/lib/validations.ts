@@ -23,6 +23,11 @@ export const propertySchema = z.object({
     lng: z.number()
   }).optional(),
   developer_id: z.string().optional(),
+  apartment_units: z.number().min(0).optional(),
+  apartment_monthly_income: z.number().min(0).optional(),
+  apartment_occupancy_rate: z.number().min(0).max(100).optional(),
+  apartment_projected_roi: z.number().min(0).max(100).optional(),
+  apartment_notes: z.string().optional(),
 });
 
 // Visit booking validation schema

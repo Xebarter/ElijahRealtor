@@ -38,11 +38,17 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, featured = false 
   // Get the first image from property_images or fallback to legacy images array
   const getMainImage = () => {
     if (property.property_images && property.property_images.length > 0) {
-      // Sort by display_order and get the first one
+      // Try to find the first 'exterior' image by display_order
+      const exteriorImages = property.property_images
+        .filter(img => img.feature_type === 'exterior')
+        .sort((a, b) => a.display_order - b.display_order);
+      if (exteriorImages.length > 0) {
+        return exteriorImages[0].image_url;
+      }
+      // Fallback: sort all images by display_order and get the first one
       const sortedImages = property.property_images.sort((a, b) => a.display_order - b.display_order);
       return sortedImages[0].image_url;
     }
-    
     // Fallback to legacy images array
     if (property.images && property.images.length > 0) {
       return property.images[0];

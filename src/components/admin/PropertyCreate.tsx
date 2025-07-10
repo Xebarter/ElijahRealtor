@@ -548,6 +548,71 @@ const PropertyCreate = () => {
           </CardContent>
         </Card>
 
+        {watch('property_type') === 'apartment' && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Apartment Block Details (Optional)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Number of Units Available
+                  </label>
+                  <Input
+                    type="number"
+                    {...register('apartment_units', { valueAsNumber: true })}
+                    placeholder="e.g. 20"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Monthly Income per Unit
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    {...register('apartment_monthly_income', { valueAsNumber: true })}
+                    placeholder="e.g. 50000"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Occupancy Rate (%)
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    {...register('apartment_occupancy_rate', { valueAsNumber: true })}
+                    placeholder="e.g. 95"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Projected ROI (%)
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    {...register('apartment_projected_roi', { valueAsNumber: true })}
+                    placeholder="e.g. 12"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Notes (Optional)
+                </label>
+                <Textarea
+                  {...register('apartment_notes')}
+                  placeholder="Any additional notes about the apartment block"
+                  rows={2}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Property Images */}
         <PropertyFeatureImageUpload
           onImagesChange={handleImagesChange}
