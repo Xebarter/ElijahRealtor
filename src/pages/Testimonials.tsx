@@ -163,7 +163,7 @@ const Testimonials = () => {
 
       <div className="min-h-screen bg-bg-primary">
         {/* Hero Section */}
-        <div className="bg-primary-navy text-white py-10 sm:py-16">
+        <div style={{ backgroundColor: '#181818' }} className="text-white py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Client Testimonials</h1>
             <p className="text-base sm:text-xl text-gray-200 max-w-2xl mx-auto mb-6 sm:mb-8">
@@ -251,7 +251,7 @@ const Testimonials = () => {
                           </span>
                         </div>
                         <div>
-                          <div className="font-semibold text-primary-navy">
+                          <div className="font-semibold" style={{ color: '#181818' }}>
                             {testimonial.client_name}
                           </div>
                           {testimonial.client_title && (
@@ -300,7 +300,7 @@ const Testimonials = () => {
 
           {/* Call to Action */}
           <div className="text-center bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-primary-navy mb-4">
+            <h2 className="text-2xl font-bold mb-4" style={{ color: '#181818' }}>
               Share Your Experience
             </h2>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">

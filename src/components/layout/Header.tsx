@@ -35,10 +35,10 @@ const Header = () => {
         <div className="flex justify-between items-center h-12 sm:h-14 md:h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 min-w-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-primary-navy rounded-lg flex items-center justify-center">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#181818' }}>
               <Home className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <span className="text-base sm:text-lg md:text-xl font-bold text-primary-navy truncate">ElijahRealtor</span>
+            <span className="text-base sm:text-lg md:text-xl font-bold truncate" style={{ color: '#181818' }}>ElijahRealtor</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -49,7 +49,7 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="flex items-center space-x-1 text-gray-700 hover:text-primary-navy transition-colors duration-200 text-sm sm:text-base"
+                  className="flex items-center space-x-1 text-gray-700 hover:text-black transition-colors duration-200 text-sm sm:text-base"
                 >
                   <Icon className="w-4 h-4" />
                   <span>{item.name}</span>
@@ -83,7 +83,8 @@ const Header = () => {
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
-              className="p-2 bg-primary-navy hover:bg-primary-gold"
+              style={{ backgroundColor: '#181818' }}
+              className="p-2 hover:bg-primary-gold"
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6 text-white" />
@@ -98,7 +99,8 @@ const Header = () => {
         {isMenuOpen && (
           <div
             ref={menuRef}
-            className="md:hidden border-t border-gray-200 py-4 animate-slide-in bg-primary-navy text-white shadow-2xl fixed right-0 top-0 h-full w-4/5 max-w-xs z-50"
+            className="md:hidden border-t border-gray-200 py-4 animate-slide-in text-white shadow-2xl fixed right-0 top-0 h-full w-4/5 max-w-xs z-50"
+            style={{ backgroundColor: '#181818' }}
           >
             <nav className="flex flex-col space-y-2 sm:space-y-4 mt-16 px-4">
               {navigation.map((item) => {

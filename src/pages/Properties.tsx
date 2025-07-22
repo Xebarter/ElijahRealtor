@@ -87,7 +87,7 @@ const Properties = () => {
         <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           {/* Page Header */}
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-2 sm:mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4" style={{ color: '#181818' }}>
               Properties for Sale
             </h1>
             <p className="text-base sm:text-lg text-gray-600">

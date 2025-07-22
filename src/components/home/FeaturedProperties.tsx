@@ -34,14 +34,14 @@ const FeaturedProperties = () => {
   }
 
   return (
-    <section className="py-10 sm:py-16 bg-white">
+    <section className="py-6 sm:py-10 bg-white overflow-x-hidden">
       <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-2 sm:mb-4">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-navy mb-2 sm:mb-4">
             Featured Properties
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
             Discover our handpicked selection of premium properties in Kenya's most desirable locations
           </p>
         </div>
@@ -49,7 +49,7 @@ const FeaturedProperties = () => {
         {/* Properties Grid */}
         {properties && properties.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 mb-8 sm:mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-8 mb-6 sm:mb-8">
               {properties.map((property) => (
                 <PropertyCard key={property.id} property={property} featured />
               ))}
@@ -58,7 +58,7 @@ const FeaturedProperties = () => {
             {/* View All Button */}
             <div className="text-center">
               <Link to="/properties">
-                <Button size="lg" className="btn-primary px-6 sm:px-8 py-2 sm:py-3">
+                <Button size="lg" className="btn-primary px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto">
                   View All Properties
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
@@ -66,10 +66,10 @@ const FeaturedProperties = () => {
             </div>
           </>
         ) : (
-          <div className="text-center py-8 sm:py-12">
+          <div className="text-center py-6 sm:py-8">
             <p className="text-gray-600 mb-4">No featured properties available at the moment.</p>
             <Link to="/properties">
-              <Button className="btn-primary">Browse All Properties</Button>
+              <Button className="btn-primary w-full sm:w-auto">Browse All Properties</Button>
             </Link>
           </div>
         )}

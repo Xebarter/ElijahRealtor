@@ -65,26 +65,7 @@ const ServicesSection = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-10 sm:mt-16 bg-white rounded-2xl shadow-lg p-4 sm:p-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8">
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-1 sm:mb-2">500+</div>
-              <div className="text-gray-600 text-sm sm:text-base">Properties Sold</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-1 sm:mb-2">98%</div>
-              <div className="text-gray-600 text-sm sm:text-base">Client Satisfaction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-1 sm:mb-2">15+</div>
-              <div className="text-gray-600 text-sm sm:text-base">Years Experience</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-1 sm:mb-2">50+</div>
-              <div className="text-gray-600 text-sm sm:text-base">Locations Covered</div>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </section>
   );

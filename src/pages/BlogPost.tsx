@@ -169,7 +169,7 @@ const BlogPostPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="bg-primary-navy text-white py-16">
+              <div style={{ backgroundColor: '#181818' }} className="text-white py-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                   <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
                   {post.excerpt && (
@@ -214,7 +214,7 @@ const BlogPostPage = () => {
               {/* Main Content */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Back to Blog */}
-                <Link to="/blog" className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors">
+                <Link to="/blog" className="inline-flex items-center hover:text-primary-gold transition-colors" style={{ color: '#181818' }}>
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Blog
                 </Link>
@@ -266,7 +266,7 @@ const BlogPostPage = () => {
                 {/* Related Posts */}
                 {relatedPosts.length > 0 && (
                   <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-primary-navy">Related Posts</h2>
+                    <h2 className="text-2xl font-bold" style={{ color: '#181818' }}>Related Posts</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {relatedPosts.map((relatedPost) => (
                         <BlogCard key={relatedPost.id} post={relatedPost} compact />

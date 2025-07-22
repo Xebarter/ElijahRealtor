@@ -8,7 +8,7 @@
   font-weight: 400;
 
   /* Primary Colors */
-  --primary-navy: #0A2342;
+  --primary-navy: #181818; /* Luxurious black */
   --secondary-gold: #D4AF37;
   
   /* Backgrounds */
@@ -211,7 +211,7 @@ button:focus-visible {
 
 /* Hero gradient */
 .hero-gradient {
-  background: linear-gradient(135deg, #0A2342 0%, #6C8EBF 100%);
+  background: linear-gradient(135deg, #181818 0%, #6C8EBF 100%);
 }
 
 /* Property card styles */

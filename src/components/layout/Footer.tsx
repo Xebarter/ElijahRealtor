@@ -43,14 +43,14 @@ const Footer = () => {
   const operatingCountries = COUNTRIES.slice(0, 8); // Show first 8 countries
 
   return (
-    <footer className="bg-primary-navy text-white">
+    <footer style={{ backgroundColor: '#181818' }} className="text-white">
       <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Company Info */}
           <div className="col-span-1 lg:col-span-1 mb-6 lg:mb-0">
             <Link to="/" className="flex items-center space-x-2 mb-3 sm:mb-4 min-w-0">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-gold rounded-lg flex items-center justify-center">
-                <Home className="w-5 h-5 sm:w-6 sm:h-6 text-primary-navy" />
+                <Home className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: '#181818' }} />
               </div>
               <span className="text-lg sm:text-xl font-bold truncate">ElijahRealtor</span>
             </Link>

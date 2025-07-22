@@ -123,7 +123,7 @@ const Contact = () => {
 
       <div className="min-h-screen bg-bg-primary">
         {/* Hero Section */}
-        <div className="bg-primary-navy text-white py-10 sm:py-16">
+        <div style={{ backgroundColor: '#181818' }} className="text-white py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Contact Us</h1>
             <p className="text-base sm:text-xl text-gray-200 max-w-2xl mx-auto">
@@ -268,7 +268,7 @@ const Contact = () => {
                     <Card key={index}>
                       <CardContent className="p-6 text-center">
                         <Icon className="w-8 h-8 text-primary-gold mx-auto mb-3" />
-                        <h3 className="font-semibold text-primary-navy mb-2">{info.title}</h3>
+                        <h3 className="font-semibold mb-2" style={{ color: '#181818' }}>{info.title}</h3>
                         <div className="space-y-1">
                           {info.details.map((detail, idx) => (
                             <p key={idx} className="text-sm text-gray-600">{detail}</p>
@@ -294,21 +294,21 @@ const Contact = () => {
                             <MapPin className="w-4 h-4 text-primary-gold" />
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-semibold text-primary-navy">
+                            <h4 className="font-semibold" style={{ color: '#181818' }}>
                               {office.city}, {office.country}
                             </h4>
                             <p className="text-sm text-gray-600 mb-2">{office.address}</p>
                             <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-1 sm:space-y-0 text-sm">
                               <a 
                                 href={`tel:${office.phone}`}
-                                className="text-primary-navy hover:text-primary-gold flex items-center"
+                                className="hover:text-primary-gold flex items-center" style={{ color: '#181818' }}
                               >
                                 <Phone className="w-3 h-3 mr-1" />
                                 {office.phone}
                               </a>
                               <a 
                                 href={`mailto:${office.email}`}
-                                className="text-primary-navy hover:text-primary-gold flex items-center"
+                                className="hover:text-primary-gold flex items-center" style={{ color: '#181818' }}
                               >
                                 <Mail className="w-3 h-3 mr-1" />
                                 {office.email}

@@ -58,7 +58,8 @@ const Login = () => {
           <div className="text-center">
             <Link
               to="/"
-              className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors"
+              className="inline-flex items-center hover:text-primary-gold transition-colors"
+              style={{ color: '#181818' }}
             >
               <Home className="w-5 h-5 mr-2" />
               <span className="font-medium text-sm sm:text-base">Back to Home</span>
@@ -68,10 +69,10 @@ const Login = () => {
           {/* Login Card */}
           <Card className="shadow-xl p-5 sm:p-8">
             <CardHeader className="text-center space-y-2">
-              <div className="w-16 h-16 bg-primary-navy rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#181818' }}>
                 <Home className="w-8 h-8 text-white" />
               </div>
-              <CardTitle className="text-2xl font-bold text-primary-navy">
+              <CardTitle className="text-2xl font-bold" style={{ color: '#181818' }}>
                 Admin Login
               </CardTitle>
               <CardDescription className="text-gray-600">

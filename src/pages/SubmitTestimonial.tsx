@@ -203,12 +203,13 @@ const SubmitTestimonial = () => {
           <div className="mb-8">
             <Link 
               to="/testimonials" 
-              className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors mb-4"
+              className="inline-flex items-center hover:text-primary-gold transition-colors mb-4"
+              style={{ color: '#181818' }}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Testimonials
             </Link>
-            <h1 className="text-3xl font-bold text-primary-navy mb-2">Share Your Experience</h1>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: '#181818' }}>Share Your Experience</h1>
             <p className="text-gray-600">
               Help others by sharing your experience with ElijahRealtor. Your testimonial will be reviewed before being published.
             </p>

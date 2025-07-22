@@ -116,7 +116,7 @@ const BlogTagPage = () => {
                           key={page}
                           variant={currentPage === page ? 'default' : 'outline'}
                           onClick={() => handlePageChange(page)}
-                          className={currentPage === page ? 'bg-primary-navy' : ''}
+                          className={currentPage === page ? '' : ''} style={currentPage === page ? { backgroundColor: '#181818', color: 'white' } : {}}
                         >
                           {page}
                         </Button>
