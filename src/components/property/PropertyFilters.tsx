@@ -154,31 +154,6 @@ const PropertyFiltersComponent: React.FC<PropertyFiltersProps> = ({
                   />
                 </div>
 
-                {/* Price Range */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Min Price
-                  </label>
-                  <Input
-                    type="number"
-                    placeholder="Min Price"
-                    value={filters.min_price || ''}
-                    onChange={(e) => handleInputChange('min_price', e.target.value ? Number(e.target.value) : undefined)}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Max Price
-                  </label>
-                  <Input
-                    type="number"
-                    placeholder="Max Price"
-                    value={filters.max_price || ''}
-                    onChange={(e) => handleInputChange('max_price', e.target.value ? Number(e.target.value) : undefined)}
-                  />
-                </div>
-
                 {/* Bedrooms */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
