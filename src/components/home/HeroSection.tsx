@@ -14,7 +14,6 @@ const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [nextIndex, setNextIndex] = React.useState(1);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
-  const [searchExpanded, setSearchExpanded] = React.useState(false);
 
   React.useEffect(() => {
     const fetchImages = async () => {
@@ -59,16 +58,6 @@ const HeroSection = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       window.location.href = `/properties?search=${encodeURIComponent(searchQuery)}`;
-    }
-  };
-
-  const toggleSearch = () => {
-    setSearchExpanded(!searchExpanded);
-    if (!searchExpanded) {
-      setTimeout(() => {
-        const input = document.querySelector('.search-input') as HTMLInputElement;
-        if (input) input.focus();
-      }, 300);
     }
   };
 
@@ -157,32 +146,22 @@ const HeroSection = () => {
           transform: scale(1.1);
           box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
         }
-        .search-toggle {
-          transition: all 0.3s ease;
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .search-toggle:hover {
-          transform: scale(1.1);
-          background: rgba(255, 255, 255, 0.2);
-        }
         .search-container {
-          transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
           display: flex;
           justify-content: center;
           margin: 0 auto;
+          width: 100%;
+          max-width: 48rem;
         }
         .search-form {
-          transition: all 0.3s ease;
-          overflow: hidden;
           display: flex;
           align-items: center;
+          width: 100%;
         }
         .search-input-container {
-          transition: width 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
           display: flex;
           align-items: center;
+          width: 100%;
         }
         @media (max-width: 640px) {
           .font-luxury {
@@ -199,23 +178,6 @@ const HeroSection = () => {
             width: 48px !important;
             height: 48px !important;
             margin-bottom: 0.75rem !important;
-          }
-          .search-container {
-            width: ${searchExpanded ? '100%' : 'auto'};
-          }
-          .search-input-container {
-            width: ${searchExpanded ? 'calc(100% - 70px)' : '0'};
-          }
-          .search-input {
-            display: ${searchExpanded ? 'block' : 'none'};
-            width: ${searchExpanded ? '100%' : '0'};
-            opacity: ${searchExpanded ? '1' : '0'};
-            margin-left: ${searchExpanded ? '0.5rem' : '0'};
-          }
-          .search-button {
-            display: ${searchExpanded ? 'flex' : 'none'};
-            align-items: center;
-            justify-content: center;
           }
         }
         @media (min-width: 641px) {
@@ -288,34 +250,24 @@ const HeroSection = () => {
 
           {/* Search */}
           <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 px-2 sm:px-0">
-            <div className="search-container">
-              {!searchExpanded && (
-                <button
-                  onClick={toggleSearch}
-                  className="search-toggle p-4 rounded-full flex items-center justify-center"
-                  aria-label="Open search"
-                >
-                  <Search className="text-primary-gold w-6 h-6" />
-                </button>
-              )}
-
+            <div className="search-container w-full max-w-3xl">
               <form onSubmit={handleSearch} className="search-form bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl overflow-hidden w-full">
                 <div className="search-input-container flex items-center w-full h-full pl-6 pr-2 py-1.5">
-                   <Input
-                     type="text"
-                     placeholder="Search locations, countries, or properties..."
-                     className="search-input w-full border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-lg"
-                     value={searchQuery}
-                     onChange={(e) => setSearchQuery(e.target.value)}
-                   />
+                  <Input
+                    type="text"
+                    placeholder="Search locations, countries, or properties..."
+                    className="search-input w-full border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-lg"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                   <Button
                     type="submit"
                     className="search-button btn-primary p-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
                   >
                     <Search className="w-6 h-6" />
-                   </Button>
-                 </div>
-               </form>
+                  </Button>
+                </div>
+              </form>
             </div>
           </div>
 
