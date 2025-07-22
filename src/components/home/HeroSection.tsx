@@ -88,11 +88,7 @@ const HeroSection = () => {
           font-family: 'Playfair Display', serif;
         }
         .gold-gradient {
-          background: linear-gradient(90deg, #E0B46B 0%, #D4AF37 50%, #fffbe6 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-fill-color: transparent;
+          color: #E0B46B;
         }
         .gold-shimmer {
           position: absolute;
@@ -246,34 +242,30 @@ const HeroSection = () => {
       `}</style>
 
       {/* Background */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ background: 'linear-gradient(135deg, #000000 0%, #181818 100%)' }}>
+      <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        {/* Gold shimmer overlay */}
         <div className="gold-shimmer" />
+        {/* Sparkles */}
         <div className="sparkle" style={{ top: '20%', left: '15%', animationDelay: '0s' }} />
         <div className="sparkle" style={{ top: '60%', left: '80%', animationDelay: '1.2s' }} />
         <div className="sparkle" style={{ top: '40%', left: '50%', animationDelay: '2s' }} />
         <div className="sparkle" style={{ top: '75%', left: '30%', animationDelay: '0.8s' }} />
+        {/* Current Image */}
         {images.length > 0 && (
           <div
             className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-10"
-            style={{ backgroundImage: `url(${images[currentIndex]})`, pointerEvents: 'none' }}
-          />
-        )}
-        {images.length > 1 && (
-          <div
-            className={`absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-20 transition-opacity ease-in-out ${
-              isTransitioning ? 'opacity-100' : 'opacity-0'
-            }`}
             style={{
-              backgroundImage: `url(${images[nextIndex]})`,
+              backgroundImage: `url(${images[currentIndex]})`,
               pointerEvents: 'none',
-              transitionDuration: `${FADE_DURATION}ms`,
+              opacity: isTransitioning ? 0 : 1,
+              transition: `opacity ${FADE_DURATION}ms ease-in-out`,
             }}
           />
         )}
       </div>
 
-      {/* Black overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50 z-30 gold-vignette" />
+      {/* Overlay - Black with gold vignette */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-black/40 z-30 gold-vignette" />
 
       <div className="relative z-40 max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-20 lg:py-24 w-full">
         <div className="text-center w-full">
@@ -301,7 +293,7 @@ const HeroSection = () => {
           <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 px-2 sm:px-0">
             <div className="search-container">
               {!searchExpanded && (
-                <button 
+                <button
                   onClick={toggleSearch}
                   className="search-toggle p-4 rounded-full flex items-center justify-center"
                   aria-label="Open search"
@@ -309,24 +301,24 @@ const HeroSection = () => {
                   <Search className="text-primary-gold w-6 h-6" />
                 </button>
               )}
-              
+
               <form onSubmit={handleSearch} className="search-form bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl overflow-hidden w-full">
-                <div className="search-input-container h-full p-2">
-                  <Input
-                    type="text"
-                    placeholder="Search locations, countries, or properties..."
-                    className="search-input pl-4 border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-lg rounded-xl input-focus-gold"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <Button 
-                    type="submit" 
-                    className="search-button ml-2 btn-primary p-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
+                <div className="search-input-container flex items-center w-full h-full pl-6 pr-2 py-1.5">
+                   <Input
+                     type="text"
+                     placeholder="Search locations, countries, or properties..."
+                     className="search-input w-full border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-lg"
+                     value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
+                   />
+                  <Button
+                    type="submit"
+                    className="search-button btn-primary p-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
                   >
                     <Search className="w-6 h-6" />
-                  </Button>
-                </div>
-              </form>
+                   </Button>
+                 </div>
+               </form>
             </div>
           </div>
 
@@ -349,8 +341,8 @@ const HeroSection = () => {
       </div>
 
       {/* WhatsApp button */}
-      <button 
-        onClick={openWhatsApp} 
+      <button
+        onClick={openWhatsApp}
         className="whatsapp-button"
         aria-label="Chat with us on WhatsApp"
       >
