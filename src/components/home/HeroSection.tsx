@@ -68,7 +68,7 @@ const HeroSection = () => {
       setTimeout(() => {
         const input = document.querySelector('.search-input') as HTMLInputElement;
         if (input) input.focus();
-      }, 100);
+      }, 300);
     }
   };
 
@@ -166,12 +166,28 @@ const HeroSection = () => {
         }
         .search-toggle {
           transition: all 0.3s ease;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .search-toggle:hover {
           transform: scale(1.1);
+          background: rgba(255, 255, 255, 0.2);
         }
         .search-container {
+          transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          display: flex;
+          justify-content: center;
+          margin: 0 auto;
+        }
+        .search-form {
           transition: all 0.3s ease;
+          overflow: hidden;
+        }
+        .search-input-container {
+          transition: width 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          display: flex;
+          align-items: center;
         }
         @media (max-width: 640px) {
           .font-luxury {
@@ -189,22 +205,38 @@ const HeroSection = () => {
             height: 48px !important;
             margin-bottom: 0.75rem !important;
           }
-          .hero-search-btn {
-            padding: 1rem 1.5rem !important;
-            font-size: 1.125rem !important;
-          }
           .search-container {
             width: ${searchExpanded ? '100%' : 'auto'};
+          }
+          .search-input-container {
+            width: ${searchExpanded ? '100%' : '0'};
           }
           .search-input {
             display: ${searchExpanded ? 'block' : 'none'};
             width: ${searchExpanded ? '100%' : '0'};
+            opacity: ${searchExpanded ? '1' : '0'};
+            margin-left: ${searchExpanded ? '0.5rem' : '0'};
+          }
+          .search-button {
+            display: ${searchExpanded ? 'block' : 'none'};
           }
         }
         @media (min-width: 641px) {
+          .search-container {
+            width: 100%;
+            max-width: 600px;
+          }
+          .search-input-container {
+            width: 100%;
+          }
           .search-input {
             display: block;
             width: 100%;
+            opacity: 1;
+            margin-left: 0.5rem;
+          }
+          .search-toggle {
+            display: none;
           }
         }
       `}</style>
@@ -262,32 +294,37 @@ const HeroSection = () => {
           </p>
 
           {/* Search */}
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-10 px-2 sm:px-0">
-            <div className="flex flex-col sm:flex-row gap-4 bg-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl border border-white/20 w-full shadow-2xl items-center search-container">
-              <div className="flex-1 relative min-w-0 w-full flex items-center">
+          <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 px-2 sm:px-0">
+            <div className="search-container">
+              {!searchExpanded && (
                 <button 
-                  type="button" 
                   onClick={toggleSearch}
-                  className="search-toggle p-3 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 mr-2 sm:mr-3"
+                  className="search-toggle p-4 rounded-full flex items-center justify-center"
+                  aria-label="Open search"
                 >
                   <Search className="text-primary-gold w-6 h-6" />
                 </button>
-                <Input
-                  type="text"
-                  placeholder="Search locations, countries, or properties..."
-                  className="pl-4 sm:pl-4 border border-white/30 focus:border-primary-gold focus:ring-primary-gold text-white bg-white/5 placeholder-gray-300 text-lg rounded-xl w-full input-focus-gold search-input"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <Button 
-                type="submit" 
-                className="btn-primary px-6 sm:px-8 py-3 sm:py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hero-search-btn"
-              >
-                {searchExpanded ? 'Search' : <Search className="w-6 h-6" />}
-              </Button>
+              )}
+              
+              <form onSubmit={handleSearch} className="search-form bg-white/10 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl overflow-hidden">
+                <div className="search-input-container h-full p-2">
+                  <Input
+                    type="text"
+                    placeholder="Search locations, countries, or properties..."
+                    className="search-input pl-4 border border-white/30 focus:border-primary-gold focus:ring-primary-gold text-white bg-white/5 placeholder-gray-300 text-lg rounded-xl input-focus-gold"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Button 
+                    type="submit" 
+                    className="search-button ml-2 btn-primary px-6 py-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out"
+                  >
+                    <Search className="w-6 h-6" />
+                  </Button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
 
           {/* Call-to-action */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-2 sm:px-0">
