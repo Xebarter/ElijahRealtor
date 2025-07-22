@@ -88,7 +88,7 @@ const HeroSection = () => {
           font-family: 'Playfair Display', serif;
         }
         .gold-gradient {
-          color: #E0B46B;
+          color: #FFD700; /* Brighter, more vibrant gold */
         }
         .gold-shimmer {
           position: absolute;
@@ -109,9 +109,6 @@ const HeroSection = () => {
           0% { opacity: 0.7; }
           50% { opacity: 1; box-shadow: 0 0 8px 2px #fffbe6; }
           100% { opacity: 0.7; }
-        }
-        .gold-vignette {
-          box-shadow: 0 0 120px 40px #E0B46B33 inset;
         }
         .btn-primary {
           background: linear-gradient(135deg, #E0B46B 0%, #D4AF37 100%);
@@ -264,8 +261,8 @@ const HeroSection = () => {
         )}
       </div>
 
-      {/* Overlay - Black with gold vignette */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-black/40 z-30 gold-vignette" />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-black/40 z-30" />
 
       <div className="relative z-40 max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-20 lg:py-24 w-full">
         <div className="text-center w-full">
