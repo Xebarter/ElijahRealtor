@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '../../lib/supabase';
 
-const SLIDE_DURATION = 8000;
-const FADE_DURATION = 2000;
+const SLIDE_DURATION = 7000;
+const FADE_DURATION = 3000;
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
