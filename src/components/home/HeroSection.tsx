@@ -83,27 +83,27 @@ const HeroSection = () => {
           position: absolute;
           top: 0; left: 0; width: 100%; height: 100%;
           pointer-events: none;
-          background: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="%23E0B46B" stop-opacity="0.15"/><stop offset="1" stop-color="%23D4AF37" stop-opacity="0.08"/></linearGradient><rect width="100%25" height="100%25" fill="url(%23g)"/></svg>');
+          background: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" xmlns="http://www.w3.org/2000/svg"><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="%23FFD700" stop-opacity="0.15"/><stop offset="1" stop-color="%23FFD700" stop-opacity="0.08"/></linearGradient><rect width="100%25" height="100%25" fill="url(%23g)"/></svg>');
           z-index: 25;
         }
         .sparkle {
           position: absolute;
           width: 2px; height: 2px;
           border-radius: 50%;
-          background: #fffbe6;
+          background: #FFD700;
           opacity: 0.7;
           animation: sparkle 2.5s infinite linear;
         }
         @keyframes sparkle {
           0% { opacity: 0.7; }
-          50% { opacity: 1; box-shadow: 0 0 8px 2px #fffbe6; }
+          50% { opacity: 1; box-shadow: 0 0 8px 2px #FFD700; }
           100% { opacity: 0.7; }
         }
         .btn-primary {
-          background: linear-gradient(135deg, #E0B46B 0%, #D4AF37 100%);
+          background-color: #FFD700;
           color: #181818;
           font-weight: 700;
-          box-shadow: 0 4px 24px 0 #E0B46B55, 0 2px 8px #0002;
+          box-shadow: 0 4px 24px 0 #FFD70055, 0 2px 8px #0002;
           border: none;
           position: relative;
           overflow: hidden;
@@ -124,8 +124,17 @@ const HeroSection = () => {
           transition: left 0.5s;
         }
         .input-focus-gold:focus {
-          border-color: #E0B46B !important;
-          box-shadow: 0 0 0 3px #E0B46B88 !important;
+          border-color: #FFD700 !important;
+          box-shadow: 0 0 0 3px #FFD70088 !important;
+        }
+        .btn-secondary {
+          background-color: transparent;
+          border: 2px solid #FFD700;
+          color: #FFD700;
+        }
+        .btn-secondary:hover {
+          background-color: #FFD700;
+          color: #181818;
         }
         .whatsapp-button {
           position: fixed;
@@ -231,9 +240,9 @@ const HeroSection = () => {
           {/* Crest */}
           <div className="flex justify-center mb-4">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-crest">
-              <circle cx="32" cy="32" r="30" stroke="#E0B46B" strokeWidth="4" fill="#181818" />
-              <path d="M32 16L36 28H28L32 16Z" fill="#E0B46B" />
-              <path d="M32 48C38 48 44 44 44 36C44 32 40 28 32 28C24 28 20 32 20 36C20 44 26 48 32 48Z" fill="#E0B46B" />
+              <circle cx="32" cy="32" r="30" stroke="#FFD700" strokeWidth="4" fill="#181818" />
+              <path d="M32 16L36 28H28L32 16Z" fill="#FFD700" />
+              <path d="M32 48C38 48 44 44 44 36C44 32 40 28 32 28C24 28 20 32 20 36C20 44 26 48 32 48Z" fill="#FFD700" />
             </svg>
           </div>
 
@@ -253,21 +262,21 @@ const HeroSection = () => {
             <div className="search-container w-full max-w-3xl">
               <form onSubmit={handleSearch} className="search-form bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl overflow-hidden w-full">
                 <div className="search-input-container flex items-center w-full h-full pl-6 pr-2 py-1.5">
-                  <Input
-                    type="text"
-                    placeholder="Search locations, countries, or properties..."
+                <Input
+                  type="text"
+                  placeholder="Search locations, countries, or properties..."
                     className="search-input w-full border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-lg"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
                   <Button
                     type="submit"
                     className="search-button btn-primary p-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
                   >
                     <Search className="w-6 h-6" />
-                  </Button>
-                </div>
-              </form>
+              </Button>
+            </div>
+          </form>
             </div>
           </div>
 
