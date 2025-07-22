@@ -77,7 +77,17 @@ const Header = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Call us"
+                style={{ backgroundColor: '#181818' }}
+                className="p-2 hover:bg-primary-gold"
+                onClick={() => window.location.href = 'tel:+256751077770'}
+              >
+                <Phone className="w-6 h-6 text-white" />
+              </Button>
             <Button
               variant="ghost"
               size="sm"
