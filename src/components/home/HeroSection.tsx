@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '../../lib/supabase';
@@ -14,6 +14,7 @@ const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [nextIndex, setNextIndex] = React.useState(1);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
+  const [searchExpanded, setSearchExpanded] = React.useState(false);
 
   React.useEffect(() => {
     const fetchImages = async () => {
@@ -59,6 +60,20 @@ const HeroSection = () => {
     if (searchQuery.trim()) {
       window.location.href = `/properties?search=${encodeURIComponent(searchQuery)}`;
     }
+  };
+
+  const toggleSearch = () => {
+    setSearchExpanded(!searchExpanded);
+    if (!searchExpanded) {
+      setTimeout(() => {
+        const input = document.querySelector('.search-input') as HTMLInputElement;
+        if (input) input.focus();
+      }, 100);
+    }
+  };
+
+  const openWhatsApp = () => {
+    window.open(`https://wa.me/256751077770`, '_blank');
   };
 
   return (
@@ -130,28 +145,66 @@ const HeroSection = () => {
           border-color: #E0B46B !important;
           box-shadow: 0 0 0 3px #E0B46B88 !important;
         }
+        .whatsapp-button {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          z-index: 100;
+          background: #25D366;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+          transition: all 0.3s ease;
+        }
+        .whatsapp-button:hover {
+          transform: scale(1.1);
+          box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+        }
+        .search-toggle {
+          transition: all 0.3s ease;
+        }
+        .search-toggle:hover {
+          transform: scale(1.1);
+        }
+        .search-container {
+          transition: all 0.3s ease;
+        }
         @media (max-width: 640px) {
           .font-luxury {
-            font-size: 2.75rem !important;
+            font-size: 3rem !important;
           }
           .hero-headline {
-            font-size: 2.5rem !important;
-            line-height: 3rem !important;
+            font-size: 3rem !important;
+            line-height: 3.5rem !important;
           }
           .hero-subheadline {
-            font-size: 1.35rem !important;
+            font-size: 1.5rem !important;
           }
           .hero-crest {
             width: 48px !important;
             height: 48px !important;
             margin-bottom: 0.75rem !important;
           }
-          .hero-search {
-            padding: 0.9rem !important;
-          }
           .hero-search-btn {
             padding: 1rem 1.5rem !important;
             font-size: 1.125rem !important;
+          }
+          .search-container {
+            width: ${searchExpanded ? '100%' : 'auto'};
+          }
+          .search-input {
+            display: ${searchExpanded ? 'block' : 'none'};
+            width: ${searchExpanded ? '100%' : '0'};
+          }
+        }
+        @media (min-width: 641px) {
+          .search-input {
+            display: block;
+            width: 100%;
           }
         }
       `}</style>
@@ -190,7 +243,7 @@ const HeroSection = () => {
         <div className="text-center w-full">
           {/* Crest */}
           <div className="flex justify-center mb-4">
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-crest">
               <circle cx="32" cy="32" r="30" stroke="#E0B46B" strokeWidth="4" fill="#181818" />
               <path d="M32 16L36 28H28L32 16Z" fill="#E0B46B" />
               <path d="M32 48C38 48 44 44 44 36C44 32 40 28 32 28C24 28 20 32 20 36C20 44 26 48 32 48Z" fill="#E0B46B" />
@@ -210,19 +263,28 @@ const HeroSection = () => {
 
           {/* Search */}
           <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-10 px-2 sm:px-0">
-            <div className="flex flex-col sm:flex-row gap-4 bg-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl border border-white/20 w-full shadow-2xl">
-              <div className="flex-1 relative min-w-0">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-gold w-6 h-6" />
+            <div className="flex flex-col sm:flex-row gap-4 bg-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl border border-white/20 w-full shadow-2xl items-center search-container">
+              <div className="flex-1 relative min-w-0 w-full flex items-center">
+                <button 
+                  type="button" 
+                  onClick={toggleSearch}
+                  className="search-toggle p-3 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 mr-2 sm:mr-3"
+                >
+                  <Search className="text-primary-gold w-6 h-6" />
+                </button>
                 <Input
                   type="text"
                   placeholder="Search locations, countries, or properties..."
-                  className="pl-12 sm:pl-14 border border-white/30 focus:border-primary-gold focus:ring-primary-gold text-white bg-white/5 placeholder-gray-300 text-lg rounded-xl w-full input-focus-gold"
+                  className="pl-4 sm:pl-4 border border-white/30 focus:border-primary-gold focus:ring-primary-gold text-white bg-white/5 placeholder-gray-300 text-lg rounded-xl w-full input-focus-gold search-input"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button type="submit" className="btn-primary px-6 sm:px-8 py-3 sm:py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hero-search-btn">
-                Search
+              <Button 
+                type="submit" 
+                className="btn-primary px-6 sm:px-8 py-3 sm:py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hero-search-btn"
+              >
+                {searchExpanded ? 'Search' : <Search className="w-6 h-6" />}
               </Button>
             </div>
           </form>
@@ -244,6 +306,15 @@ const HeroSection = () => {
           <div className="w-1 h-4 bg-white/50 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
+
+      {/* WhatsApp button */}
+      <button 
+        onClick={openWhatsApp} 
+        className="whatsapp-button"
+        aria-label="Chat with us on WhatsApp"
+      >
+        <MessageCircle className="text-white w-8 h-8" />
+      </button>
     </section>
   );
 };
