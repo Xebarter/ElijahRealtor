@@ -118,6 +118,7 @@ export interface Testimonial {
   country?: string;
   status: 'pending' | 'approved' | 'rejected';
   created_at: string;
+  new_media?: File[];
 }
 
 export interface BlogPost {

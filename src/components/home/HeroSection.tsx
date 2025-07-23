@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { MessageSquare, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '../../lib/supabase';
+import ContactForm from '@/components/common/ContactForm';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 
 const SLIDE_DURATION = 7000;
 const FADE_DURATION = 6500;
@@ -64,6 +68,9 @@ const HeroSection = () => {
   const openWhatsApp = () => {
     window.open(`https://wa.me/256751077770`, '_blank');
   };
+
+  // Modal state for message button
+  const [open, setOpen] = React.useState(false);
 
   return (
     <section className="relative min-h-[60vh] sm:min-h-[75vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden font-inter overflow-x-hidden">
@@ -142,17 +149,20 @@ const HeroSection = () => {
           right: 30px;
           z-index: 100;
           background: #25D366;
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
+          padding: 10px 20px;
+          border-radius: 9999px;
           display: flex;
           align-items: center;
           justify-content: center;
           box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
           transition: all 0.3s ease;
+          color: white;
+          font-weight: 600;
+          font-size: 1rem;
+          line-height: 1.5;
         }
         .whatsapp-button:hover {
-          transform: scale(1.1);
+          transform: scale(1.05);
           box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
         }
         .search-container {
@@ -262,21 +272,21 @@ const HeroSection = () => {
             <div className="search-container w-full max-w-3xl">
               <form onSubmit={handleSearch} className="search-form bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl overflow-hidden w-full">
                 <div className="search-input-container flex items-center w-full h-full pl-6 pr-2 py-1.5">
-                <Input
-                  type="text"
-                  placeholder="Search locations, countries, or properties..."
+                  <Input
+                    type="text"
+                    placeholder="Search locations, countries, or properties..."
                     className="search-input w-full border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-lg"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                   <Button
                     type="submit"
                     className="search-button btn-primary p-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
                   >
                     <Search className="w-6 h-6" />
-              </Button>
-            </div>
-          </form>
+                  </Button>
+                </div>
+              </form>
             </div>
           </div>
 
@@ -305,18 +315,47 @@ const HeroSection = () => {
         aria-label="Chat with us on WhatsApp"
       >
         <svg
-          width="32"
-          height="32"
+          width="24"
+          height="24"
           viewBox="0 0 448 512"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
-          className="text-white"
+          className="text-white mr-2"
         >
           <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.5-7c-18.9-29.4-28.8-63.3-28.8-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
         </svg>
+        <span>Chat on WhatsApp</span>
       </button>
+            {/* Message button */}
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={() => setOpen(true)}
+              className="fixed bottom-32 right-7 z-100 bg-[#FFD700] hover:bg-yellow-400 text-[#181818] w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110"
+              aria-label="Send us a message"
+              style={{ boxShadow: '0 4px 20px #FFD70055, 0 2px 8px #0002' }}
+            >
+              <MessageSquare className="w-7 h-7" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Send us a message</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      {/* Message Modal */}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-lg w-full">
+          <DialogHeader>
+            <DialogTitle>Send us a Message</DialogTitle>
+          </DialogHeader>
+          <ContactForm onSuccess={() => setOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </section>
   );
-};
+}
+  ;
 
 export default HeroSection;

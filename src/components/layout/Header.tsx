@@ -30,129 +30,102 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 w-full overflow-x-hidden">
-      <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-12 sm:h-14 md:h-16">
+    <header className="bg-black text-white shadow-lg sticky top-0 z-50 w-full">
+      <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 min-w-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#181818' }}>
-              <Home className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            </div>
-            <span className="text-base sm:text-lg md:text-xl font-bold truncate" style={{ color: '#181818' }}>ElijahRealtor</span>
+          <Link to="/" className="flex items-center space-x-3">
+            <img src="/logo.svg" alt="Elijah Realtor Logo" className="h-10 w-auto" />
+            <span className="text-2xl font-bold tracking-wider text-[#ffd51e] font-cinzel">ElijahRealtor</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 sm:space-x-8">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="flex items-center space-x-1 text-gray-700 hover:text-black transition-colors duration-200 text-sm sm:text-base"
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
+          <nav className="hidden md:flex items-center space-x-8">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="flex items-center space-x-2 text-gray-300 hover:text-primary-gold transition-colors duration-300 group font-cinzel"
+              >
+                <item.icon className="w-5 h-5 text-primary-gold/80 group-hover:text-primary-gold" />
+                <span className="font-medium tracking-wide">{item.name}</span>
+              </Link>
+            ))}
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-2 sm:space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             {isAdmin ? (
               <Link to="/admin">
-                <Button className="btn-primary px-3 sm:px-4 py-1 sm:py-2 text-sm sm:text-base">Admin</Button>
+                <Button className="btn-primary bg-primary-gold hover:bg-primary-gold/90 text-primary-navy font-bold tracking-wide font-cinzel">Admin</Button>
               </Link>
             ) : user ? (
-              <span className="text-xs sm:text-sm text-gray-600 truncate">Welcome, {user.user_metadata?.full_name || user.email}</span>
+              <span className="text-sm text-gray-300 font-cinzel">Welcome, {user.user_metadata?.full_name || user.email}</span>
             ) : (
               <Link to="/login">
-                <Button variant="outline" size="sm" className="flex items-center space-x-2 px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-base">
-                  <LogIn className="w-4 h-4" />
-                  <span>Admin Login</span>
+                <Button variant="outline" className="border-primary-gold text-primary-gold hover:bg-primary-gold hover:text-primary-navy font-bold tracking-wide font-cinzel">
+                  <LogIn className="w-5 h-5 mr-2" />
+                  Admin Login
                 </Button>
               </Link>
             )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <Button
-                variant="ghost"
-                size="sm"
-                aria-label="Call us"
-                style={{ backgroundColor: '#181818' }}
-                className="p-2 hover:bg-primary-gold"
-                onClick={() => window.location.href = 'tel:+256751077770'}
-              >
-                <Phone className="w-6 h-6 text-white" />
-              </Button>
+          <div className="md:hidden flex items-center">
             <Button
               variant="ghost"
-              size="sm"
+              size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
-              style={{ backgroundColor: '#181818' }}
-              className="p-2 hover:bg-primary-gold"
+              className="text-white hover:bg-white/10"
             >
-              {isMenuOpen ? (
-                <X className="w-6 h-6 text-white" />
-              ) : (
-                <Menu className="w-6 h-6 text-white" />
-              )}
+              {isMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
             </Button>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div
-            ref={menuRef}
-            className="md:hidden border-t border-gray-200 py-4 animate-slide-in text-white shadow-2xl fixed right-0 top-0 h-full w-4/5 max-w-xs z-50"
-            style={{ backgroundColor: '#181818' }}
-          >
-            <nav className="flex flex-col space-y-2 sm:space-y-4 mt-16 px-4">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="flex items-center space-x-2 text-white hover:text-primary-gold transition-colors duration-200 px-2 sm:px-4 py-3 text-lg font-semibold rounded-lg"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
-              <div className="px-2 sm:px-4 pt-4 border-t border-gray-700 mt-4">
-                {isAdmin ? (
-                  <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
-                    <Button className="w-full btn-primary px-3 sm:px-4 py-2 text-base">Admin</Button>
-                  </Link>
-                ) : !user ? (
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="outline" className="w-full flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 text-base">
-                      <LogIn className="w-4 h-4" />
-                      <span>Admin Login</span>
-                    </Button>
-                  </Link>
-                ) : null}
-              </div>
-            </nav>
-          </div>
-        )}
-        {/* Overlay for click-outside-to-close */}
-        {isMenuOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
-            onClick={() => setIsMenuOpen(false)}
-            aria-hidden="true"
-          />
-        )}
       </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div
+          ref={menuRef}
+          className="md:hidden fixed inset-0 bg-black/95 backdrop-blur-sm z-50 animate-slide-in"
+        >
+          <div className="flex justify-end p-4">
+            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(false)}>
+              <X className="w-8 h-8 text-white" />
+            </Button>
+          </div>
+          <nav className="flex flex-col items-center justify-center h-full space-y-6 -mt-16">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="flex items-center space-x-3 text-2xl font-semibold text-white hover:text-primary-gold transition-colors duration-300 font-cinzel"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <item.icon className="w-6 h-6" />
+                <span>{item.name}</span>
+              </Link>
+            ))}
+            <div className="pt-8 w-4/5 max-w-xs">
+              {isAdmin ? (
+                <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
+                  <Button className="w-full btn-primary bg-primary-gold hover:bg-primary-gold/90 text-primary-navy font-bold tracking-wide text-lg py-3 font-cinzel">Admin</Button>
+                </Link>
+              ) : !user ? (
+                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" className="w-full border-primary-gold text-primary-gold hover:bg-primary-gold hover:text-primary-navy font-bold tracking-wide text-lg py-3 font-cinzel">
+                    <LogIn className="w-5 h-5 mr-2" />
+                    <span>Admin Login</span>
+                  </Button>
+                </Link>
+              ) : null}
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };

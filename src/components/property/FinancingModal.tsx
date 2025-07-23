@@ -11,6 +11,7 @@ import type { z } from 'zod';
 import toast from 'react-hot-toast';
 import { COUNTRIES } from '@/lib/countries';
 import type { Property } from '@/types';
+import { supabase } from '@/lib/supabase';
 
 interface FinancingModalProps {
   property: Property;
@@ -47,7 +48,7 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
 
   const watchCurrency = watch('currency');
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: any) => {
     if (!idDocument || !incomeProof) {
       toast.error('Please upload all required documents');
       return;
@@ -55,9 +56,45 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
 
     setIsSubmitting(true);
     try {
-      // In a real app, upload files to Supabase Storage and submit application
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Upload ID Document
+      const idDocExt = idDocument.name.split('.').pop();
+      const idDocPath = `financing/${property.id}/${Date.now()}-id.${idDocExt}`;
+      const { data: idDocUpload, error: idDocError } = await supabase.storage.from('financing-documents').upload(idDocPath, idDocument);
+      if (idDocError) {
+        console.error('ID Document upload error:', idDocError);
+        throw idDocError;
+      }
+      const { data: idDocUrlData } = supabase.storage.from('financing-documents').getPublicUrl(idDocPath);
+      const idDocUrl = idDocUrlData.publicUrl;
+
+      // Upload Income Proof
+      const incomeProofExt = incomeProof.name.split('.').pop();
+      const incomeProofPath = `financing/${property.id}/${Date.now()}-income.${incomeProofExt}`;
+      const { data: incomeProofUpload, error: incomeProofError } = await supabase.storage.from('financing-documents').upload(incomeProofPath, incomeProof);
+      if (incomeProofError) {
+        console.error('Income Proof upload error:', incomeProofError);
+        throw incomeProofError;
+      }
+      const { data: incomeProofUrlData } = supabase.storage.from('financing-documents').getPublicUrl(incomeProofPath);
+      const incomeProofUrl = incomeProofUrlData.publicUrl;
+
+      // Insert application into DB
+      const { error: insertError } = await supabase.from('financing_applications').insert({
+        property_id: property.id,
+        applicant_name: data.applicant_name,
+        applicant_email: data.applicant_email,
+        applicant_phone: data.applicant_phone,
+        monthly_income: data.monthly_income,
+        currency: data.currency,
+        employment_status: data.employment_status,
+        id_document_url: idDocUrl,
+        income_proof_url: incomeProofUrl,
+        status: 'received',
+      });
+      if (insertError) {
+        console.error('Insert error:', insertError);
+        throw insertError;
+      }
 
       toast.success('Financing application submitted successfully!');
       handleClose();
@@ -230,18 +267,13 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
                 <p className="text-sm text-gray-600 mb-2">
                   Upload your ID document (Passport, Driver's License, etc.)
                 </p>
-                <Input
+                <input
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={(e) => setIdDocument(e.target.files?.[0] || null)}
-                  className="hidden"
+                  className="block mx-auto mb-2 border border-gray-300 rounded px-3 py-2 cursor-pointer text-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-gold"
                   id="id-document"
                 />
-                <label htmlFor="id-document">
-                  <Button type="button" variant="outline" size="sm">
-                    Choose File
-                  </Button>
-                </label>
                 {idDocument && (
                   <p className="text-sm text-green-600 mt-2">
                     Selected: {idDocument.name}
@@ -264,18 +296,13 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
                 <p className="text-sm text-gray-600 mb-2">
                   Upload proof of income (Payslip, Bank Statement, etc.)
                 </p>
-                <Input
+                <input
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={(e) => setIncomeProof(e.target.files?.[0] || null)}
-                  className="hidden"
+                  className="block mx-auto mb-2 border border-gray-300 rounded px-3 py-2 cursor-pointer text-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-gold"
                   id="income-proof"
                 />
-                <label htmlFor="income-proof">
-                  <Button type="button" variant="outline" size="sm">
-                    Choose File
-                  </Button>
-                </label>
                 {incomeProof && (
                   <p className="text-sm text-green-600 mt-2">
                     Selected: {incomeProof.name}

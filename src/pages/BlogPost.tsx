@@ -57,7 +57,7 @@ const BlogPostPage = () => {
     if (slug) {
       fetchPost();
     }
-  }, [slug]);
+  }, [slug, getPostBySlug]);
 
   useEffect(() => {
     if (post && sanitizedPosts.length > 0) {
@@ -118,59 +118,19 @@ const BlogPostPage = () => {
         type="article"
       />
 
-      <div className="min-h-screen bg-bg-primary py-8 sm:py-12">
-        <div className="max-w-4xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
-          {/* Hero Section */}
-          <div className="relative">
-            {post.featured_image_url ? (
-              <div className="h-96 relative">
-                <div className="absolute inset-0 bg-black/50"></div>
-                <img
-                  src={post.featured_image_url}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
-                    {post.excerpt && (
-                      <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-6">
-                        {post.excerpt}
-                      </p>
-                    )}
-                    <div className="flex flex-wrap justify-center gap-4 text-sm">
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        <span>{formatDate(post.created_at)}</span>
-                      </div>
-                      
-                      {post.author_name && (
-                        <div className="flex items-center">
-                          <User className="w-4 h-4 mr-1" />
-                          <span>{post.author_name}</span>
-                        </div>
-                      )}
-                      
-                      {post.reading_time_minutes && (
-                        <div className="flex items-center">
-                          <Clock className="w-4 h-4 mr-1" />
-                          <span>{post.reading_time_minutes} min read</span>
-                        </div>
-                      )}
-                      
-                      {post.view_count !== undefined && (
-                        <div className="flex items-center">
-                          <Eye className="w-4 h-4 mr-1" />
-                          <span>{post.view_count} views</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div style={{ backgroundColor: '#181818' }} className="text-white py-16">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="min-h-screen bg-bg-primary">
+        {/* Hero Section */}
+        <div className="relative">
+          {post.featured_image_url ? (
+            <div className="h-96 relative">
+              <div className="absolute inset-0 bg-black/50"></div>
+              <img
+                src={post.featured_image_url}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
                   <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
                   {post.excerpt && (
                     <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-6">
@@ -206,84 +166,122 @@ const BlogPostPage = () => {
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Main Content */}
-              <div className="lg:col-span-2 space-y-8">
-                {/* Back to Blog */}
-                <Link to="/blog" className="inline-flex items-center hover:text-primary-gold transition-colors" style={{ color: '#181818' }}>
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Blog
-                </Link>
-                
-                {/* Post Content */}
-                <Card>
-                  <CardContent className="p-8">
-                    {/* Category */}
-                    {post.category && (
-                      <Link to={`/blog/category/${post.category}`}>
-                        <Badge variant="outline" className="mb-4 text-primary-gold border-primary-gold">
-                          {post.category}
-                        </Badge>
-                      </Link>
-                    )}
-                    
-                    {/* Content */}
-                    <div className="prose prose-lg max-w-none">
-                      <ReactMarkdown>{post.content}</ReactMarkdown>
+            </div>
+          ) : (
+            <div className="bg-primary-navy text-white py-16">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
+                {post.excerpt && (
+                  <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-6">
+                    {post.excerpt}
+                  </p>
+                )}
+                <div className="flex flex-wrap justify-center gap-4 text-sm">
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-1" />
+                    <span>{formatDate(post.created_at)}</span>
+                  </div>
+                  
+                  {post.author_name && (
+                    <div className="flex items-center">
+                      <User className="w-4 h-4 mr-1" />
+                      <span>{post.author_name}</span>
                     </div>
-                    
-                    {/* Tags */}
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="mt-8 pt-6 border-t border-gray-200">
-                        <div className="flex items-center">
-                          <TagIcon className="w-4 h-4 mr-2 text-gray-500" />
-                          <span className="text-gray-700 mr-2">Tags:</span>
-                          <div className="flex flex-wrap gap-2">
-                            {post.tags.map((tag, index) => (
-                              <Link key={index} to={`/blog/tag/${tag}`}>
-                                <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
-                                  {tag}
-                                </Badge>
-                              </Link>
-                            ))}
-                          </div>
+                  )}
+                  
+                  {post.reading_time_minutes && (
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      <span>{post.reading_time_minutes} min read</span>
+                    </div>
+                  )}
+                  
+                  {post.view_count !== undefined && (
+                    <div className="flex items-center">
+                      <Eye className="w-4 h-4 mr-1" />
+                      <span>{post.view_count} views</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Back to Blog */}
+              <Link to="/blog" className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Blog
+              </Link>
+              
+              {/* Post Content */}
+              <Card>
+                <CardContent className="p-8">
+                  {/* Category */}
+                  {post.category && (
+                    <Link to={`/blog/category/${post.category}`}>
+                      <Badge variant="outline" className="mb-4 text-primary-gold border-primary-gold">
+                        {post.category}
+                      </Badge>
+                    </Link>
+                  )}
+                  
+                  {/* Content */}
+                  <div className="prose prose-lg max-w-none">
+                    <ReactMarkdown>{post.content}</ReactMarkdown>
+                  </div>
+                  
+                  {/* Tags */}
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mt-8 pt-6 border-t border-gray-200">
+                      <div className="flex items-center">
+                        <TagIcon className="w-4 h-4 mr-2 text-gray-500" />
+                        <span className="text-gray-700 mr-2">Tags:</span>
+                        <div className="flex flex-wrap gap-2">
+                          {post.tags.map((tag, index) => (
+                            <Link key={index} to={`/blog/tag/${tag}`}>
+                              <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+                                {tag}
+                              </Badge>
+                            </Link>
+                          ))}
                         </div>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-                
-                {/* Comments */}
-                <div className="space-y-6">
-                  <BlogCommentList />
-                  <BlogCommentForm postId={post.id} />
-                </div>
-                
-                {/* Related Posts */}
-                {relatedPosts.length > 0 && (
-                  <div className="space-y-4">
-                    <h2 className="text-2xl font-bold" style={{ color: '#181818' }}>Related Posts</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {relatedPosts.map((relatedPost) => (
-                        <BlogCard key={relatedPost.id} post={relatedPost} compact />
-                      ))}
                     </div>
-                  </div>
-                )}
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Comments */}
+              <div className="space-y-6">
+                <BlogCommentList />
+                <BlogCommentForm postId={post.id} />
               </div>
               
-              {/* Sidebar */}
-              <div>
-                <BlogSidebar
-                  categories={sanitizedCategories}
-                  tags={sanitizedTags}
-                  recentPosts={sanitizedPosts.filter((p: any) => p.id !== post.id).slice(0, 5)}
-                />
-              </div>
+              {/* Related Posts */}
+              {relatedPosts.length > 0 && (
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-bold text-primary-navy">Related Posts</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {relatedPosts.map((relatedPost) => (
+                      <BlogCard key={relatedPost.id} post={relatedPost} compact />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Sidebar */}
+            <div>
+              <BlogSidebar
+                categories={sanitizedCategories}
+                tags={sanitizedTags}
+                recentPosts={sanitizedPosts.filter((p: any) => p.id !== post.id).slice(0, 5)}
+              />
             </div>
           </div>
         </div>

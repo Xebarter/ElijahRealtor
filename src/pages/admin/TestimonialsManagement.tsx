@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Plus, Star, Trash2, Image as ImageIcon } from 'lucide-react';
+import { Plus, Star, Trash2, Image as ImageIcon, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
@@ -11,15 +11,19 @@ import { useTestimonials } from '@/hooks/useTestimonials';
 import { supabase } from '@/lib/supabase';
 import toast from 'react-hot-toast';
 import type { Testimonial } from '@/types';
+import TestimonialForm from '@/components/admin/TestimonialForm';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 const TestimonialsManagement = () => {
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { testimonials, loading, error } = useTestimonials();
+  const { testimonials, loading, error, addTestimonial, updateTestimonial, deleteTestimonial, refetch } = useTestimonials();
 
   const filteredTestimonials = testimonials.filter(testimonial => {
     const matchesStatus = statusFilter === 'all' || testimonial.status === statusFilter;
@@ -32,14 +36,14 @@ const TestimonialsManagement = () => {
   });
 
   const getStatusBadge = (status: string) => {
-    const statusColors = {
+    const statusColors: { [key: string]: string } = {
       pending: 'bg-yellow-500 text-white',
       approved: 'bg-green-500 text-white',
       rejected: 'bg-red-500 text-white',
     };
 
     return (
-      <Badge className={statusColors[status as keyof typeof statusColors]}>
+      <Badge className={statusColors[status]}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </Badge>
     );
@@ -56,24 +60,62 @@ const TestimonialsManagement = () => {
     ));
   };
 
+  const handleAddTestimonial = () => {
+    setSelectedTestimonial(null);
+    setShowFormModal(true);
+  };
+
+  const handleEditTestimonial = (testimonial: Testimonial) => {
+    setSelectedTestimonial(testimonial);
+    setShowFormModal(true);
+  };
+
+  const handleDeleteTestimonial = async (id: string) => {
+    try {
+      await deleteTestimonial(id);
+      toast.success('Testimonial deleted successfully');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to delete testimonial';
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleFormSubmit = async (data: Omit<Testimonial, 'id' | 'created_at'>) => {
+    setIsSubmitting(true);
+    try {
+      if (selectedTestimonial) {
+        await updateTestimonial(selectedTestimonial.id, data);
+        toast.success('Testimonial updated successfully');
+      } else {
+        await addTestimonial(data);
+        toast.success('Testimonial added successfully');
+      }
+      setShowFormModal(false);
+      setSelectedTestimonial(null);
+      refetch(); // Refresh the list
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save testimonial';
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const updateTestimonialStatus = async (testimonialId: string, newStatus: string) => {
     setUpdatingStatus(testimonialId);
     try {
-      const { error } = await supabase
+      await supabase
         .from('testimonials')
         .update({ status: newStatus })
         .eq('id', testimonialId);
 
-      if (error) throw error;
-
       toast.success(`Testimonial ${newStatus} successfully`);
       setShowDetailsModal(false);
       setSelectedTestimonial(null);
-      
-      // Refresh the data
-      window.location.reload();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update testimonial status');
+      refetch(); // Refresh the data
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update testimonial status';
+      toast.error(errorMessage);
     } finally {
       setUpdatingStatus(null);
     }
@@ -175,7 +217,7 @@ const TestimonialsManagement = () => {
           <h1 className="text-3xl font-bold text-primary-navy">Testimonials Management</h1>
           <p className="text-gray-600 mt-2">Manage client testimonials and reviews</p>
         </div>
-        <Button className="btn-primary">
+        <Button className="btn-primary" onClick={handleAddTestimonial}>
           <Plus className="w-4 h-4 mr-2" />
           Add Testimonial
         </Button>
@@ -331,16 +373,50 @@ const TestimonialsManagement = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => handleViewDetails(testimonial)}
-                    className="flex-1"
+                    className="flex-grow"
                   >
                     <ImageIcon className="w-4 h-4 mr-1" />
                     View
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEditTestimonial(testimonial)}
+                    className="flex-grow"
+                  >
+                    <Edit className="w-4 h-4 mr-1" />
+                    Edit
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-grow text-red-600 hover:text-red-700"
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" />
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently delete the
+                          testimonial and remove its data from our servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleDeleteTestimonial(testimonial.id)}>Continue</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                   {testimonial.status === 'pending' && (
                     <>
                       <Button
@@ -475,6 +551,21 @@ const TestimonialsManagement = () => {
               )}
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Testimonial Form Modal */}
+      <Dialog open={showFormModal} onOpenChange={setShowFormModal}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{selectedTestimonial ? 'Edit Testimonial' : 'Add New Testimonial'}</DialogTitle>
+          </DialogHeader>
+          <TestimonialForm
+            testimonial={selectedTestimonial}
+            onSubmit={handleFormSubmit}
+            onCancel={() => setShowFormModal(false)}
+            loading={isSubmitting}
+          />
         </DialogContent>
       </Dialog>
     </div>

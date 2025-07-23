@@ -334,7 +334,7 @@ const FinancingManagement = () => {
               {/* Applicant Information */}
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Applicant Information</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="text-gray-600">Name:</span>
                     <div className="font-medium">{selectedApplication.applicant_name}</div>
@@ -357,7 +357,7 @@ const FinancingManagement = () => {
               {/* Financial Information */}
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Financial Information</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="text-gray-600">Monthly Income:</span>
                     <div className="font-medium">
@@ -400,8 +400,8 @@ const FinancingManagement = () => {
               {/* Documents */}
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Documents</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-3 border rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-3 border rounded-lg w-full max-w-full md:max-w-xs mx-auto flex flex-col items-start">
                     <div className="flex items-center mb-2">
                       <FileText className="w-4 h-4 mr-2 text-primary-gold" />
                       <span className="font-medium">ID Document</span>
@@ -416,7 +416,7 @@ const FinancingManagement = () => {
                       <span className="text-sm text-gray-500">Not uploaded</span>
                     )}
                   </div>
-                  <div className="p-3 border rounded-lg">
+                  <div className="p-3 border rounded-lg w-full max-w-full md:max-w-xs mx-auto flex flex-col items-start">
                     <div className="flex items-center mb-2">
                       <FileText className="w-4 h-4 mr-2 text-primary-gold" />
                       <span className="font-medium">Income Proof</span>
@@ -459,7 +459,7 @@ const FinancingManagement = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 {selectedApplication.status === 'received' && (
                   <>
                     <Button

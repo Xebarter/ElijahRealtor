@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase, uploadFile, getPublicUrl } from '@/lib/supabase';
 import type { Testimonial } from '@/types';
 
@@ -7,91 +7,120 @@ export function useTestimonials(status?: 'pending' | 'approved' | 'rejected', li
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      setLoading(true);
-      setError(null);
+  const fetchTestimonials = useCallback(async () => {
+    setLoading(true);
+    setError(null);
 
-      try {
-        let query = supabase
-          .from('testimonials')
-          .select('*')
-          .order('created_at', { ascending: false });
+    try {
+      let query = supabase
+        .from('testimonials')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-        // Filter by status
-        if (status) {
-          query = query.eq('status', status);
-        }
-
-        // Apply limit
-        if (limit) {
-          query = query.limit(limit);
-        }
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-
-        setTestimonials(data || []);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch testimonials');
-        console.error('Error fetching testimonials:', err);
-      } finally {
-        setLoading(false);
+      if (status) {
+        query = query.eq('status', status);
       }
-    };
 
-    fetchTestimonials();
+      if (limit) {
+        query = query.limit(limit);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      setTestimonials(data || []);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch testimonials';
+      setError(errorMessage);
+      console.error('Error fetching testimonials:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [status, limit]);
+
+  useEffect(() => {
+    fetchTestimonials();
+  }, [fetchTestimonials]);
 
   const uploadTestimonialMedia = async (files: File[]): Promise<string[]> => {
     if (!files || files.length === 0) return [];
 
     const uploadedUrls: string[] = [];
 
-    try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const timestamp = Date.now();
-        const fileName = `${timestamp}-${i}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-        const filePath = `testimonials/${fileName}`;
+    for (const file of files) {
+      const timestamp = Date.now();
+      const fileName = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+      const filePath = `testimonials/${fileName}`;
 
-        // Upload file to Supabase Storage
-        await uploadFile('testimonial-media', filePath, file);
-        
-        // Get public URL
-        const publicUrl = getPublicUrl('testimonial-media', filePath);
-        uploadedUrls.push(publicUrl);
+      await uploadFile('testimonial-media', filePath, file);
+      const publicUrl = getPublicUrl('testimonial-media', filePath);
+      uploadedUrls.push(publicUrl);
+    }
+
+    return uploadedUrls;
+  };
+
+  const addTestimonial = async (testimonialData: Omit<Testimonial, 'id' | 'created_at' | 'status'> & { new_media?: File[] }) => {
+    try {
+      let media_urls = testimonialData.media_urls || [];
+      if (testimonialData.new_media && testimonialData.new_media.length > 0) {
+        const newUrls = await uploadTestimonialMedia(testimonialData.new_media);
+        media_urls = [...media_urls, ...newUrls];
       }
 
-      return uploadedUrls;
-    } catch (error) {
-      console.error('Failed to upload testimonial media:', error);
-      throw new Error('Failed to upload media files. Please try again.');
+      const { data, error } = await supabase
+        .from('testimonials')
+        .insert({
+          ...testimonialData,
+          media_urls,
+          status: 'pending',
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setTestimonials(prev => [data, ...prev]);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(error instanceof Error ? error.message : 'Failed to add testimonial');
     }
   };
 
-  const submitTestimonial = async (testimonialData: {
-    client_name: string;
-    client_title?: string;
-    content: string;
-    rating: number;
-    country?: string;
-    type: 'text' | 'image' | 'video';
-    media_urls?: string[];
-  }) => {
+  const updateTestimonial = async (id: string, testimonialData: Partial<Testimonial> & { new_media?: File[] }) => {
+    try {
+      let media_urls = testimonialData.media_urls || [];
+      if (testimonialData.new_media && testimonialData.new_media.length > 0) {
+        const newUrls = await uploadTestimonialMedia(testimonialData.new_media);
+        media_urls = [...media_urls, ...newUrls];
+      }
+      
+      const { new_media, ...restData } = testimonialData;
+
+      const { data, error } = await supabase
+        .from('testimonials')
+        .update({ ...restData, media_urls })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setTestimonials(prev => prev.map(t => t.id === id ? data : t));
+      return data;
+    } catch (error: unknown) {
+      throw new Error(error instanceof Error ? error.message : 'Failed to update testimonial');
+    }
+  };
+
+  const submitTestimonial = async (testimonialData: Omit<Testimonial, 'id' | 'created_at' | 'status'>) => {
     try {
       const { data, error } = await supabase
         .from('testimonials')
         .insert({
-          client_name: testimonialData.client_name,
-          client_title: testimonialData.client_title,
-          content: testimonialData.content,
-          rating: testimonialData.rating,
-          country: testimonialData.country,
-          type: testimonialData.type,
-          media_urls: testimonialData.media_urls || [],
-          status: 'pending'
+          ...testimonialData,
+          status: 'pending',
         })
         .select()
         .single();
@@ -99,8 +128,23 @@ export function useTestimonials(status?: 'pending' | 'approved' | 'rejected', li
       if (error) throw error;
 
       return data;
-    } catch (error: any) {
-      throw new Error(error.message || 'Failed to submit testimonial');
+    } catch (error: unknown) {
+      throw new Error(error instanceof Error ? error.message : 'Failed to submit testimonial');
+    }
+  };
+
+  const deleteTestimonial = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('testimonials')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setTestimonials(prev => prev.filter(t => t.id !== id));
+    } catch (error: unknown) {
+      throw new Error(error instanceof Error ? error.message : 'Failed to delete testimonial');
     }
   };
 
@@ -113,30 +157,28 @@ export function useTestimonials(status?: 'pending' | 'approved' | 'rejected', li
 
       if (error) throw error;
 
-      // Update local state
-      setTestimonials(prev => 
-        prev.map(testimonial => 
-          testimonial.id === id 
+      setTestimonials(prev =>
+        prev.map(testimonial =>
+          testimonial.id === id
             ? { ...testimonial, status }
             : testimonial
         )
       );
-    } catch (error: any) {
-      throw new Error(error.message || 'Failed to update testimonial status');
+    } catch (error: unknown) {
+      throw new Error(error instanceof Error ? error.message : 'Failed to update testimonial status');
     }
   };
 
-  return { 
-    testimonials, 
-    loading, 
-    error, 
+  return {
+    testimonials,
+    loading,
+    error,
+    addTestimonial,
+    updateTestimonial,
+    deleteTestimonial,
+    updateTestimonialStatus,
     submitTestimonial,
     uploadTestimonialMedia,
-    updateTestimonialStatus,
-    refetch: () => {
-      setLoading(true);
-      // Re-trigger the effect
-      setTestimonials([]);
-    }
+    refetch: fetchTestimonials,
   };
 }
