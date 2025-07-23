@@ -249,11 +249,7 @@ const HeroSection = () => {
         <div className="text-center w-full">
           {/* Crest */}
           <div className="flex justify-center mb-4">
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-crest">
-              <circle cx="32" cy="32" r="30" stroke="#FFD700" strokeWidth="4" fill="#181818" />
-              <path d="M32 16L36 28H28L32 16Z" fill="#FFD700" />
-              <path d="M32 48C38 48 44 44 44 36C44 32 40 28 32 28C24 28 20 32 20 36C20 44 26 48 32 48Z" fill="#FFD700" />
-            </svg>
+            <img src="/logo.svg" alt="Elijah Realtor Logo" className="h-16 w-auto hero-crest" />
           </div>
 
           {/* Headline */}
