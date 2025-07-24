@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '../../lib/supabase';
 import ContactForm from '@/components/common/ContactForm';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 
@@ -345,6 +345,9 @@ const HeroSection = () => {
         <DialogContent className="max-w-lg w-full">
           <DialogHeader>
             <DialogTitle>Send us a Message</DialogTitle>
+            <DialogDescription>
+              Please fill out the form below and we will get back to you as soon as possible.
+            </DialogDescription>
           </DialogHeader>
           <ContactForm onSuccess={() => setOpen(false)} />
         </DialogContent>

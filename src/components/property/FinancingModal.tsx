@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { financingSchema } from '@/lib/validations';
 import type { z } from 'zod';
 import toast from 'react-hot-toast';
@@ -121,6 +121,9 @@ const FinancingModal: React.FC<FinancingModalProps> = ({
             <DollarSign className="w-5 h-5 mr-2 text-primary-gold" />
             Apply for Financing
           </DialogTitle>
+          <DialogDescription>
+            Please fill out the form below to apply for financing for this property.
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
