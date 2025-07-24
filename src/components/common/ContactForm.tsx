@@ -63,48 +63,48 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   };
 
   return (
-    <Card>
+    <Card className="w-full max-w-2xl mx-auto z-50">
       <CardHeader>
-        <CardTitle className="flex items-center text-base sm:text-lg">
-          <Send className="w-5 h-5 mr-2 text-primary-gold" />
+        <CardTitle className="flex items-center text-lg sm:text-xl">
+          <Send className="w-6 h-6 mr-3 text-primary-gold" />
           Send us a Message
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+      <CardContent className="max-h-[70vh] overflow-y-auto p-4 sm:p-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-800 mb-1.5">
                 Full Name *
               </label>
               <Input
                 {...register('name')}
                 placeholder="Enter your full name"
-                className={errors.name ? 'border-red-500' : ''}
+                className={`${errors.name ? 'border-red-500' : ''} transition-shadow duration-300`}
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                <p className="text-red-600 text-xs mt-1.5">{errors.name.message}</p>
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-800 mb-1.5">
                 Email Address *
               </label>
               <Input
                 type="email"
                 {...register('email')}
                 placeholder="Enter your email"
-                className={errors.email ? 'border-red-500' : ''}
+                className={`${errors.email ? 'border-red-500' : ''} transition-shadow duration-300`}
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                <p className="text-red-600 text-xs mt-1.5">{errors.email.message}</p>
               )}
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
             {/* Country */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-800 mb-1.5">
                 Country *
               </label>
               <Select
@@ -114,7 +114,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
                 <SelectTrigger className={errors.country ? 'border-red-500' : ''}>
                   <SelectValue placeholder="Select your country" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-60">
                   {COUNTRIES.map((country) => (
                     <SelectItem key={country.code} value={country.name}>
                       {country.flag} {country.name}
@@ -123,69 +123,68 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
                 </SelectContent>
               </Select>
               {errors.country && (
-                <p className="text-red-500 text-sm mt-1">{errors.country.message}</p>
+                <p className="text-red-600 text-xs mt-1.5">{errors.country.message}</p>
               )}
             </div>
             {/* Country Code */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-800 mb-1.5">
                 Code
               </label>
               <Input
                 value={countryCode}
                 readOnly
                 placeholder="+XXX"
-                className="bg-gray-100 cursor-not-allowed"
+                className="bg-gray-200 cursor-not-allowed"
                 tabIndex={-1}
               />
             </div>
-            {/* Phone Number */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number *
-              </label>
-              <Input
-                type="tel"
-                {...register('phone')}
-                placeholder="Enter your phone number"
-                className={errors.phone ? 'border-red-500' : ''}
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
-              )}
-            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-800 mb-1.5">
+              Phone Number *
+            </label>
+            <Input
+              type="tel"
+              {...register('phone')}
+              placeholder="Enter your phone number"
+              className={`${errors.phone ? 'border-red-500' : ''} transition-shadow duration-300`}
+            />
+            {errors.phone && (
+              <p className="text-red-600 text-xs mt-1.5">{errors.phone.message}</p>
+            )}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-800 mb-1.5">
               Subject *
             </label>
             <Input
               {...register('subject')}
               placeholder="What is this regarding?"
-              className={errors.subject ? 'border-red-500' : ''}
+              className={`${errors.subject ? 'border-red-500' : ''} transition-shadow duration-300`}
             />
             {errors.subject && (
-              <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
+              <p className="text-red-600 text-xs mt-1.5">{errors.subject.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-800 mb-1.5">
               Message *
             </label>
             <Textarea
               {...register('message')}
               placeholder="Tell us how we can help you..."
-              rows={5}
-              className={errors.message ? 'border-red-500' : ''}
+              rows={6}
+              className={`${errors.message ? 'border-red-500' : ''} transition-shadow duration-300`}
             />
             {errors.message && (
-              <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+              <p className="text-red-600 text-xs mt-1.5">{errors.message.message}</p>
             )}
           </div>
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full btn-primary"
+            className="w-full btn-primary py-3 text-base font-semibold tracking-wider"
           >
             {isSubmitting ? 'Sending...' : 'Send Message'}
           </Button>
