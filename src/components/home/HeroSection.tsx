@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, Search } from 'lucide-react';
+import { MessageCircle, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '../../lib/supabase';
@@ -346,8 +346,14 @@ const HeroSection = () => {
       )}
       {/* Message Form */}
       {open && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-start justify-center z-[100] pt-20">
-          <div className="relative bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
+        <div
+          className="fixed top-0 left-0 w-full h-full flex items-start justify-center z-[100] pt-20 bg-black bg-opacity-50"
+          onClick={() => setOpen(false)} // Close when clicking outside
+        >
+          <div
+            className="relative bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4 max-h-[calc(100vh-10rem)] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
+          >
             <h2 className="text-2xl font-bold mb-4">Send us a Message</h2>
             <p className="text-gray-600 mb-4">
               Please fill out the form below and we will get back to you as soon as possible.
@@ -355,9 +361,10 @@ const HeroSection = () => {
             <ContactForm onSuccess={() => setOpen(false)} />
             <button
               onClick={() => setOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+              className="absolute top-3 right-3 text-white bg-black p-2 rounded-full hover:bg-gray-800 transition-colors"
+              aria-label="Close message form"
             >
-              &times;
+              <X className="w-6 h-6" />
             </button>
           </div>
         </div>
