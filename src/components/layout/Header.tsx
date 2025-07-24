@@ -9,7 +9,6 @@ const Header = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const { user, isAdmin } = useAuthStore();
 
-  // Close mobile menu when clicking outside
   useEffect(() => {
     if (!isMenuOpen) return;
     function handleClickOutside(event: MouseEvent) {
@@ -36,7 +35,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img src="/logo.svg" alt="Elijah Realtor Logo" className="h-10 w-auto" />
-            <span className="text-2xl font-bold tracking-wider text-[#ffd51e] font-cinzel">ElijahRealtor</span>
+            <span className="text-2xl font-bold tracking-wider text-[#ffd51e]">ElijahRealtor</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -54,13 +53,15 @@ const Header = () => {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 font-cinzel">
             {isAdmin ? (
               <Link to="/admin">
-                <Button className="btn-primary bg-primary-gold hover:bg-primary-gold/90 text-primary-navy font-bold tracking-wide font-cinzel">Admin</Button>
+                <Button className="btn-primary bg-primary-gold hover:bg-primary-gold/90 text-primary-navy font-bold tracking-wide font-cinzel">
+                  Admin
+                </Button>
               </Link>
             ) : user ? (
-              <span className="text-sm text-gray-300 font-cinzel">Welcome, {user.user_metadata?.full_name || user.email}</span>
+              <span className="text-sm text-gray-300">Welcome, {user.user_metadata?.full_name || user.email}</span>
             ) : (
               <Link to="/login">
                 <Button variant="outline" className="border-primary-gold text-primary-gold hover:bg-primary-gold hover:text-primary-navy font-bold tracking-wide font-cinzel">
@@ -80,7 +81,15 @@ const Header = () => {
               aria-label="Toggle menu"
               className="text-white hover:bg-white/10"
             >
-              {isMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+              {isMenuOpen ? (
+                <X className="w-7 h-7" />
+              ) : (
+                <div className="w-7 h-7 flex flex-col justify-between items-center py-1.5" aria-hidden="true">
+                  <span className="block h-0.5 w-full bg-white rounded-sm"></span>
+                  <span className="block h-0.5 w-full bg-white rounded-sm"></span>
+                  <span className="block h-0.5 w-full bg-white rounded-sm"></span>
+                </div>
+              )}
             </Button>
           </div>
         </div>

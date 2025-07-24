@@ -75,13 +75,13 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-[60vh] sm:min-h-[75vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden font-inter overflow-x-hidden">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
 
         .font-inter {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Cinzel', serif;
         }
         .font-luxury {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Cinzel', serif;
         }
         .gold-gradient {
           color: #FFD700; /* Brighter, more vibrant gold */
@@ -248,7 +248,7 @@ const HeroSection = () => {
       <div className="relative z-40 max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-20 lg:py-24 w-full">
         <div className="text-center w-full">
           {/* Crest */}
-          <div className="flex justify-center mb-4">
+          <div className="hidden md:flex justify-center mb-4">
             <img src="/logo.svg" alt="Elijah Realtor Logo" className="h-16 w-auto hero-crest" />
           </div>
 
