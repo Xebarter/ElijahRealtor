@@ -61,14 +61,14 @@ const ContactForm = () => {
       form.reset();
     } catch (error: any) {
       toast.error(error.message || 'Failed to send message. Please try again.');
-      console.error('Contact form error:', error);
+      console.error('Contact form error:', error.message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Card className="bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+    <Card className="w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Send Us a Message</CardTitle>
       </CardHeader>
