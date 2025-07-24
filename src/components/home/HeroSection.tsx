@@ -344,18 +344,24 @@ const HeroSection = () => {
           </Tooltip>
         </TooltipProvider>
       )}
-      {/* Message Modal */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-lg w-full">
-          <DialogHeader>
-            <DialogTitle>Send us a Message</DialogTitle>
-            <DialogDescription>
+      {/* Message Form */}
+      {open && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-start justify-center z-[100] pt-20">
+          <div className="relative bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
+            <h2 className="text-2xl font-bold mb-4">Send us a Message</h2>
+            <p className="text-gray-600 mb-4">
               Please fill out the form below and we will get back to you as soon as possible.
-            </DialogDescription>
-          </DialogHeader>
-          <ContactForm onSuccess={() => setOpen(false)} />
-        </DialogContent>
-      </Dialog>
+            </p>
+            <ContactForm onSuccess={() => setOpen(false)} />
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
