@@ -2,23 +2,12 @@ import { Link } from 'react-router-dom';
 import { Menu, X, Home, Building, Phone, BookOpen, LogIn, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { user, isAdmin } = useAuthStore();
-
-  useEffect(() => {
-    if (!isMenuOpen) return;
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMenuOpen]);
 
   const navigation = [
     { name: 'Home', href: '/', icon: Home },
@@ -79,15 +68,15 @@ const Header = () => {
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
-              className="text-white hover:bg-white/10"
+              className="text-white hover:bg-white/10 z-50"
             >
               {isMenuOpen ? (
                 <X className="w-7 h-7" />
               ) : (
-                <div className="w-7 h-7 flex flex-col justify-between items-center py-1.5" aria-hidden="true">
-                  <span className="block h-0.5 w-full bg-white rounded-sm"></span>
-                  <span className="block h-0.5 w-full bg-white rounded-sm"></span>
-                  <span className="block h-0.5 w-full bg-white rounded-sm"></span>
+                <div className="w-7 h-7 flex flex-col justify-around items-center" aria-hidden="true">
+                  <span className="block h-0.5 w-6 bg-white rounded-sm transition-all duration-300"></span>
+                  <span className="block h-0.5 w-6 bg-white rounded-sm transition-all duration-300"></span>
+                  <span className="block h-0.5 w-6 bg-white rounded-sm transition-all duration-300"></span>
                 </div>
               )}
             </Button>
@@ -96,29 +85,39 @@ const Header = () => {
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && (
+      <div
+        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      >
+        {/* Overlay */}
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+          onClick={() => setIsMenuOpen(false)}
+          aria-hidden="true"
+        ></div>
+
+        {/* Menu Panel */}
         <div
           ref={menuRef}
-          className="md:hidden fixed inset-0 bg-black/95 backdrop-blur-sm z-50 animate-slide-in"
+          className={`fixed top-4 right-4 h-auto max-h-[90vh] w-4/5 max-w-sm bg-black shadow-2xl transition-transform duration-300 ease-in-out border-2 border-[#ffd51e] rounded-lg ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
         >
-          <div className="flex justify-end p-4">
-            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(false)}>
-              <X className="w-8 h-8 text-white" />
+          <div className="flex justify-end p-2">
+            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(false)} className="text-white hover:bg-white/10">
+              <X className="w-8 h-8" />
             </Button>
           </div>
-          <nav className="flex flex-col items-center justify-center h-full space-y-6 -mt-16">
+          <nav className="flex flex-col items-start p-6 pt-0 space-y-5">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className="flex items-center space-x-3 text-2xl font-semibold text-white hover:text-primary-gold transition-colors duration-300 font-cinzel"
+                className="flex items-center space-x-4 text-lg font-semibold text-white hover:text-primary-gold transition-colors duration-300 font-cinzel"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <item.icon className="w-6 h-6" />
                 <span>{item.name}</span>
               </Link>
             ))}
-            <div className="pt-8 w-4/5 max-w-xs">
+            <div className="pt-6 w-full">
               {isAdmin ? (
                 <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
                   <Button className="w-full btn-primary bg-primary-gold hover:bg-primary-gold/90 text-primary-navy font-bold tracking-wide text-lg py-3 font-cinzel">Admin</Button>
@@ -134,7 +133,7 @@ const Header = () => {
             </div>
           </nav>
         </div>
-      )}
+      </div>
     </header>
   );
 };
