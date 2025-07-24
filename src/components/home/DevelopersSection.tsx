@@ -56,13 +56,20 @@ const DevelopersSection = () => {
 
   return (
     <section className="py-6 sm:py-12 lg:py-16 bg-white overflow-hidden">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+        .font-luxury {
+          font-family: 'Cinzel', serif;
+        }
+      `}</style>
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-6 sm:mb-10 lg:mb-12">
-          <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-2 sm:mb-4 px-2 sm:px-4">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-2 sm:mb-4 px-2 sm:px-4 font-luxury">
             Our Trusted Development Partners
           </h2>
-          <p className="text-sm sm:text-lg text-gray-600 max-w-2xl mx-auto px-2 sm:px-4">
-            We work with leading property developers across East Africa to bring you the finest real estate opportunities
+          <p className="text-sm sm:text-lg text-gray-600 max-w-2xl mx-auto px-2 sm:px-4 font-luxury">
+            We work with leading property developers across Africa to bring you the finest real estate opportunities
           </p>
         </div>
 

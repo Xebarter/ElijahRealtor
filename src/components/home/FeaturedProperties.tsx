@@ -35,14 +35,21 @@ const FeaturedProperties = () => {
 
   return (
     <section className="py-6 sm:py-10 bg-white overflow-x-hidden">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+        .font-luxury {
+          font-family: 'Cinzel', serif;
+        }
+      `}</style>
       <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-navy mb-2 sm:mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-navy mb-2 sm:mb-4 font-luxury">
             Featured Properties
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Discover our handpicked selection of premium properties in Kenya's most desirable locations
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto font-luxury">
+            Discover our handpicked selection of premium properties in Africa's most desirable locations
           </p>
         </div>
 
