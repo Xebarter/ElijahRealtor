@@ -4,6 +4,9 @@
   .bg-secondary-gold {
     background-color: hsl(var(--secondary-gold));
   }
+  .border-secondary-gold {
+    border-color: hsl(var(--secondary-gold));
+  }
 }
 
 @tailwind components;
