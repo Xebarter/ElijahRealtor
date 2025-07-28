@@ -1,4 +1,5 @@
 import { Card, CardContent } from '../../components/ui/card';
+import { useEffect } from 'react';
 
 const ServicesSection = () => {
   const services = [
@@ -23,49 +24,51 @@ const ServicesSection = () => {
       description: 'Specialized expertise in commercial real estate for businesses and investors.',
     },
     {
-      title: 'Customer Satisfaction',
+      title: 'Valued Customer',
       description: 'Our commitment to excellence ensures every client receives exceptional service and results.',
     },
   ];
 
+  useEffect(() => {
+    const font = document.createElement('link');
+    font.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap';
+    font.rel = 'stylesheet';
+    document.head.appendChild(font);
+  }, []);
+
   return (
-    <section className="py-10 sm:py-16 bg-bg-primary">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
+    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-900 to-black text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-[Cinzel]">
         {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-navy mb-2 sm:mb-4">
+        <div className="text-center mb-10 md:mb-14">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-amber-300 mb-4 tracking-wider leading-snug">
             Why Choose ElijahRealtor
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-            We provide comprehensive real estate services with a commitment to excellence, 
-            integrity, and client satisfaction
+          <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            We provide comprehensive real estate services with a commitment to excellence,
+            integrity, and client satisfaction.
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
-          {services.map((service, index) => {
-            return (
-              <Card 
-                key={service.title} 
-                className="card-hover bg-white border-0 shadow-md hover:shadow-xl transition-all duration-300"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardContent className="p-4 sm:p-6 text-center">
-                  <h3 className="text-lg sm:text-xl font-semibold text-primary-navy mb-2 sm:mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                    {service.description}
-                  </p>
-                </CardContent>
-              </Card>
-            );
-          })}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 md:gap-10">
+          {services.map((service, index) => (
+            <Card
+              key={service.title}
+              className="bg-gray-800/50 border border-amber-600 rounded-3xl shadow-md hover:shadow-xl transition duration-300 ease-in-out hover:-translate-y-1"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <CardContent className="p-5 sm:p-6 md:p-8 text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-amber-200 mb-3 tracking-wide leading-tight">
+                  {service.title}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                  {service.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-
-        {/* Stats Section */}
-        
       </div>
     </section>
   );

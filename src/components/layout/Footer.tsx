@@ -43,18 +43,18 @@ const Footer = () => {
   const operatingCountries = COUNTRIES.slice(0, 8); // Show first 8 countries
 
   return (
-    <footer style={{ backgroundColor: '#181818' }} className="text-white">
+    <footer className="bg-gradient-to-br from-gray-900 to-black text-white font-[Cinzel]">
       <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Company Info */}
           <div className="col-span-1 lg:col-span-1 mb-6 lg:mb-0">
             <Link to="/" className="flex items-center space-x-2 mb-3 sm:mb-4 min-w-0">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-gold rounded-lg flex items-center justify-center">
-                <Home className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: '#181818' }} />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-amber-300 rounded-lg flex items-center justify-center">
+                <Home className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: '#1a1a1a' }} />
               </div>
-              <span className="text-lg sm:text-xl font-bold truncate">ElijahRealtor</span>
+              <span className="text-lg sm:text-xl font-bold truncate text-amber-300">ElijahRealtor</span>
             </Link>
-            <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
+            <p className="text-gray-400 mb-4 sm:mb-6 text-sm sm:text-base">
               Your trusted partner in finding the perfect property across Africa. We specialize in luxury residential 
               and commercial real estate in multiple countries.
             </p>
@@ -62,31 +62,31 @@ const Footer = () => {
             {/* Contact Info */}
             <div className="space-y-2 sm:space-y-3">
               <div className="flex items-center space-x-2 sm:space-x-3">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary-gold flex-shrink-0" />
-                <span className="text-xs sm:text-sm text-gray-300">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300 flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-gray-400">
                   Mutungo Hill, Kampala
                 </span>
               </div>
               <div className="flex items-center space-x-2 sm:space-x-3">
-                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary-gold flex-shrink-0" />
-                <span className="text-xs sm:text-sm text-gray-300">+256 751 077770</span>
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300 flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-gray-400">+256 751 077770</span>
               </div>
               <div className="flex items-center space-x-2 sm:space-x-3">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary-gold flex-shrink-0" />
-                <span className="text-xs sm:text-sm text-gray-300">lwangabluhan@yahoo.com</span>
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300 flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-gray-400">lwangabluhan@yahoo.com</span>
               </div>
             </div>
           </div>
 
           {/* Company Links */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Company</h3>
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-amber-300">Company</h3>
             <ul className="space-y-1 sm:space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-gray-300 hover:text-primary-gold transition-colors duration-200 text-xs sm:text-sm"
+                    className="text-gray-400 hover:text-amber-300 transition-colors duration-200 text-xs sm:text-sm"
                   >
                     {link.name}
                   </Link>
@@ -97,13 +97,13 @@ const Footer = () => {
 
           {/* Services Links */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Services</h3>
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-amber-300">Services</h3>
             <ul className="space-y-1 sm:space-y-2">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-gray-300 hover:text-primary-gold transition-colors duration-200 text-xs sm:text-sm"
+                    className="text-gray-400 hover:text-amber-300 transition-colors duration-200 text-xs sm:text-sm"
                   >
                     {link.name}
                   </Link>
@@ -114,10 +114,10 @@ const Footer = () => {
 
           {/* Operating Countries */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">We Operate In</h3>
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-amber-300">We Operate In</h3>
             <div className="grid grid-cols-2 gap-1 sm:gap-2">
               {operatingCountries.map((country) => (
-                <div key={country.code} className="flex items-center text-xs sm:text-sm text-gray-300">
+                <div key={country.code} className="flex items-center text-xs sm:text-sm text-gray-400">
                   <span className="mr-1 sm:mr-2">{country.flag}</span>
                   <span>{country.name}</span>
                 </div>
@@ -137,7 +137,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-primary-gold transition-colors duration-200"
+                  className="text-gray-400 hover:text-amber-300 transition-colors duration-200"
                   aria-label={social.name}
                 >
                   <Icon className="w-5 h-5" />
@@ -146,10 +146,10 @@ const Footer = () => {
             })}
           </div>
           <div className="text-center md:text-right">
-            <p className="text-gray-300 text-xs sm:text-sm">
+            <p className="text-gray-400 text-xs sm:text-sm">
               © {currentYear} ElijahRealtor. All rights reserved.
             </p>
-            <p className="text-gray-400 text-[10px] sm:text-xs mt-1">
+            <p className="text-gray-500 text-[10px] sm:text-xs mt-1">
               Built with ❤️ for exceptional real estate experiences across Africa
             </p>
           </div>
