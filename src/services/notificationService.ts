@@ -1,6 +1,5 @@
 import { getMessaging } from 'firebase/messaging';
-import { getAuth } from 'firebase/auth';
-import { messaging } from '@/lib/firebase';
+import { getToken } from '@/lib/firebase';
 
 interface NotificationPayload {
   notification: {
@@ -11,13 +10,39 @@ interface NotificationPayload {
   data?: Record<string, string>;
 }
 
+interface ContactMessageData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 export const requestPermission = async (): Promise<string | null> => {
   try {
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
-      const token = await getToken(messaging, {
+      const token = await getToken({
         vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY!,
       });
+      
+      // Store the token in Firebase using Cloud Functions
+      if (token) {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_FIREBASE_FUNCTIONS_URL}/requestPermission`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token }),
+          }
+        );
+
+        if (!response.ok) {
+          console.error('Failed to store token');
+        }
+      }
+      
       return token;
     }
     return null;
@@ -28,51 +53,34 @@ export const requestPermission = async (): Promise<string | null> => {
 };
 
 export const listenForNotifications = () => {
-  onMessage(messaging, (payload: NotificationPayload) => {
-    console.log('Received notification:', payload);
-    const notificationTitle = payload.notification?.title;
-    const notificationBody = payload.notification?.body;
-
-    if (notificationTitle && notificationBody) {
-      new Notification(notificationTitle, {
-        body: notificationBody,
-        icon: payload.notification.icon || '/favicon.ico',
-      });
-    }
-  });
+  // This will be handled by the Firebase SDK automatically
+  // No need to implement onMessage here since we're using the Firebase SDK
 };
-
-interface ContactMessageData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
 
 export const sendContactNotification = async (messageData: ContactMessageData) => {
   try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    
-    if (!user) {
-      console.error('No user is currently logged in');
-      return;
+    // Get the FCM token from Firebase Functions
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_FIREBASE_FUNCTIONS_URL}/sendNotification`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: 'New Contact Message',
+          body: `New message from ${messageData.name}: ${messageData.subject}`,
+          tokens: [process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY!]
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to send notification');
     }
 
-    const notification: NotificationPayload = {
-      notification: {
-        title: 'New Contact Message',
-        body: `New message from ${messageData.name}: ${messageData.subject}`,
-        icon: '/favicon.ico',
-      },
-      data: {
-        type: 'contact_message',
-        ...messageData,
-      },
-    };
-
-    // Send notification to user's device
-    await messaging.sendToDevice(user.fcmToken, notification);
+    const result = await response.json();
+    console.log('Notification sent successfully:', result);
   } catch (error) {
     console.error('Error sending notification:', error);
   }

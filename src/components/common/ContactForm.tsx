@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { supabase } from '../../lib/supabase';
 import { sendContactNotification } from '@/services/notificationService';
+import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { COUNTRIES } from '../../lib/allCountries';
 import { Textarea } from '@/components/ui/textarea';
@@ -49,11 +50,13 @@ const ContactForm = () => {
       const { error } = await supabase.from('contact_messages').insert({
         name: data.name,
         email: data.email,
-        phone: data.phone,
+        phone: `${countryCode}${data.phone}`,
         country: data.country,
+        country_code: countryCode,
         subject: data.subject,
         message: data.message,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        status: 'new'
       });
 
       if (!error) {
@@ -65,20 +68,13 @@ const ContactForm = () => {
           message: data.message
         });
       }
-        phone: `${countryCode}${data.phone}`,
-        country: data.country,
-        country_code: countryCode,
-        subject: data.subject,
-        message: data.message,
-        status: 'new',
-      });
 
       if (error) throw error;
       toast.success('Message sent successfully! We\'ll get back to you soon.');
       form.reset();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to send message. Please try again.');
-      console.error('Contact form error:', error.message);
+    } catch (error) {
+      toast.error('Error sending message. Please try again.');
+      console.error('Error:', error);
     } finally {
       setIsSubmitting(false);
     }

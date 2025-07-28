@@ -6,6 +6,8 @@ import Layout from '@/components/layout/Layout';
 import AdminLayout from '@/components/admin/layout/AdminLayout';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
 import { useAuthStore } from '@/store/auth';
+import { useNotifications } from '@/lib/useNotifications';
+import NotificationHandler from '@/components/common/NotificationHandler';
 
 // Lazy load public pages
 const Home = React.lazy(() => import('@/pages/Home'));
@@ -71,6 +73,7 @@ function App() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
+        <NotificationHandler />
         <Router>
           <Suspense
             fallback={
