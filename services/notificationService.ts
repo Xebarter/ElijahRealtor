@@ -1,56 +1,65 @@
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
-import { app } from '@/lib/firebase';
-import { getAuth, User } from 'firebase/auth';
+import { getAuth, User } from '@/lib/firebase';
+import { getToken, onMessage } from 'firebase/messaging';
+import { getFirebaseMessaging } from '@/lib/firebase';
 import { supabase } from '@/lib/supabase';
-
-const auth = getAuth(app);
-const messaging = getMessaging(app);
 
 // Check if user is an administrator
 const isAdmin = async (user: User | null): Promise<boolean> => {
   if (!user) return false;
   
-  const { data: { roles }, error } = await supabase
+  const { data, error } = await supabase
     .from('users')
     .select('roles')
     .eq('id', user.uid)
     .single();
 
-  if (error) return false;
-  return roles?.includes('admin') ?? false;
+  if (error || !data) return false;
+  return data.roles?.includes('admin') ?? false;
 };
 
 // Initialize Firebase Messaging for administrators
-export const initializeAdminNotifications = async () => {
+export const initializeAdminNotifications = () => {
   try {
+    const auth = getAuth();
+    const messaging = getFirebaseMessaging();
+    
     const user = auth.currentUser;
     if (!user) return;
 
     // Only initialize for admins
-    const isUserAdmin = await isAdmin(user);
+    const isUserAdmin = isAdmin(user);
     if (!isUserAdmin) return;
 
-    // Request permission for notifications
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
-      // Get FCM token
-      const token = await getToken(messaging, {
-        vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-      });
-
-      if (token) {
-        // Store token in Supabase for admin
-        await supabase
-          .from('admin_notifications')
-          .upsert({
-            user_id: user.uid,
-            fcm_token: token,
-            updated_at: new Date().toISOString(),
-          });
-
-        console.log('Admin notification token registered successfully');
+    // Request permission to send notifications
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        // Get registration token
+        getToken(messaging, {
+          vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+        }).then((currentToken) => {
+          if (currentToken) {
+            // Save token to Supabase
+            supabase
+              .from('notification_tokens')
+              .upsert({
+                user_id: user.uid,
+                token: currentToken,
+              });
+          }
+        });
       }
-    }
+    });
+
+    // Set up message handler
+    onMessage(messaging, (payload) => {
+      const notification = payload.notification;
+      if (notification) {
+        new Notification(notification.title, {
+          body: notification.body,
+          icon: '/favicon.ico',
+        });
+      }
+    });
   } catch (error) {
     console.error('Error initializing admin notifications:', error);
   }
@@ -58,20 +67,22 @@ export const initializeAdminNotifications = async () => {
 
 // Handle incoming notifications
 export const setupNotificationHandler = () => {
-  onMessage(messaging, (payload) => {
-    const notification = payload.notification;
-    if (notification) {
-      new Notification(notification.title, {
-        body: notification.body,
-        icon: '/favicon.ico',
-      });
-
-      // Handle click action
-      if (notification.click_action) {
-        window.location.href = notification.click_action;
+  try {
+    const messaging = getFirebaseMessaging();
+    
+    // Set up message handler
+    onMessage(messaging, (payload) => {
+      const notification = payload.notification;
+      if (notification) {
+        new Notification(notification.title, {
+          body: notification.body,
+          icon: '/favicon.ico',
+        });
       }
-    }
-  });
+    });
+  } catch (error) {
+    console.error('Error setting up notification handler:', error);
+  }
 };
 
 // Send notification to all admin devices
@@ -82,31 +93,31 @@ export const sendContactNotification = async (data: {
   message: string;
 }) => {
   try {
-    // Define the notification payload
-    const payload = {
-      notification: {
-        title: 'New Contact Form Submission',
-        body: `From: ${data.name}\nSubject: ${data.subject}`,
-        click_action: `${window.location.origin}/contact`,
-      },
-      data: {
-        name: data.name,
-        email: data.email,
-        subject: data.subject,
-        message: data.message,
-      },
-    };
-
-    // Insert into Supabase to trigger the Edge Function
-    const { error } = await supabase
-      .rpc('send_admin_notification', {
-        notification_type: 'contact_form_submission',
-        payload: payload,
-      });
+    // Get all admin notification tokens
+    const { data: tokens, error } = await supabase
+      .from('notification_tokens')
+      .select('token')
+      .eq('user_id', supabase.auth.user()?.id)
+      .eq('roles', 'admin');
 
     if (error) throw error;
 
+    if (tokens && tokens.length > 0) {
+      // Send notification to each token
+      tokens.forEach((token) => {
+        navigator.serviceWorker.ready.then((registration) => {
+          registration.showNotification('New Contact Form Submission', {
+            body: `${data.name} (${data.email}) has submitted a contact form`,
+            icon: '/favicon.ico',
+            data: {
+              type: 'contact_form',
+              ...data,
+            },
+          });
+        });
+      });
+    }
   } catch (error) {
-    console.error('Error sending notification:', error);
+    console.error('Error sending contact notification:', error);
   }
 };
