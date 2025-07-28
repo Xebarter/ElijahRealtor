@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { initializeAdminNotifications, setupNotificationHandler } from '@/services/notificationService';
+import { initializeAdminNotifications, setupNotificationHandler } from '../../../services/notificationService';
 
 export const NotificationHandler: React.FC = () => {
   useEffect(() => {
