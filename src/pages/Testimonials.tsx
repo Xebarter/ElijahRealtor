@@ -300,11 +300,6 @@ const Testimonials = () => {
         </DialogContent>
       </Dialog>
     </>
-  );      Discover why our clients trust us with their property needs. Read their stories and see how we've helped them achieve their real estate goals.
-          </p>
-        </div>
-      </div>
-    </>
   );
 };
 
