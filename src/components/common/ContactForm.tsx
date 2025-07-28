@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { supabase } from '../../lib/supabase';
+import { sendContactNotification } from '@/services/notificationService';
 import { toast } from 'react-hot-toast';
 import { COUNTRIES } from '../../lib/allCountries';
 import { Textarea } from '@/components/ui/textarea';
@@ -48,6 +49,22 @@ const ContactForm = () => {
       const { error } = await supabase.from('contact_messages').insert({
         name: data.name,
         email: data.email,
+        phone: data.phone,
+        country: data.country,
+        subject: data.subject,
+        message: data.message,
+        created_at: new Date().toISOString()
+      });
+
+      if (!error) {
+        // Send notification when message is successfully submitted
+        await sendContactNotification({
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message
+        });
+      }
         phone: `${countryCode}${data.phone}`,
         country: data.country,
         country_code: countryCode,
