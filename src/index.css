@@ -1,4 +1,11 @@
 @tailwind base;
+
+@layer base {
+  .bg-secondary-gold {
+    background-color: hsl(var(--secondary-gold));
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
 
