@@ -87,14 +87,14 @@ const Header = () => {
           <div className="hidden md:flex items-center space-x-4 font-cinzel">
             {isAdmin || user ? (
               <Link to={isAdmin ? "/admin" : "/profile"}>
-                <div className="w-10 h-10 rounded-full bg-primary-gold/10 flex items-center justify-center border border-primary-gold/30 hover:bg-primary-gold/20 transition-colors duration-300">
-                  <User className="w-5 h-5 text-primary-gold" />
+                <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center border-2 border-[#ffd51e] hover:bg-gray-900 transition-colors duration-300">
+                  <User className="w-5 h-5 text-[#ffd51e]" />
                 </div>
               </Link>
             ) : (
               <Link to="/login">
-                <div className="w-10 h-10 rounded-full bg-primary-gold/10 flex items-center justify-center border border-primary-gold/30 hover:bg-primary-gold/20 transition-colors duration-300">
-                  <User className="w-5 h-5 text-primary-gold" />
+                <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center border-2 border-[#ffd51e] hover:bg-gray-900 transition-colors duration-300">
+                  <User className="w-5 h-5 text-[#ffd51e]" />
                 </div>
               </Link>
             )}
