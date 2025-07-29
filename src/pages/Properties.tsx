@@ -124,9 +124,8 @@ const Properties = () => {
 
           {/* Loading State */}
           {loading && (
-            <div className="flex justify-center items-center py-8 sm:py-12">
+            <div className="py-12 sm:py-16">
               <LoadingSpinner size="lg" />
-              <span className="ml-3 text-gray-600 text-sm sm:text-base">Loading properties...</span>
             </div>
           )}
 
