@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getMessaging } from 'firebase/messaging';
 
@@ -17,18 +17,38 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase app
-const app = initializeApp(firebaseConfig);
+let firebaseApp: ReturnType<typeof initializeApp>;
+let firebaseAuth: ReturnType<typeof getAuth>;
+let firebaseMessaging: ReturnType<typeof getMessaging>;
 
-// Register Auth component
-import 'firebase/auth';
+// Check if Firebase is already initialized
+const existingApps = getApps();
+if (existingApps.length > 0) {
+  console.log('Using existing Firebase app:', existingApps[0].name);
+  firebaseApp = existingApps[0];
+  firebaseAuth = getAuth(firebaseApp);
+  firebaseMessaging = getMessaging(firebaseApp);
+} else {
+  try {
+    console.log('Initializing Firebase app with config:', firebaseConfig);
+    // Initialize app first
+    firebaseApp = initializeApp(firebaseConfig);
+    
+    // Register components
+    import('firebase/auth').then((authModule) => {
+      // Auth is now registered
+      firebaseAuth = getAuth(firebaseApp);
+    });
+    
+    import('firebase/messaging').then((messagingModule) => {
+      // Messaging is now registered
+      firebaseMessaging = getMessaging(firebaseApp);
+    });
+  } catch (error) {
+    console.error('Failed to initialize Firebase:', error);
+    throw error;
+  }
+}
 
-// Register Messaging component
-import 'firebase/messaging';
-
-// Initialize Auth
-const auth = getAuth(app);
-
-// Initialize Messaging
-const messaging = getMessaging(app);
-
-export { app, auth, messaging };
+// Export all components
+export { firebaseApp as app, firebaseAuth as auth, firebaseMessaging as messaging };

@@ -8,6 +8,10 @@ export default {
     './src/**/*.{ts,tsx}',
   ],
   theme: {
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+      cinzel: ['Cinzel', 'serif'],
+    },
     extend: {
       borderRadius: {
         lg: 'var(--radius)',

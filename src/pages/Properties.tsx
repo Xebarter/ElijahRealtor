@@ -87,7 +87,7 @@ const Properties = () => {
         <div className="max-w-[1800px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           {/* Page Header */}
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4" style={{ color: '#181818' }}>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 font-cinzel" style={{ color: '#181818' }}>
               Properties for Sale
             </h1>
             <p className="text-base sm:text-lg text-gray-600">
@@ -134,7 +134,10 @@ const Properties = () => {
           {error && (
             <div className="text-center py-8 sm:py-12">
               <p className="text-red-600 mb-4">{error}</p>
-              <Button onClick={() => window.location.reload()}>
+              <Button 
+                onClick={() => window.location.reload()}
+                className="bg-[#ffd51e] text-black hover:bg-[#ffd51e]/90 transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto border border-red-300 hover:border-red-400 rounded-lg font-medium shadow-sm"
+              >
                 Try Again
               </Button>
             </div>
@@ -153,10 +156,9 @@ const Properties = () => {
               {meta.totalPages > 1 && (
                 <div className="flex flex-wrap justify-center items-center gap-2">
                   <Button
-                    variant="outline"
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2"
+                    className="bg-[#ffd51e] text-black hover:bg-[#ffd51e]/90 transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto border border-red-300 hover:border-red-400 rounded-lg font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </Button>
@@ -166,9 +168,8 @@ const Properties = () => {
                     return (
                       <Button
                         key={page}
-                        variant={page === currentPage ? "default" : "outline"}
                         onClick={() => handlePageChange(page)}
-                        className={page === currentPage ? "btn-primary text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2" : "text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2"}
+                        className={`bg-[#ffd51e] text-black hover:bg-[#ffd51e]/90 transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto border ${page === currentPage ? 'border-red-400 bg-[#ffd51e] font-semibold' : 'border-red-300'} hover:border-red-400 rounded-lg font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed`}
                       >
                         {page}
                       </Button>
@@ -176,10 +177,9 @@ const Properties = () => {
                   })}
                   
                   <Button
-                    variant="outline"
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === meta.totalPages}
-                    className="text-xs sm:text-base px-3 sm:px-4 py-1 sm:py-2"
+                    className="bg-[#ffd51e] text-black hover:bg-[#ffd51e]/90 transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto border border-red-300 hover:border-red-400 rounded-lg font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </Button>
@@ -197,7 +197,10 @@ const Properties = () => {
               <p className="text-gray-600 mb-4">
                 Try adjusting your search criteria or browse all properties
               </p>
-              <Button onClick={handleClearFilters} className="btn-secondary">
+              <Button 
+                onClick={handleClearFilters}
+                className="bg-[#ffd51e] text-black hover:bg-[#ffd51e]/90 transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto border border-red-300 hover:border-red-400 rounded-lg font-medium shadow-sm"
+              >
                 Clear All Filters
               </Button>
             </div>

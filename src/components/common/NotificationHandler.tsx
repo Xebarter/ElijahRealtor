@@ -8,19 +8,30 @@ export const NotificationHandler: React.FC = () => {
       // Wait for Firebase to be initialized
       const messaging = getFirebaseMessaging();
       
-      // Set up message handler
-      const messageHandler = (payload: any) => {
-        const notification = payload.notification;
-        if (notification) {
-          new Notification(notification.title, {
-            body: notification.body,
-            icon: '/favicon.ico',
-          });
+      if (!messaging) {
+        throw new Error('Firebase messaging not initialized');
+      }
+
+      // Request notification permission
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          // Set up message handler
+          const messageHandler = (payload: any) => {
+            const notification = payload.notification;
+            if (notification) {
+              new Notification(notification.title, {
+                body: notification.body,
+                icon: '/favicon.ico',
+              });
+            }
+          };
+
+          // Set up the message handler
+          onMessage(messaging, messageHandler);
+        } else {
+          console.log('Notification permission denied');
         }
-      };
-      
-      // Set up the message handler
-      onMessage(messaging, messageHandler);
+      });
     } catch (error) {
       console.error('Error setting up notification handler:', error);
     }

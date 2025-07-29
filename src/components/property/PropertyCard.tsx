@@ -183,7 +183,12 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, featured = false 
         {/* Actions */}
         <div className="flex gap-2">
           <span className="w-full">
-            <Button className="w-full btn-primary pointer-events-none" tabIndex={-1}>View Details</Button>
+            <Button 
+              className="w-full bg-[#ffd51e] text-black hover:bg-[#ffd51e]/90 transition-all duration-300 border border-red-300 hover:border-red-400 rounded-lg pointer-events-none font-medium shadow-sm" 
+              tabIndex={-1}
+            >
+              View Details
+            </Button>
           </span>
         </div>
       </div>
