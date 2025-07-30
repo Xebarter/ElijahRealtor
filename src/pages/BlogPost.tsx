@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Eye, TagIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,36 +28,36 @@ const BlogPostPage = () => {
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        if (!slug) return;
-        const fetchedPost = await getPostBySlug(slug);
-        if (fetchedPost) {
-          setPost({
-            ...fetchedPost,
-            excerpt: fetchedPost.excerpt ?? null,
-            featured_image_url: fetchedPost.featured_image_url ?? null,
-            category: fetchedPost.category ?? null,
-            seo_title: fetchedPost.seo_title ?? null,
-            seo_description: fetchedPost.seo_description ?? null,
-            meta_keywords: fetchedPost.meta_keywords ?? null
-          });
-        } else {
-          setError('Post not found');
-        }
-      } catch (err: any) {
-        setError(err.message || 'Failed to load post');
-      } finally {
-        setLoading(false);
+  const fetchPost = useCallback(async () => {
+    if (!slug) return;
+    
+    try {
+      setLoading(true);
+      const fetchedPost = await getPostBySlug(slug);
+      
+      if (fetchedPost) {
+        setPost({
+          ...fetchedPost,
+          excerpt: fetchedPost.excerpt ?? null,
+          featured_image_url: fetchedPost.featured_image_url ?? null,
+          category: fetchedPost.category ?? null,
+          seo_title: fetchedPost.seo_title ?? null,
+          seo_description: fetchedPost.seo_description ?? null,
+          meta_keywords: fetchedPost.meta_keywords ?? null
+        });
+      } else {
+        setError('Post not found');
       }
-    };
-
-    if (slug) {
-      fetchPost();
+    } catch (err: any) {
+      setError(err.message || 'Failed to load post');
+    } finally {
+      setLoading(false);
     }
   }, [slug, getPostBySlug]);
+
+  useEffect(() => {
+    fetchPost();
+  }, [fetchPost]);
 
   useEffect(() => {
     if (post && sanitizedPosts.length > 0) {
