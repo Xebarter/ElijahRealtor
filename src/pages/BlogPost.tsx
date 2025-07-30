@@ -15,9 +15,14 @@ import { deepSanitizeNulls } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import type { BlogPost } from '@/types/blog';
 
+// Extend the BlogPost type to include comment_count
+interface ExtendedBlogPost extends BlogPost {
+  comment_count?: number;
+}
+
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [post, setPost] = useState<BlogPost | null>(null);
+  const [post, setPost] = useState<ExtendedBlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
@@ -27,23 +32,39 @@ const BlogPostPage = () => {
   const sanitizedPosts = deepSanitizeNulls(posts);
   const sanitizedCategories = deepSanitizeNulls(categories);
   const sanitizedTags = deepSanitizeNulls(tags);
+  
+  // Add a function to format the post content
+  const formatPostContent = (content: string) => {
+    if (!content) return '';
+    return content.replace(/\n\n/g, '\n');
+  };
 
   const fetchPost = useCallback(async () => {
     if (!slug) return;
     
     try {
       setLoading(true);
-      const fetchedPost = await getPostBySlug(slug);
+      setError(null);
+      
+      // First try to find the post in the local cache
+      let fetchedPost = sanitizedPosts.find(p => p.slug === slug) || null;
+      
+      // If not found in cache, fetch it from the server
+      if (!fetchedPost) {
+        fetchedPost = await getPostBySlug(slug);
+      }
       
       if (fetchedPost) {
         setPost({
           ...fetchedPost,
-          excerpt: fetchedPost.excerpt ?? null,
-          featured_image_url: fetchedPost.featured_image_url ?? null,
-          category: fetchedPost.category ?? null,
-          seo_title: fetchedPost.seo_title ?? null,
-          seo_description: fetchedPost.seo_description ?? null,
-          meta_keywords: fetchedPost.meta_keywords ?? null
+          content: formatPostContent(fetchedPost.content || ''),
+          excerpt: fetchedPost.excerpt || null,
+          featured_image_url: fetchedPost.featured_image_url || null,
+          category: fetchedPost.category || null,
+          seo_title: fetchedPost.seo_title || null,
+          seo_description: fetchedPost.seo_description || null,
+          meta_keywords: fetchedPost.meta_keywords || null,
+          tags: fetchedPost.tags || []
         });
       } else {
         setError('Post not found');
@@ -53,7 +74,7 @@ const BlogPostPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [slug, getPostBySlug]);
+  }, [slug, getPostBySlug, sanitizedPosts]);
 
   useEffect(() => {
     fetchPost();
@@ -84,7 +105,10 @@ const BlogPostPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg-primary flex items-center justify-center">
-        <LoadingSpinner size="lg" />
+        <div className="text-center">
+          <LoadingSpinner size="lg" className="mx-auto mb-4" />
+          <p className="text-gray-600">Loading post...</p>
+        </div>
       </div>
     );
   }
@@ -92,12 +116,14 @@ const BlogPostPage = () => {
   if (error || !post) {
     return (
       <div className="min-h-screen bg-bg-primary flex items-center justify-center">
-        <Card className="max-w-md w-full">
+        <Card className="max-w-md w-full mx-4">
           <CardContent className="p-8 text-center">
             <h2 className="text-2xl font-bold text-gray-700 mb-4">Blog Post Not Found</h2>
-            <p className="text-gray-500 mb-6">{error || 'The blog post you are looking for does not exist or has been removed.'}</p>
+            <p className="text-gray-500 mb-6">
+              {error || 'The blog post you are looking for does not exist or has been removed.'}
+            </p>
             <Link to="/blog">
-              <Button className="btn-primary">
+              <Button className="bg-primary-gold hover:bg-primary-gold/90 text-white">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Blog
               </Button>
@@ -118,7 +144,7 @@ const BlogPostPage = () => {
         type="article"
       />
 
-      <div className="min-h-screen bg-bg-primary">
+      <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <div className="relative">
           {post.featured_image_url ? (
@@ -208,19 +234,18 @@ const BlogPostPage = () => {
           )}
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Back to Blog */}
-              <Link to="/blog" className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Blog
-              </Link>
-              
-              {/* Post Content */}
-              <Card>
-                <CardContent className="p-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="lg:col-span-2">
+              <article className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6 sm:mb-8">
+                {/* Back to Blog */}
+                <Link to="/blog" className="inline-flex items-center text-primary-navy hover:text-primary-gold transition-colors mb-6">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Blog
+                </Link>
+                
+                {/* Post Content */}
+                <div className="prose max-w-none">
                   {/* Category */}
                   {post.category && (
                     <Link to={`/blog/category/${post.category}`}>
@@ -253,18 +278,24 @@ const BlogPostPage = () => {
                       </div>
                     </div>
                   )}
-                </CardContent>
-              </Card>
-              
-              {/* Comments */}
-              <div className="space-y-6">
-                <BlogCommentList />
-                <BlogCommentForm postId={post.id} />
-              </div>
+                </div>
+                
+                {/* Comments Section */}
+                <div className="mt-12">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">
+                    {post.comment_count ? `Comments (${post.comment_count})` : 'Comments'}
+                  </h3>
+                  <BlogCommentList postId={post.id} />
+                  <div className="mt-8">
+                    <h4 className="text-lg font-semibold text-gray-800 mb-4">Leave a Comment</h4>
+                    <BlogCommentForm postId={post.id} />
+                  </div>
+                </div>
+              </article>
               
               {/* Related Posts */}
               {relatedPosts.length > 0 && (
-                <div className="space-y-4">
+                <div className="mt-12 space-y-4">
                   <h2 className="text-2xl font-bold text-primary-navy">Related Posts</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {relatedPosts.map((relatedPost) => (

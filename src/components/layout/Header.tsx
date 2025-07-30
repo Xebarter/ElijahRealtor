@@ -131,19 +131,20 @@ const Header = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}
+        className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}
         aria-hidden={!isMenuOpen}
       >
         {/* Overlay */}
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 z-40"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 z-50"
           onClick={() => setIsMenuOpen(false)}
+          aria-hidden={!isMenuOpen}
         />
 
         {/* Slide-in Menu */}
         <div
           ref={menuRef}
-          className={`fixed inset-y-0 left-0 w-[70%] max-w-sm h-screen bg-[#0A0A0A] shadow-xl transition-all duration-300 ease-in-out transform border-r-2 border-red-500/70 z-50 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+          className={`fixed inset-y-0 left-0 w-[80%] max-w-sm h-screen bg-[#0A0A0A] shadow-xl transition-all duration-300 ease-in-out transform z-50 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
         >
           <div className="h-full flex flex-col">
             {/* Menu Header */}

@@ -81,120 +81,163 @@ const ContactForm = () => {
   };
 
   return (
-    <Card className="w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Send Us a Message</CardTitle>
+    <Card className="w-full max-w-4xl mx-2 sm:mx-auto bg-white dark:bg-gray-800 shadow-sm sm:shadow-lg rounded-none sm:rounded-lg overflow-hidden border-0 sm:border">
+      <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+        <CardTitle className="text-lg sm:text-2xl font-semibold text-gray-800 dark:text-white">Send Us a Message</CardTitle>
+        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">We'll get back to you as soon as possible</p>
       </CardHeader>
-      <CardContent className="p-4 sm:p-6 max-h-[80vh] overflow-y-auto">
+      <CardContent className="p-3 sm:p-5 md:p-6 max-h-[calc(100vh-120px)] overflow-y-auto">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Full Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your full name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email Address</FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="Your email address" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="country"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Country</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-5">
+              {/* Name */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Full Name <span className="text-red-500">*</span></FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your country" />
-                      </SelectTrigger>
+                      <Input 
+                        placeholder="Your full name" 
+                        className="text-sm h-10 sm:h-11 w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-primary-gold/50"
+                        {...field} 
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {COUNTRIES.map((country) => (
-                        <SelectItem key={country.name} value={country.name}>
-                          {country.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage className="text-[11px] sm:text-xs text-red-500 dark:text-red-400" />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <div className="flex">
-                    <span className="flex h-10 items-center rounded-l-md border border-r-0 border-input bg-background px-3 text-sm text-muted-foreground">
-                      {countryCode || '+'}
-                    </span>
+              {/* Email */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Email Address <span className="text-red-500">*</span></FormLabel>
                     <FormControl>
-                      <Input className="rounded-l-none" placeholder="Your phone number" {...field} />
+                      <Input 
+                        type="email" 
+                        placeholder="your.email@example.com" 
+                        className="text-sm h-10 sm:h-11 w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-primary-gold/50"
+                        inputMode="email"
+                        autoCapitalize="none"
+                        autoComplete="email"
+                        {...field} 
+                      />
                     </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage className="text-[11px] sm:text-xs text-red-500 dark:text-red-400" />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="subject"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subject</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Subject of your message" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Country */}
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Country <span className="text-red-500">*</span></FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="h-10 sm:h-11 text-sm w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary-gold/50">
+                          <SelectValue placeholder="Select your country" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="max-h-60 overflow-y-auto">
+                        {COUNTRIES.map((country) => (
+                          <SelectItem key={country.name} value={country.name} className="text-sm">
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-sm" />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Message</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Your message" className="resize-none" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Phone */}
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number <span className="text-red-500">*</span></FormLabel>
+                    <div className="flex">
+                      <span className="flex h-10 sm:h-11 items-center rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 px-2 sm:px-3 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                        {countryCode || '+'}
+                      </span>
+                      <FormControl>
+                        <Input 
+                          className="rounded-l-none text-sm h-10 sm:h-11 w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-primary-gold/50" 
+                          placeholder="e.g., 712345678" 
+                          type="tel"
+                          inputMode="tel"
+                          autoComplete="tel"
+                          {...field} 
+                        />
+                      </FormControl>
+                    </div>
+                    <FormMessage className="text-[11px] sm:text-xs text-red-500 dark:text-red-400" />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-primary-gold text-white hover:bg-primary-gold/90 transition-colors duration-300"
-            >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </Button>
+            {/* Subject - Full Width */}
+            <div className="space-y-1.5">
+              <FormField
+                control={form.control}
+                name="subject"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Subject <span className="text-red-500">*</span></FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="How can we help you?" 
+                        className="text-sm h-10 sm:h-11 w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-primary-gold/50"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[11px] sm:text-xs text-red-500 dark:text-red-400" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Message - Full Width */}
+            <div className="space-y-1.5">
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Message <span className="text-red-500">*</span></FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Please provide details about your inquiry..." 
+                        className="resize-none min-h-[120px] sm:min-h-[140px] text-sm w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-primary-gold/50" 
+                        rows={5}
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[11px] sm:text-xs text-red-500 dark:text-red-400" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-gray-800 pt-3 pb-2 -mx-3 sm:-mx-5 md:-mx-6 px-3 sm:px-5 md:px-6 border-t border-gray-100 dark:border-gray-700">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full h-12 sm:h-12 text-sm font-medium bg-primary-gold hover:bg-primary-gold/90 text-white shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>

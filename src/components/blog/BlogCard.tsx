@@ -22,13 +22,17 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
     });
   };
 
+  // Generate the post URL using the slug or by generating one from the title
+  const postSlug = post.slug || generateSlug(post.title || 'untitled');
+  const postUrl = `/blog/${postSlug}`;
+
   return (
     <Card 
       className={`overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100 group ${className}`}
     >
       {/* Featured Image */}
       {post.featured_image_url && (
-        <Link to={`/blog/${post.slug || generateSlug(post.title || 'Untitled')}`} className="block overflow-hidden">
+        <Link to={postUrl} className="block overflow-hidden">
           <div className="aspect-video overflow-hidden relative">
             <img
               src={post.featured_image_url}
@@ -51,7 +55,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
       <CardContent className="p-6">
         {/* Category */}
         {post.category && (
-          <Link to={`/blog/category/${post.category}`}>
+          <Link to={`/blog/category/${post.category}`} className="inline-block" onClick={(e) => e.stopPropagation()}>
             <Badge 
               variant="outline" 
               className="mb-3 text-[#ffd51e] border-[#ffd51e] bg-[#ffd51e]/10 hover:bg-[#ffd51e]/20 transition-colors font-normal"
@@ -62,7 +66,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
         )}
         
         {/* Title */}
-        <Link to={`/blog/${post.slug || generateSlug(post.title || 'Untitled')}`}>
+        <Link to={postUrl}>
           <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 hover:text-[#ffd51e] transition-colors font-cinzel">
             {post.title || 'Untitled'}
           </h3>
@@ -120,16 +124,15 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, className = '', compact = fal
         
         {/* Read More Button */}
         <div className="mt-4">
-          <Button 
-            variant="link" 
-            className="p-0 h-auto text-[#ffd51e] hover:text-[#e6c01a] font-medium flex items-center group"
-            asChild
-          >
-            <Link to={`/blog/${post.slug || generateSlug(post.title || 'Untitled')}`}>
+          <Link to={postUrl} className="inline-block">
+            <Button 
+              variant="link" 
+              className="p-0 h-auto text-[#ffd51e] hover:text-[#e6c01a] font-medium flex items-center group"
+            >
               Read more
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

@@ -2,8 +2,12 @@ import { Calendar, User, MessageSquare } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useBlogComments } from '@/hooks/useBlog';
 
-const BlogCommentList: React.FC = () => {
-  const { comments, loading, error } = useBlogComments();
+interface BlogCommentListProps {
+  postId: string;
+}
+
+const BlogCommentList: React.FC<BlogCommentListProps> = ({ postId }) => {
+  const { comments, loading, error } = useBlogComments(postId);
 
   if (loading) {
     return (
