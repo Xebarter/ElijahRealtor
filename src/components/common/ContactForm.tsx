@@ -26,7 +26,11 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-const ContactForm = () => {
+interface ContactFormProps {
+  onSuccess?: () => void;
+}
+
+const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -61,17 +65,17 @@ const ContactForm = () => {
 
       if (!error) {
         // Send notification when message is successfully submitted
-        await sendContactNotification({
-          name: data.name,
-          email: data.email,
-          subject: data.subject,
-          message: data.message
-        });
+        await sendContactNotification(data);
       }
 
       if (error) throw error;
-      toast.success('Message sent successfully! We\'ll get back to you soon.');
+      toast.success('Your message has been sent successfully!');
       form.reset();
+
+      // Call onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       toast.error('Error sending message. Please try again.');
       console.error('Error:', error);

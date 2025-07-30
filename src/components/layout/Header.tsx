@@ -100,17 +100,17 @@ const Header = () => {
             )}
           </div>
 
-          {/* Hamburger / X Button */}
-          <div className="md:hidden">
+          {/* Hamburger / X Button - Moved outside the overlay */}
+          <div className="md:hidden relative z-[10000]">
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleMenu}
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              className="z-50 p-2 -mr-2 hover:bg-white/10 transition duration-200"
+              className="p-2 -mr-2 hover:bg-white/10 transition duration-200 relative z-[10001]"
             >
               {isMenuOpen ? (
-                <div className="relative w-8 h-8 flex items-center justify-center z-50">
+                <div className="relative w-8 h-8 flex items-center justify-center">
                   <div className="absolute inset-0 bg-[#ffd51e] rounded-full transform scale-90 transition-all duration-300 group-hover:scale-100 group-hover:bg-opacity-90" />
                   <X 
                     className="relative w-5 h-5 text-black transition-transform duration-300 group-hover:rotate-90"
@@ -131,12 +131,12 @@ const Header = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}
+        className={`fixed inset-0 z-[9998] md:hidden transition-opacity duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}
         aria-hidden={!isMenuOpen}
       >
         {/* Overlay */}
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 z-50"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 z-[9998]"
           onClick={() => setIsMenuOpen(false)}
           aria-hidden={!isMenuOpen}
         />
@@ -144,7 +144,7 @@ const Header = () => {
         {/* Slide-in Menu */}
         <div
           ref={menuRef}
-          className={`fixed inset-y-0 left-0 w-[80%] max-w-sm h-screen bg-[#0A0A0A] shadow-xl transition-all duration-300 ease-in-out transform z-50 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+          className={`fixed inset-y-0 left-0 w-[80%] max-w-sm h-screen bg-[#0A0A0A] shadow-xl transition-all duration-300 ease-in-out transform z-[9999] border-r-4 border-red-600 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
         >
           <div className="h-full flex flex-col">
             {/* Menu Header */}
