@@ -288,46 +288,49 @@ const Contact = () => {
             </motion.div>
 
             {/* Contact Form */}
+            // ... (keep all the imports and other code exactly the same until the form section)
+
+            {/* Contact Form */}
             <motion.div 
               className="bg-white rounded-2xl shadow-2xl overflow-hidden"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <div className="p-8 sm:p-10">
-                <div className="text-center mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 font-cinzel">Send Us a Message</h2>
-                  <p className="text-gray-600 mt-2">We'll get back to you within 24 hours</p>
+              <div className="p-4 sm:p-6 md:p-8 lg:p-10">
+                <div className="text-center mb-6 sm:mb-8">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 font-cinzel">Send Us a Message</h2>
+                  <p className="text-sm sm:text-base text-gray-600 mt-2">We'll get back to you within 24 hours</p>
                 </div>
 
                 {submitSuccess ? (
-                  <div className="text-center py-10">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <div className="text-center py-8 sm:py-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Message Sent Successfully!</h3>
-                    <p className="text-gray-600">We'll get back to you soon.</p>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Message Sent Successfully!</h3>
+                    <p className="text-sm sm:text-base text-gray-600">We'll get back to you soon.</p>
                   </div>
                 ) : (
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+                      <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2">
                         {/* Name Field */}
                         <FormField
                           control={form.control}
                           name="name"
                           render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-sm font-medium text-gray-700">Full Name</FormLabel>
+                            <FormItem className="sm:col-span-2 md:col-span-1">
+                              <FormLabel className="text-xs sm:text-sm font-medium text-gray-700">Full Name</FormLabel>
                               <FormControl>
                                 <div className="relative">
                                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <User className="h-5 w-5 text-gray-400" />
+                                    <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                                   </div>
                                   <Input
-                                    className="pl-10 h-12 rounded-lg border-gray-300 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
+                                    className="pl-8 sm:pl-10 h-10 sm:h-12 text-sm sm:text-base rounded-lg border-gray-300 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
                                     placeholder="John Doe"
                                     {...field}
                                   />
@@ -343,16 +346,16 @@ const Contact = () => {
                           control={form.control}
                           name="email"
                           render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-sm font-medium text-gray-700">Email Address</FormLabel>
+                            <FormItem className="sm:col-span-2 md:col-span-1">
+                              <FormLabel className="text-xs sm:text-sm font-medium text-gray-700">Email Address</FormLabel>
                               <FormControl>
                                 <div className="relative">
                                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Mail className="h-5 w-5 text-gray-400" />
+                                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                                   </div>
                                   <Input
                                     type="email"
-                                    className="pl-10 h-12 rounded-lg border-gray-300 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
+                                    className="pl-8 sm:pl-10 h-10 sm:h-12 text-sm sm:text-base rounded-lg border-gray-300 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
                                     placeholder="your.email@example.com"
                                     {...field}
                                   />
@@ -368,17 +371,17 @@ const Contact = () => {
                           control={form.control}
                           name="country"
                           render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-sm font-medium text-gray-700">Country</FormLabel>
+                            <FormItem className="sm:col-span-2 md:col-span-1">
+                              <FormLabel className="text-xs sm:text-sm font-medium text-gray-700">Country</FormLabel>
                               <Select onValueChange={field.onChange} value={field.value}>
                                 <FormControl>
-                                  <SelectTrigger className="h-12">
+                                  <SelectTrigger className="h-10 sm:h-12 text-sm sm:text-base">
                                     <SelectValue placeholder="Select your country" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
                                   {COUNTRIES.map((country) => (
-                                    <SelectItem key={country.name} value={country.name}>
+                                    <SelectItem key={country.name} value={country.name} className="text-sm sm:text-base">
                                       {country.name}
                                     </SelectItem>
                                   ))}
@@ -394,16 +397,16 @@ const Contact = () => {
                           control={form.control}
                           name="phone"
                           render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-sm font-medium text-gray-700">Phone Number</FormLabel>
+                            <FormItem className="sm:col-span-2 md:col-span-1">
+                              <FormLabel className="text-xs sm:text-sm font-medium text-gray-700">Phone Number</FormLabel>
                               <div className="flex">
-                                <div className="flex-shrink-0 z-10 inline-flex items-center px-4 text-sm text-gray-500 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg">
+                                <div className="flex-shrink-0 z-10 inline-flex items-center px-3 text-xs sm:text-sm text-gray-500 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg">
                                   {countryCode ? `+${countryCode}` : '--'}
                                 </div>
                                 <FormControl>
                                   <Input
                                     type="tel"
-                                    className="rounded-l-none h-12 border-l-0 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
+                                    className="rounded-l-none h-10 sm:h-12 text-sm sm:text-base border-l-0 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
                                     placeholder="700 000000"
                                     {...field}
                                   />
@@ -420,10 +423,10 @@ const Contact = () => {
                           name="subject"
                           render={({ field }) => (
                             <FormItem className="col-span-2">
-                              <FormLabel className="text-sm font-medium text-gray-700">Subject</FormLabel>
+                              <FormLabel className="text-xs sm:text-sm font-medium text-gray-700">Subject</FormLabel>
                               <FormControl>
                                 <Input
-                                  className="h-12 rounded-lg border-gray-300 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
+                                  className="h-10 sm:h-12 text-sm sm:text-base rounded-lg border-gray-300 focus:ring-2 focus:ring-[#ffd51e] focus:border-[#ffd51e]"
                                   placeholder="How can we help you?"
                                   {...field}
                                 />
@@ -439,12 +442,12 @@ const Contact = () => {
                           name="message"
                           render={({ field }) => (
                             <FormItem className="col-span-2">
-                              <FormLabel className="text-sm font-medium text-gray-700">Your Message</FormLabel>
+                              <FormLabel className="text-xs sm:text-sm font-medium text-gray-700">Your Message</FormLabel>
                               <FormControl>
                                 <Textarea 
                                   placeholder="Tell us about your real estate needs..." 
-                                  rows={5} 
-                                  className="bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#ffd51e] focus:border-transparent resize-none"
+                                  rows={4}
+                                  className="text-sm sm:text-base bg-white border-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-[#ffd51e] focus:border-transparent resize-none"
                                   {...field} 
                                 />
                               </FormControl>
@@ -458,12 +461,12 @@ const Contact = () => {
                       <div className="pt-2 col-span-2">
                         <Button
                           type="submit"
-                          className="w-full bg-[#ffd51e] hover:bg-[#e6c01d] text-gray-900 font-medium py-3 px-6 rounded-lg transition-colors duration-300"
+                          className="w-full text-sm sm:text-base bg-[#ffd51e] hover:bg-[#e6c01d] text-gray-900 font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-300"
                           disabled={isSubmitting}
                         >
                           {isSubmitting ? (
                             <>
-                              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <svg className="animate-spin -ml-1 mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                               </svg>
@@ -471,7 +474,7 @@ const Contact = () => {
                             </>
                           ) : (
                             <>
-                              <Send className="w-5 h-5 mr-2" />
+                              <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                               Send Message
                             </>
                           )}
@@ -482,6 +485,8 @@ const Contact = () => {
                 )}
               </div>
             </motion.div>
+
+// ... (keep all the remaining code exactly the same)
           </div>
         </div>
       </section>
