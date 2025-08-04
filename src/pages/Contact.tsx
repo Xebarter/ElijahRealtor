@@ -288,9 +288,6 @@ const Contact = () => {
             </motion.div>
 
             {/* Contact Form */}
-            // ... (keep all the imports and other code exactly the same until the form section)
-
-            {/* Contact Form */}
             <motion.div 
               className="bg-white rounded-2xl shadow-2xl overflow-hidden"
               initial={{ opacity: 0, y: 50 }}
@@ -485,8 +482,6 @@ const Contact = () => {
                 )}
               </div>
             </motion.div>
-
-// ... (keep all the remaining code exactly the same)
           </div>
         </div>
       </section>

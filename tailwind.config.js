@@ -13,6 +13,10 @@ export default {
       cinzel: ['Cinzel', 'serif'],
     },
     extend: {
+      screens: {
+        ipad: '834px', // iPad Air/Pro portrait
+        'ipad-lg': '1024px', // iPad landscape
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

@@ -76,8 +76,7 @@ const HeroSection = () => {
     <section className="relative min-h-[60vh] sm:min-h-[75vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden font-inter overflow-x-hidden">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
-
-        .font-inter {
+        /* Only keep custom styles for shimmer, sparkle, and button effects. All layout, font, and spacing is handled by Tailwind. */
           font-family: 'Cinzel', serif;
         }
         .font-luxury {
@@ -248,38 +247,46 @@ const HeroSection = () => {
       <div className="relative z-40 max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-20 lg:py-24 w-full">
         <div className="text-center w-full">
           {/* Crest */}
-          <div className="hidden md:flex justify-center mb-4">
-            <img src="/logo.svg" alt="Elijah Realtor Logo" className="h-16 w-auto hero-crest" />
+          <div className="hidden md:flex justify-center mb-3 md:mb-4 ipad:mb-6">
+            <img src="/logo.svg" alt="Elijah Realtor Logo" className="h-12 sm:h-16 ipad:h-20 w-auto hero-crest" />
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white mb-4 sm:mb-6 md:mb-8 tracking-tight text-shadow-lg font-luxury hero-headline">
+          <h1 className="font-extrabold text-white mb-4 sm:mb-6 md:mb-8 ipad:mb-10 tracking-tight text-shadow-lg font-luxury hero-headline
+            text-3xl xs:text-4xl sm:text-5xl md:text-6xl ipad:text-7xl ipad-lg:text-8xl lg:text-8xl
+            leading-tight sm:leading-tight md:leading-[1.1]"
+          >
             Your Dream
-            <span className="block gold-gradient mt-2 font-luxury">Property Across Africa</span>
+            <span className="block gold-gradient mt-2 font-luxury
+              text-2xl xs:text-3xl sm:text-4xl md:text-5xl ipad:text-6xl ipad-lg:text-7xl lg:text-7xl
+            ">
+              Property Across Africa
+            </span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-200 mb-6 sm:mb-8 md:mb-10 max-w-4xl mx-auto px-2 sm:px-0 leading-relaxed font-inter hero-subheadline">
+          <p className="text-base xs:text-lg sm:text-xl md:text-2xl ipad:text-3xl ipad-lg:text-4xl lg:text-4xl text-gray-200 mb-4 sm:mb-6 md:mb-8 ipad:mb-10 max-w-3xl ipad:max-w-4xl mx-auto px-2 sm:px-0 leading-relaxed font-inter hero-subheadline"
+          >
             Luxury properties in Africa's most prestigious locations
           </p>
 
           {/* Search */}
-          <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 px-2 sm:px-0">
-            <div className="search-container w-full max-w-3xl">
-              <form onSubmit={handleSearch} className="search-form bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl overflow-hidden w-full">
-                <div className="search-input-container flex items-center w-full h-full pl-6 pr-2 py-1.5">
+          <div className="flex justify-center mb-4 sm:mb-6 md:mb-8 ipad:mb-10 px-2 sm:px-0">
+            <div className="w-full max-w-[95vw] xs:max-w-xl sm:max-w-2xl md:max-w-3xl ipad:max-w-4xl">
+              <form onSubmit={handleSearch} className="flex bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl overflow-hidden w-full">
+                <div className="flex items-center w-full h-full pl-4 xs:pl-6 pr-2 py-1.5 xs:py-2">
                   <Input
                     type="text"
                     placeholder="Search locations, countries, or properties..."
-                    className="search-input w-full border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-lg"
+                    className="w-full border-0 focus:ring-0 text-white bg-transparent placeholder-gray-300 text-base xs:text-lg ipad:text-xl"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <Button
                     type="submit"
-                    className="search-button btn-primary p-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
+                    className="btn-primary p-2 xs:p-3 ipad:p-4 text-base xs:text-lg ipad:text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
                   >
-                    <Search className="w-6 h-6" />
+                    <Search className="w-5 h-5 xs:w-6 xs:h-6 ipad:w-7 ipad:h-7" />
                   </Button>
                 </div>
               </form>
@@ -287,9 +294,9 @@ const HeroSection = () => {
           </div>
 
           {/* Call-to-action */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-2 sm:px-0">
-            <Link to="/properties" className="w-full sm:w-auto">
-              <Button size="lg" className="btn-secondary px-6 sm:px-8 py-3 sm:py-4 text-lg rounded-full shadow-md hover:shadow-lg transition-all duration-300 ease-in-out">
+          <div className="flex flex-col xs:flex-row gap-3 xs:gap-4 justify-center items-center w-full px-2 sm:px-0">
+            <Link to="/properties" className="w-full xs:w-auto">
+              <Button size="lg" className="btn-secondary px-4 xs:px-6 sm:px-8 py-2 xs:py-3 sm:py-4 text-base xs:text-lg ipad:text-xl rounded-full shadow-md hover:shadow-lg transition-all duration-300 ease-in-out">
                 View All Properties
               </Button>
             </Link>
