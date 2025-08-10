@@ -252,7 +252,7 @@ const Header = () => {
           {/* Slide-in Menu */}
           <div
             ref={menuRef}
-            className={`fixed inset-y-0 left-0 w-[90%] xs:w-[85%] sm:w-[75%] max-w-xs h-screen bg-gradient-to-b from-[#0A0A0A] to-[#1A1A1A] shadow-2xl transition-all duration-300 ease-out transform z-[9999] border-r-4 border-[#FFD700] ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+            className={`fixed inset-y-0 left-0 w-[90%] xs:w-[85%] sm:w-[75%] max-w-xs h-screen bg-gradient-to-b from-[#0A0A0A] to-[#1A1A1A] shadow-2xl transition-all duration-300 ease-out transform z-[9999] border-r-4 border-[#cc0000] ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
           >
             <div className="h-full flex flex-col">
               {/* Menu Header */}
